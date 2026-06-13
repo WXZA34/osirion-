@@ -47,3 +47,5 @@ app.*.map.json
 functions/node_modules/
 
 tmp/
+
+secrets_backup.txt
