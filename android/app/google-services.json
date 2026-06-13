@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "317679762375",
+    "project_id": "valerion-55414",
+    "storage_bucket": "valerion-55414.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:317679762375:android:e657e99e55d9f7f80337e2",
+        "android_client_info": {
+          "package_name": "com.example.valerion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "317679762375-rv4ut4bn0qevjnero5djed5g532tpbi9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.valerion",
+            "certificate_hash": "34d27fa530ce15ddcaf3a62a2584eb1c74b003a6"
+          }
+        },
+        {
+          "client_id": "317679762375-9bvblp6ufivg3ssjjbc5ovgc89u9a5ko.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALbcxFo0B9cxMYVSQy_bm4v51wtn1HFXw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "317679762375-9bvblp6ufivg3ssjjbc5ovgc89u9a5ko.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "317679762375-k4nklvtag6h3l89j1r5057dpsq6hbqb1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.valerion"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:317679762375:android:a226a0fa8c694a990337e2",
+        "android_client_info": {
+          "package_name": "com.osirion.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "317679762375-5mlldt5rt8pm1lgv597uj3jtutv51mca.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.osirion.app",
+            "certificate_hash": "a0e4b8a22774a3624f0be60a482f30d33295c1ca"
+          }
+        },
+        {
+          "client_id": "317679762375-9bvblp6ufivg3ssjjbc5ovgc89u9a5ko.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALbcxFo0B9cxMYVSQy_bm4v51wtn1HFXw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "317679762375-9bvblp6ufivg3ssjjbc5ovgc89u9a5ko.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "317679762375-k4nklvtag6h3l89j1r5057dpsq6hbqb1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.valerion"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

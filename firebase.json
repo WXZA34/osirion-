@@ -1,0 +1,35 @@
+{
+  "functions": {
+    "source": "functions"
+  },
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "storage": [
+    {
+      "bucket": "valerion-55414.firebasestorage.app",
+      "rules": "storage.rules"
+    }
+  ],
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "valerion-55414",
+          "appId": "1:317679762375:android:a226a0fa8c694a990337e2",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "valerion-55414",
+          "configurations": {
+            "android": "1:317679762375:android:a226a0fa8c694a990337e2",
+            "ios": "1:317679762375:ios:9ac55d4bc597d3280337e2",
+            "macos": "1:317679762375:ios:9ac55d4bc597d3280337e2"
+          }
+        }
+      }
+    }
+  }
+}

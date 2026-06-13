@@ -1,0 +1,219 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ----------------------------------------------------------------------
+    // FONCTIONS UTILITAIRES
+    // ----------------------------------------------------------------------
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isNotBanned() {
+      return !exists(/databases/$(database)/documents/bans/$(request.auth.uid));
+    }
+
+    function isUser(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // ----------------------------------------------------------------------
+    // PROFIL UTILISATEUR (Sanctuaire)
+    // ----------------------------------------------------------------------
+    match /users/{userId} {
+      // SÉCURITÉ : Autorise les listes courtes pour la recherche (UI) mais bloque l'aspiration massive
+      allow get: if isAuthenticated();
+      allow list: if isAuthenticated() && request.query.limit <= 30; 
+      allow create: if isUser(userId);
+      
+      // SÉCURITÉ RGPD : Données privées (Tokens, Emails)
+      match /private/data {
+        allow read, write: if isUser(userId);
+      }
+      
+      allow update: if isUser(userId) && isNotBanned() && (
+        // Interdiction de modifier les champs sensibles (XP, Aether, etc.)
+        // Doit passer par Cloud Functions pour validation serveur
+        !request.resource.data.diff(resource.data).affectedKeys()
+          .hasAny(['xp', 'level', 'forceXp', 'wisdomXp', 'aetherBalance', 'inventory', 'clanIds', 'unlockedTitles']) &&
+        // Validation des types (SÉCURITÉ ANTI-INJECTION)
+        (!request.resource.data.keys().hasAny(['username']) || request.resource.data.username is string) &&
+        (!request.resource.data.keys().hasAny(['pseudo']) || request.resource.data.pseudo is string)
+      ) || (
+        // Autorise uniquement les tiers (amis/clan) à modifier les IDs de requête (système social)
+        isAuthenticated() && isNotBanned() && request.auth.uid != userId &&
+        request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['incomingRequestIds', 'outgoingRequestIds'])
+      );
+      
+      allow delete: if isUser(userId);
+
+      match /journal/{entryId} {
+        allow read, write: if isUser(userId) && isNotBanned();
+      }
+
+      match /arcs/{arcId} {
+        allow read: if isUser(userId);
+        // 'claimed' ne peut être écrit que par Cloud Function
+        allow write: if false; 
+        
+        match /daily_stats/{dateStr} {
+          allow read: if isUser(userId);
+          // Validation basique des données de workout quotidien
+          allow write: if isUser(userId) && isNotBanned() && 
+            request.resource.data.questsDone is int &&
+            request.resource.data.totalQuests is int;
+        }
+      }
+    }
+
+    // ----------------------------------------------------------------------
+    // MESSAGERIE PRIVÉE (Alpha Connect)
+    // ----------------------------------------------------------------------
+    match /private_chats/{chatId} {
+      function isChatMember() {
+        return isAuthenticated() && (request.auth.uid in chatId.split('_'));
+      }
+      
+      function isStillFriend() {
+        let otherUid = chatId.replace(request.auth.uid, '').replace('_', '');
+        return request.auth.uid in get(/databases/$(database)/documents/users/$(otherUid)).data.friendIds;
+      }
+
+      allow read: if isChatMember();
+      // On autorise uniquement l'UPDATE de la métadonnée (lastMessage, unreadCount)
+      // La création est déléguée à la Cloud Function initializePrivateChat
+      allow update: if isChatMember() && isNotBanned();
+      allow create: if false; 
+      
+      match /messages/{messageId} {
+        allow read: if isChatMember();
+        // SÉCURITÉ : L'expéditeur doit être membre du chat ET toujours être dans la liste d'amis de l'autre
+        allow create: if isChatMember() && isNotBanned() && isStillFriend() &&
+          request.resource.data.senderId == request.auth.uid &&
+          (request.time > get(/databases/$(database)/documents/private_chats/$(chatId)).data.lastUpdate + duration.value(1, 's'));
+        allow delete: if isChatMember() && resource.data.senderId == request.auth.uid;
+      }
+    }
+    
+    // ----------------------------------------------------------------------
+    // SÉANCES D'ENTRAÎNEMENT (Le Dojo)
+    // ----------------------------------------------------------------------
+    match /workouts/{workoutId} {
+      allow read: if isAuthenticated() && (resource.data.userId == request.auth.uid);
+      // SÉCURITÉ : Délégation totale à la Cloud Function `addWorkoutResults`
+      allow write: if false; 
+    }
+
+    // ----------------------------------------------------------------------
+    // SOCIAL : LES CLANS (Panthéon)
+    // ----------------------------------------------------------------------
+    match /clans/{clanId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isNotBanned();
+      allow update: if isAuthenticated() && isNotBanned() && (
+        // Seul le leader peut modifier les infos du clan
+        resource.data.leaderId == request.auth.uid && 
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['totalXp'])
+      );
+      allow delete: if isAuthenticated() && resource.data.leaderId == request.auth.uid;
+      
+      match /messages/{messageId} {
+        // Seuls les membres du clan (vérifiés via leur profil) peuvent lire/écrire
+        // Note: Pour plus de perf, on pourrait stocker members: [] dans le doc clan
+        allow read, write: if isAuthenticated() && isNotBanned() && 
+          clanId in get(/databases/$(database)/documents/users/$(request.auth.uid)).data.clanIds;
+      }
+    }
+
+    // ----------------------------------------------------------------------
+    // REQUÊTES DE CLAN (SÉCURISÉ)
+    // ----------------------------------------------------------------------
+    match /clan_requests/{requestId} {
+      // Seul l'utilisateur concerné ou le leader du clan peut lire/écrire
+      allow read, write: if isAuthenticated() && isNotBanned() && (
+        request.auth.uid == resource.data.userId || 
+        request.auth.uid == resource.data.targetUserId ||
+        (exists(/databases/$(database)/documents/clans/$(resource.data.clanId)) && 
+         get(/databases/$(database)/documents/clans/$(resource.data.clanId)).data.leaderId == request.auth.uid)
+      );
+      // SÉCURITÉ : L'utilisateur ne peut créer une requête qu'en son propre nom
+      allow create: if isAuthenticated() && isNotBanned() && request.resource.data.userId == request.auth.uid;
+    }
+
+    // ----------------------------------------------------------------------
+    // SUPPORT ET RETOURS (Laboratoire)
+    // ----------------------------------------------------------------------
+    match /support_tickets/{ticketId} {
+      allow create: if isAuthenticated() && isNotBanned();
+      allow read: if false; 
+    }
+
+    // ----------------------------------------------------------------------
+    // CATALOGUE d'EXERCICES ET BIBLIOTHÈQUE
+    // ----------------------------------------------------------------------
+    match /exercises/{exerciseId} {
+      allow read: if isAuthenticated();
+      allow write: if false; 
+    }
+
+    match /books/{bookId} {
+      allow read: if isAuthenticated();
+      allow write: if false; 
+    }
+
+    match /library_audios/{audioId} {
+      allow read: if isAuthenticated();
+      allow write: if false; 
+    }
+
+    match /global_config/{docId} {
+      allow read: if isAuthenticated();
+      allow write: if false; 
+    }
+
+    match /system_announcements/{announcementId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    // ----------------------------------------------------------------------
+    // COLISÉE (Global Asynchronous Multiplayer)
+    // ----------------------------------------------------------------------
+    match /colosseum_runs/{runId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isNotBanned() && request.resource.data.creatorId == request.auth.uid;
+      allow update: if isAuthenticated() && isNotBanned() && (
+        resource.data.creatorId == request.auth.uid || 
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['challengersCount'])
+      );
+      allow delete: if isAuthenticated() && isNotBanned() && resource.data.creatorId == request.auth.uid;
+    }
+
+    // ----------------------------------------------------------------------
+    // BASTIONS (Spots de Workout)
+    // ----------------------------------------------------------------------
+    match /bastions/{bastionId} {
+      allow read: if isAuthenticated();
+      // Seul l'Admin peut modifier les coordonnées des bastions
+      allow write: if false; 
+
+      match /leaderboard/{userId} {
+        allow read: if isAuthenticated();
+        // SÉCURITÉ : La conquête doit passer par Cloud Function pour validation GPS
+        allow write: if false; 
+      }
+    }
+
+    // ----------------------------------------------------------------------
+    // COLLABORATIF : ZONES TACTIQUES (No-Go Zones)
+    // ----------------------------------------------------------------------
+    match /tactical_no_go_zones/{zoneId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isNotBanned() && 
+        request.resource.data.reported_by == request.auth.uid;
+      allow update, delete: if isAuthenticated() && 
+        resource.data.reported_by == request.auth.uid; 
+    }
+  }
+}

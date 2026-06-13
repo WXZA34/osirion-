@@ -1,0 +1,93 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Fonction utilitaire pour vérifier l'authentification
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Fonction pour vérifier le type de fichier
+    function isImage() {
+      return request.resource.contentType.matches('image/.*');
+    }
+    
+    function isAudio() {
+      return request.resource.contentType.matches('audio/.*');
+    }
+
+    function isSmallFile() {
+      return request.resource.size < 5 * 1024 * 1024;
+    }
+
+    // --- 1. DOSSIER DES EXERCICES (DOJO) ---
+    match /exercises/{allPaths=**} {
+      allow read: if true;
+      // SÉCURITÉ : Personne ne peut écrire via l'app, uniquement Console Admin
+      allow write: if false; 
+    }
+    
+    // --- 2. AVATARS DES JOUEURS ---
+    match /users/{userId}/avatar.jpg {
+      allow read: if true;
+      // Seul le propriétaire peut uploader son avatar (image uniquement + limite 5Mo)
+      allow write: if isAuthenticated() && request.auth.uid == userId && isImage() && isSmallFile();
+    }
+    
+    // --- 3. LOGOS DE CLAN ---
+    match /clans/{clanId}/logo.jpg {
+      allow read: if true;
+      // SÉCURITÉ : Seul le leader du clan peut modifier le logo
+      allow write: if isAuthenticated() && isImage() && isSmallFile() &&
+        firestore.get(/databases/(default)/documents/clans/$(clanId)).data.leaderId == request.auth.uid;
+    }
+
+    // --- 4. MESSAGES VOCAUX ---
+    match /chat_voices/{chatId}/{voiceId} {
+      function isChatMember() {
+        return isAuthenticated() && (
+          (chatId.matches('.*_.*') && chatId.matches('.*' + request.auth.uid + '.*')) ||
+          (!chatId.matches('.*_.*') && (
+            request.auth.uid in firestore.get(/databases/(default)/documents/clans/$(chatId)).data.get('members', []) ||
+            firestore.get(/databases/(default)/documents/clans/$(chatId)).data.get('leaderId', '') == request.auth.uid
+          ))
+        );
+      }
+      
+      allow read: if isChatMember();
+      allow write: if isChatMember() && isAudio() && isSmallFile();
+    }
+
+    // --- 5. RENSEIGNEMENT BASTIONS (ARENA) ---
+    match /bastions_intel/{bastionId}/{fileName} {
+      allow read: if isAuthenticated();
+      // SÉCURITÉ : Pas d'arborescence infinie, et pas d'écrasement
+      allow write: if isAuthenticated() && isImage() && isSmallFile() && resource == null;
+    }
+    
+    // --- 6. RENSEIGNEMENT TACTIQUE (No-Go Zones) ---
+    match /tactical_no_go_zones_intel/{zoneId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && isImage() && isSmallFile() && resource == null;
+    }
+
+    // --- 7. PARTAGES DE PERFORMANCE ---
+    // SÉCURITÉ : Dossier par utilisateur pour éviter le spam anonyme global
+    match /shared_performances/{userId}/{perfId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && request.auth.uid == userId && isImage() && isSmallFile();
+      allow update, delete: if false;
+    }
+
+    // --- 8. MÉDIAS ÉPHÉMÈRES (CHAT 24H) ---
+    // Photos et Vidéos limitées à 20Mo (pour les 15s de vidéo)
+    match /chat_ephemeral/{chatId}/{fileName} {
+      function isVideo() {
+        return request.resource.contentType.matches('video/.*');
+      }
+      
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && (isImage() || isVideo()) && request.resource.size < 20 * 1024 * 1024;
+    }
+  }
+}

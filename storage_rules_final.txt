@@ -1,0 +1,73 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Fonction utilitaire pour vérifier l'authentification
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Fonction pour vérifier le type de fichier
+    function isImage() {
+      return request.resource.contentType.matches('image/.*');
+    }
+    
+    function isAudio() {
+      return request.resource.contentType.matches('audio/.*');
+    }
+
+    function isSmallFile() {
+      return request.resource.size < 5 * 1024 * 1024;
+    }
+
+    // --- 1. DOSSIER DES EXERCICES (DOJO) ---
+    match /exercises/{allPaths=**} {
+      allow read: if true;
+      // SÉCURITÉ : Personne ne peut écrire via l'app, uniquement Console Admin
+      allow write: if false; 
+    }
+    
+    // --- 2. AVATARS DES JOUEURS ---
+    match /users/{userId}/avatar.jpg {
+      allow read: if true;
+      // Seul le propriétaire peut uploader son avatar (image uniquement + limite 5Mo)
+      // Pas de condition null ici car l'utilisateur PEUT écraser son propre avatar
+      allow write: if isAuthenticated() && request.auth.uid == userId && isImage() && isSmallFile();
+    }
+    
+    // --- 3. LOGOS DE CLAN ---
+    match /clans/{clanId}/logo.jpg {
+      allow read: if true;
+      // L'écrasement est autorisé ici pour permettre le changement de logo de clan
+      allow write: if isAuthenticated() && isImage() && isSmallFile();
+    }
+
+    // --- 4. MESSAGES VOCAUX ---
+    match /chat_voices/{chatId}/{allPaths=**} {
+      function isChatMember() {
+        return isAuthenticated() && (request.auth.uid in chatId.split('_'));
+      }
+      allow read: if isChatMember();
+      allow write: if isChatMember() && isAudio() && isSmallFile();
+    }
+
+    // --- 5. RENSEIGNEMENT BASTIONS (ARENA) ---
+    match /bastions_intel/{allPaths=**} {
+      allow read: if isAuthenticated();
+      // SÉCURITÉ : On interdit l'écrasement pour éviter le vandalisme tacite
+      allow write: if isAuthenticated() && isImage() && isSmallFile() && !exists(request.path);
+    }
+    
+    // --- 6. RENSEIGNEMENT TACTIQUE (No-Go Zones) ---
+    match /tactical_no_go_zones_intel/{allPaths=**} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && isImage() && isSmallFile() && !exists(request.path);
+    }
+
+    // --- 7. PARTAGES DE PERFORMANCE ---
+    match /shared_performances/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated() && isImage() && isSmallFile() && !exists(request.path);
+    }
+  }
+}
