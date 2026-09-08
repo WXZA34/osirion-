@@ -1,3 +1,5 @@
+import 'package:valerion/l10n/app_localizations.dart';
+import '../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,7 +21,7 @@ import '../dojo/models/exercise_config.dart';
 import '../../core/services/notification_service.dart';
 
 class LibraryScreen extends ConsumerStatefulWidget {
-  const LibraryScreen({super.key});
+  LibraryScreen({super.key});
 
   @override
   ConsumerState<LibraryScreen> createState() => _LibraryScreenState();
@@ -82,7 +84,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
       setState(() => _isTimerRunning = false);
     } else {
       setState(() => _isTimerRunning = true);
-      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _timer = Timer.periodic(Duration(seconds: 1), (timer) {
         setState(() {
           if (_remainingSeconds > 0) {
             _remainingSeconds--;
@@ -107,7 +109,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
         final repo = ref.read(valerionRepositoryProvider);
 
         final entry = JournalEntry(
-          id: const Uuid().v4(),
+          id: Uuid().v4(),
           userId: user.id,
           content: text,
           date: DateTime.now(),
@@ -122,7 +124,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: const Text("Leçon ancrée dans le Livre d'Or. +10 XP."),
+              content: Text(AppLocalizations.of(context)!.libraryLeOnAncrE),
               backgroundColor: _accentColor,
             ),
           );
@@ -133,7 +135,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text("Erreur de sauvegarde: $e"),
+              content: Text(AppLocalizations.of(context)!.commonError(e.toString())),
               backgroundColor: Colors.red,
             ),
           );
@@ -165,7 +167,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
       setState(() {
         _selectedTabIndex = 2; // Onglet Journal
         _journalController.text =
-            "Leçon numéro un tirée de : ${_selectedBookForReading!.title}\n";
+            AppLocalizations.of(context)!.libraryLeconNumeroUn + _selectedBookForReading!.title + "\n";
         _selectedBookForReading = null;
       });
     }
@@ -204,9 +206,9 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Transmission Alpha calée sur : $arcId"),
+            content: Text(AppLocalizations.of(context)!.libraryTransmissionAlphaCalee + arcId),
             backgroundColor: _accentColor,
-            duration: const Duration(seconds: 2),
+            duration: Duration(seconds: 2),
           ),
         );
       }
@@ -228,14 +230,13 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
           (context) => AlertDialog(
             backgroundColor: _surfaceColor,
             title: Text(
-              "Session Terminée",
+              AppLocalizations.of(context)!.librarySessionTerminE,
               style: TextStyle(
                 color: _isSummer ? _onSurfaceColor : Colors.white,
                 fontFamily: 'Noto Serif',
               ),
             ),
-            content: const Text(
-              "Prouesse intellectuelle validée. +15 XP de Sagesse.",
+            content: Text(AppLocalizations.of(context)!.libraryProuesseIntellectuelleValidE,
               style: TextStyle(color: Colors.white70),
             ),
             actions: [
@@ -245,7 +246,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                   _resetTimer();
                 },
                 child: Text(
-                  "FERMER",
+                  AppLocalizations.of(context)!.libraryFermer,
                   style: TextStyle(color: _accentColor),
                 ),
               ),
@@ -271,8 +272,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
-        title: const Text(
-          "LA FORGE DE L'ESPRIT",
+        title: Text(AppLocalizations.of(context)!.libraryLaForgeDeL,
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w900,
@@ -283,16 +283,16 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Column(
         children: [
           _buildTopNavigationBar(),
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(20.0),
               child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
+                duration: Duration(milliseconds: 300),
                 transitionBuilder:
                     (child, animation) =>
                         FadeTransition(opacity: animation, child: child),
@@ -307,7 +307,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
 
   Widget _buildTopNavigationBar() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
         color: _surfaceColor,
         borderRadius: BorderRadius.circular(15),
@@ -315,10 +315,10 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildNavTab(0, "Livres", Icons.menu_book),
-          _buildNavTab(1, "Focus", Icons.timer),
-          _buildNavTab(2, "Journal", Icons.edit_note),
-          _buildNavTab(3, "Audio", Icons.headphones),
+          _buildNavTab(0, AppLocalizations.of(context)!.libraryTabLivres, Icons.menu_book),
+          _buildNavTab(1, AppLocalizations.of(context)!.libraryTabFocus, Icons.timer),
+          _buildNavTab(2, AppLocalizations.of(context)!.libraryTabJournal, Icons.edit_note),
+          _buildNavTab(3, AppLocalizations.of(context)!.libraryTabAudio, Icons.headphones),
         ],
       ),
     );
@@ -329,7 +329,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     return GestureDetector(
       onTap: () => setState(() => _selectedTabIndex = index),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
@@ -360,14 +360,14 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
       case 3:
         return _buildAudioPodcasts(surfaceColor);
       default:
-        return const SizedBox.shrink();
+        return SizedBox.shrink();
     }
   }
 
   // --- Tab 0: Reading Plans ---
   Widget _buildReadingPlans(Color surfaceColor, int wisdomLevel, double wisdomProgress) {
     return Column(
-      key: const ValueKey(0),
+      key: ValueKey(0),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         // Arc Selector
@@ -375,13 +375,13 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
           scrollDirection: Axis.horizontal,
           child: Row(
             children:
-                ['Winter Arc', 'Summer Body', 'Royal Arc'].map((arc) {
+                [AppLocalizations.of(context)!.winterArc, 'Summer Body', 'Royal Arc'].map((arc) {
                   bool isSelected = _activeArc == arc;
                   return GestureDetector(
                     onTap: () => _updateActiveArc(arc),
                     child: Container(
-                      margin: const EdgeInsets.only(right: 12),
-                      padding: const EdgeInsets.symmetric(
+                      margin: EdgeInsets.only(right: 12),
+                      padding: EdgeInsets.symmetric(
                         horizontal: 16,
                         vertical: 8,
                       ),
@@ -410,12 +410,12 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                 }).toList(),
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
 
         // Bouton Admin pour créer les données de test (Migration Firestore)
         if (kDebugMode)
           Padding(
-            padding: const EdgeInsets.only(bottom: 16),
+            padding: EdgeInsets.only(bottom: 16),
             child: Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -427,11 +427,11 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                       final repo = ref.read(valerionRepositoryProvider);
                       
                       // 1. Migration des Livres
-                      final books = libraryCatalog.values.expand((e) => e).toList();
+                      final books = getLibraryCatalog(context).values.expand((e) => e).toList();
                       await repo.uploadDefaultBooks(books);
 
                       // 2. Migration des Audios
-                      await repo.uploadDefaultLibraryAudios(ValerionAudios.catalogue);
+                      await repo.uploadDefaultLibraryAudios(ValerionAudios.getCatalogue(context));
 
                       // 3. Migration des Reliques
                       await repo.uploadDefaultRelics([...arsenalRelics, ...levelTitles]);
@@ -441,8 +441,8 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                       
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("✅ Migration Firestore réussie (Livres, Audios, Reliques) !"),
+                          SnackBar(
+                            content: Text(AppLocalizations.of(context)!.libraryMigrationFirestoreRUssie),
                             backgroundColor: Colors.green,
                           ),
                         );
@@ -452,19 +452,19 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text("❌ Erreur : $e"),
+                            content: Text(AppLocalizations.of(context)!.commonError(e.toString())),
                             backgroundColor: Colors.redAccent,
                           ),
                         );
                       }
                     }
                   },
-                  icon: const Icon(Icons.cloud_upload),
-                  label: const Text("MIGRER CLOUD"),
+                  icon: Icon(Icons.cloud_upload),
+                  label: Text(AppLocalizations.of(context)!.libraryMigrerCloud),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white10,
                     foregroundColor: Colors.white70,
-                    side: const BorderSide(color: Colors.white24),
+                    side: BorderSide(color: Colors.white24),
                   ),
                 ),
                 ElevatedButton.icon(
@@ -478,8 +478,8 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                       
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("🧹 Collections Firestore purgées (Livres, Audios, Reliques, Dojo) !"),
+                          SnackBar(
+                            content: Text(AppLocalizations.of(context)!.libraryCollectionsFirestorePurgEs),
                             backgroundColor: Colors.orange,
                           ),
                         );
@@ -487,28 +487,28 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                     } catch (e) {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("❌ Erreur purge : $e")),
+                          SnackBar(content: Text(AppLocalizations.of(context)!.commonError(e.toString()))),
                         );
                       }
                     }
                   },
-                  icon: const Icon(Icons.delete_sweep),
-                  label: const Text("PURGER"),
+                  icon: Icon(Icons.delete_sweep),
+                  label: Text(AppLocalizations.of(context)!.commonPurge),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orangeAccent.withValues(alpha: 0.1),
                     foregroundColor: Colors.orangeAccent,
-                    side: const BorderSide(color: Colors.orangeAccent),
+                    side: BorderSide(color: Colors.orangeAccent),
                   ),
                 ),
               ],
             ),
           ),
 
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
 
         // Jauge de Sagesse (Gamification)
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: surfaceColor,
             borderRadius: BorderRadius.circular(16),
@@ -518,20 +518,20 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
           ),
           child: Row(
             children: [
-              const Icon(Icons.auto_awesome, color: Colors.purpleAccent),
-              const SizedBox(width: 12),
+              Icon(Icons.auto_awesome, color: Colors.purpleAccent),
+              SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Sagesse Actuelle",
+                      AppLocalizations.of(context)!.librarySagesseActuelle,
                       style: TextStyle(
                         color: _isSummer ? _onSurfaceColor : Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8),
                     LinearProgressIndicator(
                       value: wisdomProgress,
                       backgroundColor: _isSummer ? Colors.black.withValues(alpha: 0.05) : Colors.white10,
@@ -542,7 +542,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                   ],
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Text(
                 "Niv. $wisdomLevel",
                 style: TextStyle(
@@ -553,7 +553,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
             ],
           ),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
 
         // Liste des livres (Hybride Isolée pour éviter les ANR)
         _DynamicBookList(
@@ -567,8 +567,8 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
 
   Widget _buildDetailedBookCard(BookEntity book, Color surfaceColor) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(16),
@@ -582,7 +582,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
             author: book.author,
             thumbnailUrl: book.thumbnailUrl,
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -596,7 +596,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                     fontFamily: 'Noto Serif',
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4),
                 Text(
                   book.author,
                   style: TextStyle(
@@ -604,12 +604,12 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                     fontSize: 12,
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: 8,
                         vertical: 4,
                       ),
@@ -631,31 +631,31 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.transparent,
                             foregroundColor: Colors.white70,
-                            minimumSize: const Size(60, 30),
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            minimumSize: Size(60, 30),
+                            padding: EdgeInsets.symmetric(horizontal: 12),
                             side: BorderSide(color: _isSummer ? Colors.black12 : Colors.white24),
                           ),
                           onPressed: () => _showBookDetailsSheet(book),
-                          child: const Text(
-                            "FICHE",
+                          child: Text(
+                            AppLocalizations.of(context)!.libraryFiche,
                             style: TextStyle(fontSize: 10),
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        SizedBox(width: 8),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: _isSummer ? Colors.black.withValues(alpha: 0.05) : Colors.white10,
                             foregroundColor: _isSummer ? _onSurfaceColor : Colors.white,
-                            minimumSize: const Size(60, 30),
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            minimumSize: Size(60, 30),
+                            padding: EdgeInsets.symmetric(horizontal: 12),
                           ),
                           onPressed:
                               () => setState(() {
                                 _selectedBookForReading = book;
                                 _selectedTabIndex = 1;
                               }), // Go to Focus Timer
-                          child: const Text(
-                            "LIRE",
+                          child: Text(
+                            AppLocalizations.of(context)!.libraryLire,
                             style: TextStyle(fontSize: 10),
                           ),
                         ),
@@ -674,7 +674,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
   // --- Tab 1: Focus Reader ---
   Widget _buildFocusReader(Color surfaceColor) {
     return Column(
-      key: const ValueKey(1),
+      key: ValueKey(1),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Row(
@@ -683,8 +683,8 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
             Expanded(
               child: Text(
                 _selectedBookForReading != null
-                    ? "LECTURE : ${_selectedBookForReading!.title.toUpperCase()}"
-                    : "MODE IMMERSION",
+                    ? AppLocalizations.of(context)!.libraryLecturePrefix + _selectedBookForReading!.title.toUpperCase()
+                    : AppLocalizations.of(context)!.libraryModeImmersion,
                 style: TextStyle(
                   color: _accentColor,
                   letterSpacing: 2,
@@ -702,11 +702,11 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                   size: 20
                 ),
                 onPressed: () => setState(() => _selectedBookForReading = null),
-                tooltip: "Annuler la lecture",
+                tooltip: AppLocalizations.of(context)!.libraryAnnulerLaLecture,
               ),
           ],
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
 
         // Timer Display
         Center(
@@ -723,8 +723,8 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                 if (_isTimerRunning)
                   BoxShadow(
                     color: _accentColor.withValues(alpha: 0.2),
-                    blurRadius: 40,
-                    spreadRadius: 10,
+                    blurRadius: 15,
+                    spreadRadius: -5,
                   ),
               ],
             ),
@@ -742,7 +742,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                   ),
                   if (_isTimerRunning)
                     Text(
-                      "NE PAS DÉRANGER ACTIVÉ",
+                      AppLocalizations.of(context)!.libraryNePasDRanger,
                       style: TextStyle(
                         color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.3) : Colors.grey,
                         fontSize: 9,
@@ -754,7 +754,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
             ),
           ),
         ),
-        const SizedBox(height: 40),
+        SizedBox(height: 40),
 
         // Time Selectors
         Row(
@@ -763,11 +763,11 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
               [15, 30, 60].map((mins) {
                 bool isSelected = _focusTimeGoal == mins;
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
                   child: GestureDetector(
                     onTap: () => _setTimerGoal(mins),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 12,
                       ),
@@ -782,7 +782,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                         ),
                       ),
                       child: Text(
-                        "$mins min",
+                        mins.toString() + AppLocalizations.of(context)!.libraryMinutesSuffix,
                         style: TextStyle(
                           color: isSelected 
                               ? _accentColor 
@@ -795,7 +795,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                 );
               }).toList(),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
 
         // Start/Stop
         ElevatedButton(
@@ -816,18 +816,18 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                 _selectedBookForReading != null
                     ? Colors.black
                     : (_isTimerRunning ? Colors.redAccent : Colors.black),
-            padding: const EdgeInsets.symmetric(vertical: 20),
+            padding: EdgeInsets.symmetric(vertical: 20),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
           ),
           child: Text(
             _selectedBookForReading != null
-                ? "COMMENCER LA LECTURE"
+                ? AppLocalizations.of(context)!.libraryCommencerLecture
                 : (_isTimerRunning
-                    ? "ARRÊTER L'IMMERSION"
-                    : "COMMENCER L'IMMERSION"),
-            style: const TextStyle(
+                    ? AppLocalizations.of(context)!.libraryArreterImmersion
+                    : AppLocalizations.of(context)!.libraryCommencerImmersion),
+            style: TextStyle(
               fontWeight: FontWeight.w900,
               letterSpacing: 1,
             ),
@@ -840,11 +840,11 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
   // --- Tab 2: Journal ---
   Widget _buildJournalEntry(Color surfaceColor) {
     return Column(
-      key: const ValueKey(2),
+      key: ValueKey(2),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          "CONTRAT D'HONNEUR",
+          AppLocalizations.of(context)!.libraryContratDHonneur,
           style: TextStyle(
             color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.5) : Colors.white70,
             letterSpacing: 2,
@@ -853,9 +853,9 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
           ),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         Text(
-          "\"La vie ne vaut d'être vécue sans être examinée.\"",
+          AppLocalizations.of(context)!.libraryLaVieNeVaut,
           textAlign: TextAlign.center,
           style: TextStyle(
             color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.4) : Colors.white54,
@@ -863,11 +863,11 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
             fontFamily: 'Noto Serif',
           ),
         ),
-        const SizedBox(height: 32),
+        SizedBox(height: 32),
 
         // Text Area
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: surfaceColor,
             borderRadius: BorderRadius.circular(16),
@@ -877,21 +877,21 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
             controller: _journalController,
             maxLength: 280,
             maxLines: 5,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
               fontFamily: 'Noto Serif',
               fontSize: 16,
               height: 1.5,
             ),
             decoration: InputDecoration(
-              hintText: "Quelle leçon avez-vous tiré aujourd'hui ?",
+              hintText: AppLocalizations.of(context)!.libraryQuelleLeOnAvez,
               hintStyle: TextStyle(color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.25) : Colors.white24),
               border: InputBorder.none,
               counterStyle: TextStyle(color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.4) : Colors.white54),
             ),
           ),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
 
         // Contract Checkbox
         Row(
@@ -909,15 +909,13 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
               ),
               side: BorderSide(color: _accentColor),
             ),
-            const Expanded(
-              child: Text(
-                "Ai-je été fidèle à mes valeurs et à mes objectifs aujourd'hui ?",
+            Expanded(child: Text(AppLocalizations.of(context)!.libraryAiJeTFid,
                 style: TextStyle(color: Colors.white70, fontSize: 13),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 32),
+        SizedBox(height: 32),
 
         ElevatedButton(
           onPressed:
@@ -929,27 +927,25 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
             foregroundColor: Colors.black,
             disabledBackgroundColor: Colors.white10,
             disabledForegroundColor: Colors.white54,
-            padding: const EdgeInsets.symmetric(vertical: 20),
+            padding: EdgeInsets.symmetric(vertical: 20),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
           ),
-          child: const Text(
-            "SCELLER LE CONTRAT",
+          child: Text(AppLocalizations.of(context)!.libraryScellerLeContrat,
             style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1),
           ),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
         Center(
           child: TextButton(
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                MaterialPageRoute(builder: (context) => ProfileScreen()),
               );
             },
-            child: const Text(
-              "Ouvrir le Livre d'Or (Archives)",
+            child: Text(AppLocalizations.of(context)!.libraryOuvrirLeLivreD,
               style: TextStyle(
                 color: Colors.white54,
                 decoration: TextDecoration.underline,
@@ -964,11 +960,11 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
   // --- Tab 3: Audio Podcasts ---
   Widget _buildAudioPodcasts(Color surfaceColor) {
     return Column(
-      key: const ValueKey(3),
+      key: ValueKey(3),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          "RÉCUPÉRATION MENTALE",
+          AppLocalizations.of(context)!.libraryRCupRationMentale,
           style: TextStyle(
             color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.6) : Colors.white70,
             letterSpacing: 2,
@@ -977,7 +973,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
           ),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
 
         // Liste des Audios (Hybride Isolée pour éviter les ANR)
         _DynamicAudioList(
@@ -985,10 +981,10 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
           buildAudioCard: (title, subtitle, icon, path) => _buildAudioCard(title, subtitle, icon, surfaceColor, path),
         ),
 
-        const SizedBox(height: 32),
+        SizedBox(height: 32),
 
         Container(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: Colors.amber.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(16),
@@ -996,14 +992,14 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
           ),
           child: Row(
             children: [
-              const Icon(Icons.star, color: Colors.amber),
-              const SizedBox(width: 16),
+              Icon(Icons.star, color: Colors.amber),
+              SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
-                      "Devenez Alpha+",
+                      AppLocalizations.of(context)!.libraryDevenezAlpha,
                       style: TextStyle(
                         color: Colors.amber,
                         fontWeight: FontWeight.bold,
@@ -1011,7 +1007,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      "Débloquez le mode hors ligne et des thématiques niches.",
+                      AppLocalizations.of(context)!.libraryDBloquezLeMode,
                       style: TextStyle(color: Colors.white70, fontSize: 12),
                     ),
                   ],
@@ -1034,8 +1030,8 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     return Builder(
       builder: (context) {
         return Container(
-          margin: const EdgeInsets.only(bottom: 12),
-          padding: const EdgeInsets.all(16),
+          margin: EdgeInsets.only(bottom: 12),
+          padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: surfaceColor,
               borderRadius: BorderRadius.circular(16),
@@ -1046,14 +1042,14 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
           child: Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: _accentColor.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(icon, color: _accentColor),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1065,7 +1061,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4),
                     Text(
                       subtitle,
                       style: TextStyle(
@@ -1109,7 +1105,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     showModalBottomSheet(
       context: context,
       backgroundColor: _surfaceColor,
-      shape: const RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       isScrollControlled: true,
@@ -1130,7 +1126,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                 child: Container(
                   width: 40,
                   height: 4,
-                  margin: const EdgeInsets.only(bottom: 24),
+                  margin: EdgeInsets.only(bottom: 24),
                   decoration: BoxDecoration(
                     color: Colors.white24,
                     borderRadius: BorderRadius.circular(2),
@@ -1140,53 +1136,50 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
 
               Text(
                 book.title,
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Noto Serif',
                 ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
               Text(
-                "par ${book.author}",
+                AppLocalizations.of(context)!.libraryParAuteur + book.author,
                 style: TextStyle(color: _accentColor, fontSize: 12),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
 
-              const Text(
-                "THÈME",
+              Text(AppLocalizations.of(context)!.libraryThMe,
                 style: TextStyle(
                   color: Colors.white54,
                   fontSize: 10,
                   letterSpacing: 1,
                 ),
               ),
-              const SizedBox(height: 4),
-              Text(book.theme, style: const TextStyle(color: Colors.white)),
-              const SizedBox(height: 16),
+              SizedBox(height: 4),
+              Text(book.theme, style: TextStyle(color: Colors.white)),
+              SizedBox(height: 16),
 
-              const Text(
-                "POURQUOI L'INTÉGRER ?",
+              Text(AppLocalizations.of(context)!.libraryPourquoiLIntGrer,
                 style: TextStyle(
                   color: Colors.white54,
                   fontSize: 10,
                   letterSpacing: 1,
                 ),
               ),
-              const SizedBox(height: 4),
-              Text(book.whyRead, style: const TextStyle(color: Colors.white70)),
-              const SizedBox(height: 16),
+              SizedBox(height: 4),
+              Text(book.whyRead, style: TextStyle(color: Colors.white70)),
+              SizedBox(height: 16),
 
-              const Text(
-                "CITATION CLÉ",
+              Text(AppLocalizations.of(context)!.libraryCitationCl,
                 style: TextStyle(
                   color: Colors.white54,
                   fontSize: 10,
                   letterSpacing: 1,
                 ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
               Text(
                 "\"${book.keyPhrase}\"",
                 style: TextStyle(
@@ -1195,7 +1188,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                   fontFamily: 'Noto Serif',
                 ),
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: 32),
 
               SizedBox(
                 width: double.infinity,
@@ -1203,7 +1196,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: _accentColor,
                     foregroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    padding: EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -1215,13 +1208,12 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                       _selectedTabIndex = 1;
                     });
                   },
-                  child: const Text(
-                    "LANCER LA LECTURE",
+                  child: Text(AppLocalizations.of(context)!.libraryLancerLaLecture,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
             ],
           ),
         );
@@ -1246,7 +1238,7 @@ class _DynamicBookList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(libraryBooksProvider).when(
       data: (firebaseBooks) {
-        final staticBooks = libraryCatalog[activeArc] ?? [];
+        final staticBooks = getLibraryCatalog(context)[activeArc] ?? [];
         final dynamicBooks = firebaseBooks.where((b) => b.arc == activeArc).toList();
         
         // Dédoublonnage par ID (priorité au contenu Firestore si présent)
@@ -1257,11 +1249,11 @@ class _DynamicBookList extends ConsumerWidget {
         final allBooks = bookMap.values.toList();
 
         if (allBooks.isEmpty) {
-          return const Padding(
+          return Padding(
             padding: EdgeInsets.symmetric(vertical: 40),
             child: Center(
               child: Text(
-                "Aucun livre trouvé.",
+                AppLocalizations.of(context)!.libraryAucunLivreTrouv,
                 style: TextStyle(color: Colors.white30, fontSize: 12),
               ),
             ),
@@ -1272,13 +1264,13 @@ class _DynamicBookList extends ConsumerWidget {
           children: allBooks.map((book) => onBuildCard(book)).toList(),
         );
       },
-      loading: () => _buildStaticFallback(),
-      error: (err, stack) => _buildStaticFallback(),
+      loading: () => _buildStaticFallback(context),
+      error: (err, stack) => _buildStaticFallback(context),
     );
   }
 
-  Widget _buildStaticFallback() {
-    final staticBooks = libraryCatalog[activeArc] ?? [];
+  Widget _buildStaticFallback(BuildContext context) {
+    final staticBooks = getLibraryCatalog(context)[activeArc] ?? [];
     return Column(
       children: staticBooks.map((book) => onBuildCard(book)).toList(),
     );
@@ -1299,7 +1291,7 @@ class _DynamicAudioList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(libraryAudiosProvider).when(
       data: (firebaseAudios) {
-        final staticAudios = ValerionAudios.catalogue;
+        final staticAudios = ValerionAudios.getCatalogue(context);
         
         // Dédoublonnage par ID
         final Map<String, LibraryAudioEntity> audioMap = {};
@@ -1324,23 +1316,22 @@ class _DynamicAudioList extends ConsumerWidget {
               }
               return buildAudioCard(audio.title, audio.subtitle, icon, audio.audioUrl);
             }),
-            const SizedBox(height: 16),
-            const Divider(color: Colors.white10),
-            const Text(
-              "Nouveaux contenus synchronisés avec Firestore",
+            SizedBox(height: 16),
+            Divider(color: Colors.white10),
+            Text(AppLocalizations.of(context)!.libraryNouveauxContenusSynchronisS,
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white24, fontSize: 10),
             ),
           ],
         );
       },
-      loading: () => _buildStaticFallback(),
-      error: (err, stack) => _buildStaticFallback(),
+      loading: () => _buildStaticFallback(context),
+      error: (err, stack) => _buildStaticFallback(context),
     );
   }
 
-  Widget _buildStaticFallback() {
-    final staticAudios = ValerionAudios.catalogue;
+  Widget _buildStaticFallback(BuildContext context) {
+    final staticAudios = ValerionAudios.getCatalogue(context);
     return Column(
       children: staticAudios.map((audio) {
         return buildAudioCard(audio.title, audio.subtitle, Icons.music_note, audio.audioUrl);

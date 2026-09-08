@@ -1,3 +1,4 @@
+import '../../../l10n/app_localizations.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:camera/camera.dart';
@@ -231,11 +232,11 @@ class _AlphaCameraScreenState extends State<AlphaCameraScreen> with WidgetsBindi
           ),
 
           // 5. Filigrane Alpha
-          const Positioned(
+          Positioned(
             top: 45,
             right: 20,
             child: Text(
-              "ALPHA CAM",
+              AppLocalizations.of(context)!.pantheonAlphaCam,
               style: TextStyle(
                 color: Colors.white38,
                 letterSpacing: 3,

@@ -1,3 +1,4 @@
+import '../../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:valerion/core/models/lat_lng.dart';
@@ -48,7 +49,7 @@ class PerformanceCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "OSIRION PERFORMANCE",
+                    AppLocalizations.of(context)!.arenaOsirionPerformance,
                     style: TextStyle(
                       color: primaryColor,
                       fontSize: 12,
@@ -91,19 +92,19 @@ class PerformanceCard extends StatelessWidget {
                 ? CachedNetworkImage(
                     imageUrl: staticMapUrl!,
                     fit: BoxFit.cover,
-                    placeholder: (context, url) => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
-                    errorWidget: (context, url, error) => const Center(
+                    placeholder: (context, url) => Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                    errorWidget: (context, url, error) => Center(
                       child: Icon(Icons.map, color: Colors.white24, size: 40),
                     ),
                   )
-                : const Center(
+                : Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.map_outlined, color: Colors.white24, size: 48),
                         SizedBox(height: 8),
                         Text(
-                          "AUCUN TRACÉ DISPONIBLE",
+                          AppLocalizations.of(context)!.arenaAucunTracDisponible,
                           style: TextStyle(color: Colors.white24, fontSize: 8, fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -129,8 +130,8 @@ class PerformanceCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildStatItem("DISTANCE", "$distanceKm", "KM"),
-                _buildStatItem("TEMPS", duration, ""),
+                _buildStatItem(AppLocalizations.of(context)!.commonDistanceCaps, "$distanceKm", "KM"),
+                _buildStatItem(AppLocalizations.of(context)!.commonTempsCaps, duration, ""),
                 _buildStatItem("VITESSE", speed, "KM/H"),
               ],
             ),
@@ -142,7 +143,7 @@ class PerformanceCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "ENGINEERED BY VALERION",
+                AppLocalizations.of(context)!.arenaEngineeredByValerion,
                 style: TextStyle(
                   color: Colors.white.withValues(alpha: 0.3),
                   fontSize: 8,

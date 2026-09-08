@@ -1,3 +1,4 @@
+import 'package:valerion/features/home/utils/arc_translator.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -84,8 +85,8 @@ class _ArcCardState extends ConsumerState<ArcCard> {
         boxShadow: [
           BoxShadow(
             color: isSummer ? Colors.black.withValues(alpha: 0.05) : widget.arc.primaryColor.withValues(alpha: 0.1),
-            blurRadius: 30,
-            spreadRadius: 5,
+            blurRadius: 15,
+            spreadRadius: 2,
           ),
         ],
       ),
@@ -101,7 +102,7 @@ class _ArcCardState extends ConsumerState<ArcCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.arc.title,
+                      ArcTranslator.translate(context, widget.arc.title),
                       style: TextStyle(
                         color: isSummer ? widget.arc.onSurfaceColor : Colors.white,
                         fontSize: 28,
@@ -121,7 +122,7 @@ class _ArcCardState extends ConsumerState<ArcCard> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      widget.arc.subtitle,
+                      ArcTranslator.translate(context, widget.arc.subtitle),
                       style: TextStyle(
                         color: widget.arc.primaryColor,
                         fontSize: 10,
@@ -181,7 +182,7 @@ class _ArcCardState extends ConsumerState<ArcCard> {
 
           // Citation
           Text(
-            widget.arc.quote,
+            ArcTranslator.translate(context, widget.arc.quote),
             style: TextStyle(
               color: isSummer ? Colors.black54 : Colors.white70,
               fontStyle: FontStyle.italic,

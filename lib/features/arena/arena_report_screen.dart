@@ -1,3 +1,4 @@
+import '../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:valerion/core/models/lat_lng.dart';
@@ -161,7 +162,7 @@ class _ArenaReportScreenState extends ConsumerState<ArenaReportScreen> {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                "DÉFI PERFORMANCE DÉTECTÉ",
+                AppLocalizations.of(context)!.arenaDFiPerformanceD,
                 style: TextStyle(
                   color: isSummer ? arc.onSurfaceColor : Colors.white, 
                   fontWeight: FontWeight.w900, 
@@ -177,12 +178,12 @@ class _ArenaReportScreenState extends ConsumerState<ArenaReportScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Performance exceptionnelle.",
+              AppLocalizations.of(context)!.arenaPerformanceExceptionnelle,
               style: TextStyle(color: arc.primaryColor, fontWeight: FontWeight.w900),
             ),
             const SizedBox(height: 12),
             Text(
-              "Voulez-vous graver ce tracé dans la section rivaux afin que d'autres puissent affronter votre Ghost ?",
+              AppLocalizations.of(context)!.arenaVoulezVousGraverCe,
               style: TextStyle(color: isSummer ? arc.onSurfaceColor.withValues(alpha: 0.7) : Colors.white70),
             ),
           ],
@@ -190,7 +191,7 @@ class _ArenaReportScreenState extends ConsumerState<ArenaReportScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text("IGNORER", style: TextStyle(color: isSummer ? arc.onSurfaceColor.withValues(alpha: 0.3) : Colors.white24)),
+            child: Text(AppLocalizations.of(context)!.commonSkip, style: TextStyle(color: isSummer ? arc.onSurfaceColor.withValues(alpha: 0.3) : Colors.white24)),
           ),
           ElevatedButton(
             onPressed: () {
@@ -202,7 +203,7 @@ class _ArenaReportScreenState extends ConsumerState<ArenaReportScreen> {
               foregroundColor: isSummer ? Colors.white : Colors.black,
               textStyle: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            child: const Text("GRAVER LE TRACÉ"),
+            child: Text(AppLocalizations.of(context)!.arenaGraverLeTrac),
           ),
         ],
       ),
@@ -212,8 +213,8 @@ class _ArenaReportScreenState extends ConsumerState<ArenaReportScreen> {
   Future<void> _engraveRun() async {
     // Afficher un petit overlay de chargement/gravure
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("GRAVURE DANS LE COLISÉE EN COURS..."),
+      SnackBar(
+        content: Text(AppLocalizations.of(context)!.arenaGravureDansLeColis),
         backgroundColor: Colors.cyanAccent,
         duration: Duration(seconds: 2),
       ),
@@ -241,8 +242,8 @@ class _ArenaReportScreenState extends ConsumerState<ArenaReportScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("SESSION ENREGISTRÉE : TRACÉ PARTAGÉ AVEC LA COMMUNAUTÉ."),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.arenaSessionEnregistrETrac),
             backgroundColor: Colors.greenAccent,
           ),
         );
@@ -250,7 +251,7 @@ class _ArenaReportScreenState extends ConsumerState<ArenaReportScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("ERREUR DE GRAVURE : $e"), backgroundColor: Colors.redAccent),
+          SnackBar(content: Text("${AppLocalizations.of(context)!.commonErrorSimple} $e"), backgroundColor: Colors.redAccent),
         );
       }
     }
@@ -370,7 +371,7 @@ ${widget.sportType} | ${widget.distanceKm.toStringAsFixed(2)} KM
                   children: [
                     CircularProgressIndicator(color: primaryColor),
                     const SizedBox(height: 16),
-                    Text("SYNCHRONISATION DE LA SESSION...", 
+                    Text(AppLocalizations.of(context)!.arenaSynchronisationDeLaSession, 
                       style: TextStyle(color: primaryColor, fontSize: 10, fontWeight: FontWeight.bold))
                   ],
                 ),
@@ -389,7 +390,7 @@ ${widget.sportType} | ${widget.distanceKm.toStringAsFixed(2)} KM
                     ),
                     const SizedBox(height: 24),
                     Text(
-                      "SESSION TERMINÉE",
+                      AppLocalizations.of(context)!.arenaSessionTerminE,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: isSummer ? onSurfaceColor : Colors.white,
@@ -451,7 +452,7 @@ ${widget.sportType} | ${widget.distanceKm.toStringAsFixed(2)} KM
                                       Icon(Icons.map_outlined, color: primaryColor.withValues(alpha: 0.3), size: 48),
                                       const SizedBox(height: 8),
                                       Text(
-                                        "AUCUNE DONNÉE GPS",
+                                        AppLocalizations.of(context)!.arenaAucuneDonnEGps,
                                         style: TextStyle(color: primaryColor.withValues(alpha: 0.3), fontSize: 10, fontWeight: FontWeight.bold),
                                       ),
                                     ],
@@ -474,7 +475,7 @@ ${widget.sportType} | ${widget.distanceKm.toStringAsFixed(2)} KM
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  "ALLURE MOY.",
+                                  AppLocalizations.of(context)!.arenaAllureMoy,
                                   style: TextStyle(color: primaryColor, fontSize: 8, fontWeight: FontWeight.bold),
                                 ),
                                 Text(
@@ -491,7 +492,7 @@ ${widget.sportType} | ${widget.distanceKm.toStringAsFixed(2)} KM
 
                     // 2. ANALYSE DE LA VITESSE
                     Text(
-                      "ANALYSE DE LA VITESSE (KM/H)",
+                      AppLocalizations.of(context)!.arenaAnalyseDeLaVitesse,
                       style: TextStyle(
                         color: primaryColor.withValues(alpha: 0.5),
                         fontSize: 10,
@@ -566,7 +567,7 @@ ${widget.sportType} | ${widget.distanceKm.toStringAsFixed(2)} KM
                       child: Column(
                         children: [
                           Text(
-                            "RÉCOMPENSES ACQUISES",
+                            AppLocalizations.of(context)!.arenaRCompensesAcquises,
                             style: TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.bold,
@@ -626,7 +627,7 @@ ${widget.sportType} | ${widget.distanceKm.toStringAsFixed(2)} KM
                         ),
                       ),
                       child: Text(
-                        "RETOURNER AU MENU",
+                        AppLocalizations.of(context)!.arenaRetournerAuMenu,
                         style: TextStyle(
                           color: isSummer ? Colors.white : Colors.black,
                           fontWeight: FontWeight.w900,

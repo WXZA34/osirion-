@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:confetti/confetti.dart';
@@ -261,7 +262,7 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
                     Text(
                       isUnlocked
                           ? titleRelic.description
-                          : "Débloqué au Niveau ${titleRelic.requiredLevel}",
+                          : AppLocalizations.of(context)!.arsenalUnlockedAtLevel(titleRelic.requiredLevel ?? 0),
                       style: TextStyle(
                         color: isUnlocked 
                             ? (_isSummer ? Colors.black54 : Colors.white54) 
@@ -283,7 +284,7 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
                         ? (_isSummer ? _onSurfaceColor.withValues(alpha: 0.4) : Colors.white54) 
                         : Colors.black,
                   ),
-                  child: Text(isEquipped ? "ÉQUIPÉ" : "ÉQUIPER"),
+                  child: Text(isEquipped ? AppLocalizations.of(context)!.arsenalEquipped : AppLocalizations.of(context)!.arsenalEquip),
                 ),
             ],
           ),
@@ -303,9 +304,9 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildNavTab(0, "Le Forgeron", Icons.storefront, _accentPremium),
-          _buildNavTab(1, "Grades", Icons.military_tech, Colors.orangeAccent),
-          _buildNavTab(2, "Mes Reliques", Icons.backpack, _accentTech),
+          _buildNavTab(0, AppLocalizations.of(context)!.arsenalTheBlacksmith, Icons.storefront, _accentPremium),
+          _buildNavTab(1, AppLocalizations.of(context)!.arsenalRanks, Icons.military_tech, Colors.orangeAccent),
+          _buildNavTab(2, AppLocalizations.of(context)!.arsenalMyRelics, Icons.backpack, _accentTech),
         ],
       ),
     );
@@ -421,7 +422,7 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  "Type: ${relic.type.toUpperCase()}",
+                  "${AppLocalizations.of(context)!.arsenalTypePrefix}: ${relic.type.toUpperCase()}",
                   style: TextStyle(
                     color: relic.color,
                     fontSize: 10,
@@ -502,7 +503,7 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
               style: TextStyle(color: _accentPremium),
             ),
             content: Text(
-              "Échanger ${relic.cost} Aether contre '${relic.name}' ?",
+              AppLocalizations.of(context)!.arsenalExchangeAetherFor(relic.cost.toString(), relic.name),
               style: TextStyle(
                 color: _isSummer ? Colors.black87 : Colors.white,
               ),
@@ -511,7 +512,7 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
               TextButton(
                 onPressed: () => Navigator.pop(context),
                 child: Text(
-                  "Refuser",
+                  AppLocalizations.of(context)!.commonRefuse,
                   style: TextStyle(
                     color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.6) : Colors.white54
                   ),
@@ -545,7 +546,7 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
         _confettiController.play();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Relique acquise : ${relic.name}"),
+            content: Text(AppLocalizations.of(context)!.arsenalRelicAcquired(relic.name)),
             backgroundColor: relic.color,
           ),
         );
@@ -645,11 +646,10 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
                         ? (_isSummer ? _onSurfaceColor.withValues(alpha: 0.4) : Colors.white54) 
                         : Colors.black,
                   ),
-                  child: Text(isEquipped ? "ÉQUIPÉ" : "ÉQUIPER"),
+                  child: Text(isEquipped ? AppLocalizations.of(context)!.arsenalEquipped : AppLocalizations.of(context)!.arsenalEquip),
                 )
               else
-                const Text(
-                  "CONSOMMABLE",
+                Text(AppLocalizations.of(context)!.arsenalConsumable,
                   style: TextStyle(
                     color: Colors.purpleAccent,
                     fontSize: 10,
@@ -688,8 +688,8 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
           SnackBar(
             content: Text(
               isEquipping 
-                ? "${relic.name} équipé avec succès !" 
-                : "${relic.name} déséquipé."
+                ? AppLocalizations.of(context)!.arsenalEquippedSuccess(relic.name) 
+                : AppLocalizations.of(context)!.arsenalUnequipped(relic.name)
             ),
             backgroundColor: isEquipping ? relic.color : Colors.grey[800],
             duration: const Duration(seconds: 2),
@@ -699,7 +699,7 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Erreur d'équipement : $e"), backgroundColor: Colors.red),
+          SnackBar(content: Text(AppLocalizations.of(context)!.arsenalEquipError(e.toString())), backgroundColor: Colors.red),
         );
       }
     }

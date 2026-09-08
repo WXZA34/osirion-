@@ -1,3 +1,4 @@
+import '../../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -41,9 +42,7 @@ class _ShareSelectionDialogState extends ConsumerState<ShareSelectionDialog> {
         children: [
           const Icon(Icons.share, color: Colors.cyanAccent),
           const SizedBox(width: 12),
-          const Expanded(
-            child: Text(
-              "PARTAGE DE PERFORMANCE",
+          Expanded(child: Text(AppLocalizations.of(context)!.arenaPartageDePerformance,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,
@@ -92,10 +91,10 @@ class _ShareSelectionDialogState extends ConsumerState<ShareSelectionDialog> {
               const SizedBox(height: 16),
 
               // Friends Section
-              const _SectionHeader(title: "RÉSEAU ATHLÈTES"),
+              _SectionHeader(title: AppLocalizations.of(context)!.arenaRSeauAthlTes),
               friendsAsync.when(
                 data: (friends) => friends.isEmpty
-                    ? const _EmptyList(message: "Aucun disciple trouvé.")
+                    ? _EmptyList(message: AppLocalizations.of(context)!.arenaAucunDiscipleTrouve)
                     : ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -122,16 +121,16 @@ class _ShareSelectionDialogState extends ConsumerState<ShareSelectionDialog> {
                   padding: EdgeInsets.all(8.0),
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )),
-                error: (e, _) => Text("Erreur: $e", style: const TextStyle(color: Colors.red)),
+                error: (e, _) => Text("${AppLocalizations.of(context)!.commonErrorSimple} $e", style: const TextStyle(color: Colors.red)),
               ),
 
               const SizedBox(height: 16),
 
               // Clans Section
-              const _SectionHeader(title: "ÉQUIPES & CLUBS"),
+              _SectionHeader(title: AppLocalizations.of(context)!.arenaQuipesClubs),
               clansAsync.when(
                 data: (clans) => clans.isEmpty
-                    ? const _EmptyList(message: "Aucune faction rejointe.")
+                    ? _EmptyList(message: AppLocalizations.of(context)!.arenaAucuneFactionRejointe)
                     : ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -167,7 +166,7 @@ class _ShareSelectionDialogState extends ConsumerState<ShareSelectionDialog> {
       actions: [
         TextButton(
           onPressed: _isSending ? null : () => Navigator.pop(context),
-          child: const Text("ANNULER", style: TextStyle(color: Colors.white54)),
+          child: Text(AppLocalizations.of(context)!.commonCancel, style: TextStyle(color: Colors.white54)),
         ),
         ElevatedButton(
           onPressed: _isSending || (_selectedFriendIds.isEmpty && _selectedClanIds.isEmpty && widget.imageData == null)
@@ -184,7 +183,7 @@ class _ShareSelectionDialogState extends ConsumerState<ShareSelectionDialog> {
                   height: 20,
                   child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
                 )
-              : const Text("PARTAGER", style: TextStyle(fontWeight: FontWeight.bold)),
+              : Text(AppLocalizations.of(context)!.commonShare, style: TextStyle(fontWeight: FontWeight.bold)),
         ),
         // Global Share Button (External)
         if (widget.imageData != null)
@@ -257,8 +256,8 @@ class _ShareSelectionDialogState extends ConsumerState<ShareSelectionDialog> {
       if (mounted) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Performance partagée avec succès 🚀"),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.arenaPerformancePartagEAvec),
             backgroundColor: Colors.green,
           ),
         );
@@ -267,7 +266,7 @@ class _ShareSelectionDialogState extends ConsumerState<ShareSelectionDialog> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Erreur lors de la transmission : $e"),
+            content: Text("${AppLocalizations.of(context)!.commonErrorSimple} $e"),
             backgroundColor: Colors.red,
           ),
         );

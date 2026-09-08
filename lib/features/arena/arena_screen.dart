@@ -1,3 +1,4 @@
+import '../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../home/models/arc_data.dart';
@@ -93,11 +94,11 @@ class _ArenaScreenState extends ConsumerState<ArenaScreen> {
                   fontWeight: FontWeight.w900,
                   letterSpacing: 0.5,
                 ),
-                tabs: const [
-                  Tab(text: "FORGE", icon: Icon(Icons.flash_on, size: 22)),
-                  Tab(text: "ZONES", icon: Icon(Icons.grid_view, size: 22)),
-                  Tab(text: "SPOTS", icon: Icon(Icons.location_on, size: 22)),
-                  Tab(text: "RIVAUX", icon: Icon(Icons.groups, size: 22)),
+                tabs: [
+                  Tab(text: AppLocalizations.of(context)!.arenaForge, icon: const Icon(Icons.flash_on, size: 22)),
+                  Tab(text: AppLocalizations.of(context)!.arenaZones, icon: const Icon(Icons.grid_view, size: 22)),
+                  Tab(text: AppLocalizations.of(context)!.arenaSpots, icon: const Icon(Icons.location_on, size: 22)),
+                  Tab(text: AppLocalizations.of(context)!.arenaRivaux, icon: const Icon(Icons.groups, size: 22)),
                 ],
               ),
             ),

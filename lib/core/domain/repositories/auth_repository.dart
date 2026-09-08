@@ -15,6 +15,11 @@ abstract class IAuthRepository {
     String username,
   );
 
+  /// Connecte un utilisateur via Google (crée le compte Firebase s'il n'existe pas).
+  /// Retourne un UserEntity. S'il s'agit d'un nouveau compte, le champ `username` 
+  /// sera temporaire et devra être complété côté UI.
+  Future<UserEntity> signInWithGoogle();
+
   /// Déconnecte l'utilisateur actuel.
   Future<void> signOut();
 

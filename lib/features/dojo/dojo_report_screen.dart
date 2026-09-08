@@ -1,3 +1,5 @@
+import 'package:valerion/features/dojo/utils/dojo_translator.dart';
+import '../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/navigation/main_navigation_shell.dart';
@@ -56,8 +58,8 @@ class _DojoReportScreenState extends ConsumerState<DojoReportScreen> {
         );
 
         scaffoldMessenger.showSnackBar(
-          const SnackBar(
-            content: Text("Résultats synchronisés !"),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.dojoRSultatsSynchronisS),
             backgroundColor: Colors.greenAccent,
           ),
         );
@@ -91,8 +93,7 @@ class _DojoReportScreenState extends ConsumerState<DojoReportScreen> {
               size: 80,
             ),
             const SizedBox(height: 20),
-            const Text(
-              "RAPPORT DE MISSION",
+            Text(AppLocalizations.of(context)!.dojoRapportDeMission,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,
@@ -102,7 +103,7 @@ class _DojoReportScreenState extends ConsumerState<DojoReportScreen> {
             ),
             const SizedBox(height: 40),
             _buildStatBox(
-              "${widget.config.name.toUpperCase()} VALIDÉ(E)S",
+              "${DojoTranslator.translate(context, widget.config.name).toUpperCase()} VALIDÉ(E)S",
               widget.completedReps.toString(),
               Colors.cyanAccent,
             ),
@@ -131,8 +132,7 @@ class _DojoReportScreenState extends ConsumerState<DojoReportScreen> {
                   ),
                 ),
                 onPressed: _saveAndExit,
-                child: const Text(
-                  "VALIDER L'ENTRAÎNEMENT",
+                child: Text(AppLocalizations.of(context)!.dojoValiderLEntraNement,
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,

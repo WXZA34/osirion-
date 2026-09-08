@@ -1,8 +1,11 @@
+import '../../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/daily_pulse_provider.dart';
+import '../utils/daily_pulse_translator.dart';
 import '../models/arc_data.dart';
 import 'package:valerion/core/providers/arc_provider.dart';
+import 'package:valerion/features/home/utils/quest_translator.dart';
 
 class DailyPulse extends ConsumerWidget {
   final Color themeColor;
@@ -56,7 +59,7 @@ class DailyPulse extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "PULSE QUOTIDIEN",
+                AppLocalizations.of(context)!.homePulseQuotidien,
                 style: TextStyle(
                   color: themeColor,
                   fontWeight: FontWeight.w900,
@@ -124,14 +127,14 @@ class DailyPulse extends ConsumerWidget {
           ...quests.asMap().entries.map((entry) {
             final index = entry.key;
             final quest = entry.value;
-            return _buildTaskItem(quest, index, ref, isSummer);
+            return _buildTaskItem(context, quest, index, ref, isSummer);
           }),
         ],
       ),
     );
   }
 
-  Widget _buildTaskItem(Quest quest, int index, WidgetRef ref, bool isSummer) {
+  Widget _buildTaskItem(BuildContext context, Quest quest, int index, WidgetRef ref, bool isSummer) {
     bool isDone = quest.isDone;
     return GestureDetector(
       onTap: () {
@@ -163,7 +166,7 @@ class DailyPulse extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    quest.title,
+                    QuestTranslator.translateTitle(context, quest.title),
                     style: TextStyle(
                       color: isDone 
                           ? (isSummer ? Colors.black54 : Colors.white70) 
@@ -176,7 +179,7 @@ class DailyPulse extends ConsumerWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    quest.desc,
+                    QuestTranslator.translateDesc(context, quest.desc),
                     style: TextStyle(
                       color: isDone 
                           ? (isSummer ? Colors.black87 : Colors.white) 

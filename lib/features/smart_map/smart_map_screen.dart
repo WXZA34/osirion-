@@ -1,8 +1,9 @@
+import '../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 
 class SmartMapScreen extends StatefulWidget {
-  const SmartMapScreen({super.key});
+  SmartMapScreen({super.key});
 
   @override
   State<SmartMapScreen> createState() => _SmartMapScreenState();
@@ -16,22 +17,21 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
   bool _safetySyncEnabled = false;
 
   // Theme Colors (Winter Arc Default)
-  final Color _bgMap = const Color(0xFF0F172A); // Very Dark Navy
+  final Color _bgMap = Color(0xFF0F172A); // Very Dark Navy
   final Color _accentColor = Colors.cyanAccent; // Cold Neon Blue
-  final Color _surfaceColor = const Color(0xFF1E293B);
+  final Color _surfaceColor = Color(0xFF1E293B);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF020617),
+      backgroundColor: Color(0xFF020617),
       appBar: AppBar(
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.explore, color: _accentColor, size: 20),
-            const SizedBox(width: 8),
-            const Text(
-              "L'ARÈNE",
+            SizedBox(width: 8),
+            Text(AppLocalizations.of(context)!.arenaLArNe,
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w900,
@@ -53,8 +53,8 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
             onPressed: () {
               // SOS Action
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Signal de détresse prêt à être envoyé."),
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.smartMapSignalDeDTresse),
                   backgroundColor: Colors.redAccent,
                 ),
               );
@@ -70,7 +70,7 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
           // 2. Draggable/Scrollable Content Layer overlaying the map
           Positioned.fill(
             child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               child: Column(
                 children: [
                   // Transparent space to see the map
@@ -79,8 +79,8 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
                   // Wrap content in a styled container
                   Container(
                     decoration: BoxDecoration(
-                      color: const Color(0xFF020617).withValues(alpha: 0.95),
-                      borderRadius: const BorderRadius.only(
+                      color: Color(0xFF020617).withValues(alpha: 0.95),
+                      borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(30),
                         topRight: Radius.circular(30),
                       ),
@@ -89,11 +89,11 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
                         BoxShadow(
                           color: Colors.black.withValues(alpha: 0.5),
                           blurRadius: 20,
-                          offset: const Offset(0, -5),
+                          offset: Offset(0, -5),
                         ),
                       ],
                     ),
-                    padding: const EdgeInsets.all(20),
+                    padding: EdgeInsets.all(20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -102,7 +102,7 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
                           child: Container(
                             width: 40,
                             height: 4,
-                            margin: const EdgeInsets.only(bottom: 24),
+                            margin: EdgeInsets.only(bottom: 24),
                             decoration: BoxDecoration(
                               color: Colors.white24,
                               borderRadius: BorderRadius.circular(2),
@@ -111,19 +111,19 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
                         ),
 
                         _buildRouteGenerator(),
-                        const SizedBox(height: 32),
+                        SizedBox(height: 32),
 
                         _buildStreetWorkoutSpots(),
-                        const SizedBox(height: 32),
+                        SizedBox(height: 32),
 
                         _buildGhostRunSection(),
-                        const SizedBox(height: 32),
+                        SizedBox(height: 32),
 
                         _buildAudioSettings(),
-                        const SizedBox(height: 32),
+                        SizedBox(height: 32),
 
                         _buildSafetySettings(),
-                        const SizedBox(height: 100), // Padding for BottomBar
+                        SizedBox(height: 100), // Padding for BottomBar
                       ],
                     ),
                   ),
@@ -136,14 +136,13 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: _accentColor,
         foregroundColor: Colors.black,
-        icon: const Icon(Icons.play_arrow, size: 28),
-        label: const Text(
-          "DÉMARRER",
+        icon: Icon(Icons.play_arrow, size: 28),
+        label: Text(AppLocalizations.of(context)!.smartMapDMarrer,
           style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16),
         ),
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Phase d'initialisation Arène..."))
+            SnackBar(content: Text(AppLocalizations.of(context)!.smartMapPhaseDInitialisationAr))
           );
         },
       ),
@@ -162,7 +161,7 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
           ),
           // User Location
           Align(
-            alignment: const Alignment(0, -0.5),
+            alignment: Alignment(0, -0.5),
             child: Container(
               width: 16,
               height: 16,
@@ -181,15 +180,15 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
           ),
           // Route Mockup
           Align(
-            alignment: const Alignment(0, -0.4),
+            alignment: Alignment(0, -0.4),
             child: CustomPaint(
               painter: _RoutePainter(color: _accentColor),
-              size: const Size(200, 200),
+              size: Size(200, 200),
             ),
           ),
           // Ghost Marker
           Align(
-            alignment: const Alignment(-0.2, -0.2),
+            alignment: Alignment(-0.2, -0.2),
             child: Icon(
               Icons.adjust,
               color: Colors.purpleAccent.withValues(alpha: 0.8),
@@ -198,13 +197,13 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
           ),
           // Spot Marker
           Align(
-            alignment: const Alignment(0.4, -0.7),
+            alignment: Alignment(0.4, -0.7),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.fitness_center, color: Colors.amber, size: 24),
+                Icon(Icons.fitness_center, color: Colors.amber, size: 24),
                 Container(
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: 4,
                     vertical: 2,
                   ),
@@ -212,8 +211,7 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
                     color: Colors.black54,
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  child: const Text(
-                    "Parc Nord",
+                  child: Text(AppLocalizations.of(context)!.smartMapParcNord,
                     style: TextStyle(color: Colors.white, fontSize: 8),
                   ),
                 ),
@@ -235,9 +233,9 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
           Icons.refresh,
           _accentColor,
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: _surfaceColor,
             borderRadius: BorderRadius.circular(16),
@@ -249,8 +247,7 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    "Distance Cible",
+                  Text(AppLocalizations.of(context)!.smartMapDistanceCible,
                     style: TextStyle(color: Colors.white70, fontSize: 12),
                   ),
                   Text(
@@ -272,7 +269,7 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
                 inactiveColor: Colors.white10,
                 onChanged: (val) => setState(() => _loopDistance = val),
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               // Filters
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -282,15 +279,15 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
                   _buildFilterChip(2, "Dénivelé", Icons.terrain),
                 ],
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               ElevatedButton.icon(
                 onPressed: () {},
-                icon: const Icon(Icons.generating_tokens, size: 16),
-                label: const Text("GÉNÉRER 3 OPTIONS DE TRÈFLE"),
+                icon: Icon(Icons.generating_tokens, size: 16),
+                label: Text(AppLocalizations.of(context)!.smartMapGNRer3),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _accentColor.withValues(alpha: 0.2),
                   foregroundColor: _accentColor,
-                  minimumSize: const Size(double.infinity, 40),
+                  minimumSize: Size(double.infinity, 40),
                 ),
               ),
             ],
@@ -305,7 +302,7 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
     return GestureDetector(
       onTap: () => setState(() => _selectedFilterIndex = index),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           color:
               isSelected
@@ -321,7 +318,7 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
               color: isSelected ? _accentColor : Colors.white54,
               size: 14,
             ),
-            const SizedBox(width: 4),
+            SizedBox(width: 4),
             Text(
               label,
               style: TextStyle(
@@ -346,13 +343,13 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
           Icons.fitness_center,
           Colors.amber,
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
               _buildSpotCard(
-                "Parc Nord",
+                AppLocalizations.of(context)!.smartMapParcNord,
                 "Affluence: Faible",
                 "Barres, Dips, Banc",
                 1.2,
@@ -381,8 +378,8 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
   ) {
     return Container(
       width: 200,
-      margin: const EdgeInsets.only(right: 16),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(right: 16),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: _surfaceColor,
         borderRadius: BorderRadius.circular(16),
@@ -400,7 +397,7 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
               Expanded(
                 child: Text(
                   name,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
@@ -409,35 +406,34 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
                 ),
               ),
               if (isApproved)
-                const Icon(Icons.verified, color: Colors.amber, size: 16),
+                Icon(Icons.verified, color: Colors.amber, size: 16),
             ],
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           Text(
             "$distance km",
-            style: const TextStyle(color: Colors.white54, fontSize: 10),
+            style: TextStyle(color: Colors.white54, fontSize: 10),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Text(
             equipment,
-            style: const TextStyle(color: Colors.amber, fontSize: 10),
+            style: TextStyle(color: Colors.amber, fontSize: 10),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           Text(
             status,
-            style: const TextStyle(color: Colors.white70, fontSize: 10),
+            style: TextStyle(color: Colors.white70, fontSize: 10),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           SizedBox(
             width: double.infinity,
             child: OutlinedButton(
               onPressed: () {},
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.white,
-                side: const BorderSide(color: Colors.white24),
+                side: BorderSide(color: Colors.white24),
               ),
-              child: const Text(
-                "S'y rendre (GPS)",
+              child: Text(AppLocalizations.of(context)!.smartMapSYRendreGps,
                 style: TextStyle(fontSize: 10),
               ),
             ),
@@ -457,9 +453,9 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
           Icons.visibility_off,
           Colors.purpleAccent,
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Colors.purpleAccent.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(16),
@@ -469,13 +465,13 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
           ),
           child: Column(
             children: [
-              const Row(
+              Row(
                 children: [
                   Icon(Icons.directions_run, color: Colors.purpleAccent),
                   SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      "Ombre Personnelle",
+                      AppLocalizations.of(context)!.smartMapOmbrePersonnelle,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -484,7 +480,7 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
                     ),
                   ),
                   Text(
-                    "Record: 28:45",
+                    AppLocalizations.of(context)!.smartMapRecord2845,
                     style: TextStyle(
                       color: Colors.purpleAccent,
                       fontSize: 12,
@@ -493,23 +489,21 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
-              const Text(
-                "Courez contre votre performance du 12 Février sur la boucle de 6 km. L'audio vous donnera votre retard/avance.",
+              SizedBox(height: 12),
+              Text(AppLocalizations.of(context)!.smartMapCourezContreVotrePerformance,
                 style: TextStyle(color: Colors.white70, fontSize: 10),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton.icon(
                   onPressed: () {},
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.emoji_events,
                     size: 14,
                     color: Colors.purpleAccent,
                   ),
-                  label: const Text(
-                    "LEADERBOARDS SEGMENTS",
+                  label: Text(AppLocalizations.of(context)!.smartMapLeaderboardsSegments,
                     style: TextStyle(
                       color: Colors.purpleAccent,
                       fontSize: 10,
@@ -531,23 +525,23 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _buildSectionTitle("GUIDAGE & AUDIO", Icons.headphones, Colors.cyan),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
             color: _surfaceColor,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Row(
             children: [
-              const Icon(Icons.spatial_audio_off, color: Colors.cyan, size: 24),
-              const SizedBox(width: 16),
-              const Expanded(
+              Icon(Icons.spatial_audio_off, color: Colors.cyan, size: 24),
+              SizedBox(width: 16),
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Coach Vocal (Ducking)",
+                      AppLocalizations.of(context)!.smartMapCoachVocalDucking,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -556,7 +550,7 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      "Atténue Spotify lors des directions",
+                      AppLocalizations.of(context)!.smartMapAttNueSpotifyLors,
                       style: TextStyle(color: Colors.white54, fontSize: 10),
                     ),
                   ],
@@ -585,27 +579,27 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
           Icons.shield,
           Colors.redAccent,
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
             color: _surfaceColor,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.share_location,
                 color: Colors.redAccent,
                 size: 24,
               ),
-              const SizedBox(width: 16),
-              const Expanded(
+              SizedBox(width: 16),
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Safety Sync",
+                      AppLocalizations.of(context)!.smartMapSafetySync,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -614,7 +608,7 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      "Partage en direct (Contact urgence)",
+                      AppLocalizations.of(context)!.smartMapPartageEnDirectContact,
                       style: TextStyle(color: Colors.white54, fontSize: 10),
                     ),
                   ],
@@ -637,7 +631,7 @@ class _SmartMapScreenState extends State<SmartMapScreen> {
     return Row(
       children: [
         Icon(icon, color: color, size: 14),
-        const SizedBox(width: 8),
+        SizedBox(width: 8),
         Text(
           title,
           style: TextStyle(

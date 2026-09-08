@@ -1,3 +1,5 @@
+import 'package:valerion/features/home/utils/arc_translator.dart';
+import '../../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -115,14 +117,14 @@ class _DailyVideoCardState extends ConsumerState<DailyVideoCard> {
           if (kDebugMode) {
             debugPrint("⚠️ [DailyVideo] Le document 'daily_content' est INTROUVABLE dans Firestore !");
           }
-          return _buildOfflinePlaceholder(currentArc, "SIGNAL PERDU", "La transmission Alpha est actuellement hors-ligne.");
+          return _buildOfflinePlaceholder(context, currentArc, "SIGNAL PERDU", "La transmission Alpha est actuellement hors-ligne.");
         }
 
         if (config.dailyVideoUrl == null || config.dailyVideoUrl!.isEmpty) {
           if (kDebugMode) {
             debugPrint("⚠️ [DailyVideo] L'URL de la vidéo est vide dans Firestore !");
           }
-          return _buildOfflinePlaceholder(currentArc, "SIGNAL FAIBLE", "En attente du prochain briefing tactique...");
+          return _buildOfflinePlaceholder(context, currentArc, "SIGNAL FAIBLE", "En attente du prochain briefing tactique...");
         }
 
         final String videoUrl = config.dailyVideoUrl!;
@@ -180,7 +182,7 @@ class _DailyVideoCardState extends ConsumerState<DailyVideoCard> {
                       Icon(Icons.play_circle_filled, color: currentArc.primaryColor, size: 20),
                       const SizedBox(width: 8),
                       Text(
-                        "TRANSMISSION ALPHA",
+                        AppLocalizations.of(context)!.homeTransmissionAlpha,
                         style: TextStyle(
                           color: currentArc.primaryColor,
                           fontWeight: FontWeight.w900,
@@ -251,15 +253,13 @@ class _DailyVideoCardState extends ConsumerState<DailyVideoCard> {
             );
           },
       error:
-          (e, __) => _buildOfflinePlaceholder(
-            currentArc,
-            "ERREUR SYSTÈME",
+          (e, __) => _buildOfflinePlaceholder(context, currentArc, "ERREUR SYSTÈME",
             "Échec de synchronisation avec le satellite Alpha : $e",
           ),
     );
   }
 
-  Widget _buildOfflinePlaceholder(ArcData arc, String title, String message) {
+  Widget _buildOfflinePlaceholder(BuildContext context, ArcData arc, String title, String message) {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.only(top: 24),
@@ -274,7 +274,7 @@ class _DailyVideoCardState extends ConsumerState<DailyVideoCard> {
           Icon(Icons.wifi_off, color: arc.primaryColor.withValues(alpha: 0.3), size: 48),
           const SizedBox(height: 16),
           Text(
-            title,
+            ArcTranslator.translate(context, title),
             style: TextStyle(
               color: arc.primaryColor,
               fontWeight: FontWeight.w900,
@@ -284,7 +284,7 @@ class _DailyVideoCardState extends ConsumerState<DailyVideoCard> {
           ),
           const SizedBox(height: 8),
           Text(
-            message,
+            ArcTranslator.translate(context, message),
             textAlign: TextAlign.center,
             style: TextStyle(
               color: arc.arcType == AlphaArc.summer ? Colors.black38 : Colors.white38, 
@@ -319,7 +319,7 @@ class _DailyVideoCardState extends ConsumerState<DailyVideoCard> {
               const SizedBox(height: 16),
               ElevatedButton.icon(
                 icon: const Icon(Icons.open_in_new),
-                label: const Text("OUVRIR LA VIDÉO", style: TextStyle(fontWeight: FontWeight.bold)),
+                label: Text(AppLocalizations.of(context)!.homeOuvrirLaVidO, style: TextStyle(fontWeight: FontWeight.bold)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: arc.primaryColor,
                   foregroundColor: Colors.black,

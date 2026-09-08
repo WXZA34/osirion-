@@ -1,5 +1,6 @@
 // lib/core/data/repositories/firebase_auth_repository.dart
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
 
@@ -73,6 +74,39 @@ class FirebaseAuthRepository implements IAuthRepository {
       return _mapFirebaseUser(user).copyWith(username: username);
     } on FirebaseAuthException catch (e) {
       throw Exception(_handleAuthException(e));
+    }
+  }
+
+  @override
+  Future<UserEntity> signInWithGoogle() async {
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      // On force la déconnexion Google d'abord pour toujours permettre de choisir le compte
+      await googleSignIn.signOut();
+      
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      if (googleUser == null) {
+        throw Exception("Connexion Google annulée.");
+      }
+
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
+      final user = userCredential.user;
+
+      if (user == null) {
+        throw Exception("Échec de la connexion via Google.");
+      }
+
+      // Le pseudo sera complété côté UI s'il s'agit d'un nouveau compte
+      // ou si le pseudo est toujours le displayName Google par défaut.
+      return _mapFirebaseUser(user);
+    } catch (e) {
+      throw Exception("Erreur Google Sign-In : $e");
     }
   }
 

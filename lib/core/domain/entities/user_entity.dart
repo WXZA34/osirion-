@@ -38,6 +38,10 @@ class UserEntity {
   final String? activeTitle;
   final List<String> unlockedTitles;
 
+  // Setup Flow
+  final String? guardianPath;
+  final String? ultimateOath;
+
   // Champs de Performance
   final double? movementPrecision;
   final double? bestPace1km;
@@ -82,6 +86,8 @@ class UserEntity {
     this.activeTitle,
     this.unlockedTitles = const <String>[],
     this.activeArcId,
+    this.guardianPath,
+    this.ultimateOath,
   });
 
   // Copie de l'objet avec de nouvelles valeurs (utile pour les mises à jour en mémoire)
@@ -122,6 +128,8 @@ class UserEntity {
     String? activeTitle,
     List<String>? unlockedTitles,
     String? activeArcId,
+    String? guardianPath,
+    String? ultimateOath,
   }) {
     return UserEntity(
       id: id ?? this.id,
@@ -160,6 +168,8 @@ class UserEntity {
       activeTitle: activeTitle ?? this.activeTitle,
       unlockedTitles: unlockedTitles ?? this.unlockedTitles,
       activeArcId: activeArcId ?? this.activeArcId,
+      guardianPath: guardianPath ?? this.guardianPath,
+      ultimateOath: ultimateOath ?? this.ultimateOath,
     );
   }
 
@@ -223,6 +233,8 @@ class UserEntity {
       activeTitle: data['activeTitle'] as String?,
       unlockedTitles: List<String>.from(data['unlockedTitles'] ?? []),
       activeArcId: data['activeArcId'] as String?,
+      guardianPath: data['guardianPath'] as String?,
+      ultimateOath: data['ultimateOath'] as String?,
     );
   }
 
@@ -266,6 +278,8 @@ class UserEntity {
     map['activeHalo'] = activeHalo;
     map['activeTitle'] = activeTitle;
     if (activeArcId != null) map['activeArcId'] = activeArcId;
+    if (guardianPath != null) map['guardianPath'] = guardianPath;
+    if (ultimateOath != null) map['ultimateOath'] = ultimateOath;
 
     return map;
   }

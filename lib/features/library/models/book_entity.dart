@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:valerion/l10n/app_localizations.dart';
 class BookEntity {
   final String id;
   final String title;
@@ -10,7 +12,7 @@ class BookEntity {
   final String? thumbnailUrl; // URL directe ou chemin d'asset de la couverture
   final String arc; // 'Winter Arc', 'Summer Body', 'Royal Arc'
 
-  const BookEntity({
+  BookEntity({
     required this.id,
     required this.title,
     required this.author,
@@ -54,260 +56,262 @@ class BookEntity {
 }
 
 // Données statiques de la Bibliothèque
-final Map<String, List<BookEntity>> libraryCatalog = {
+Map<String, List<BookEntity>> getLibraryCatalog(BuildContext context) {
+  return {
   'Winter Arc': [
-    const BookEntity(
+    BookEntity(
       id: "b_hagakure",
-      title: "Hagakure : Le Code du Samouraï",
+      title: AppLocalizations.of(context)!.bookHagakureTitle,
       author: "Yamamoto Tsunetomo",
-      tag: "Discipline",
-      theme: "Discipline absolue et résolution.",
+      tag: AppLocalizations.of(context)!.bookHagakureTag,
+      theme: AppLocalizations.of(context)!.bookHagakureTheme,
       whyRead:
-          "C'est un texte radical sur la voie du guerrier (Bushido). Il prône une discipline de chaque instant et une préparation mentale à l'épreuve de tout.",
+          AppLocalizations.of(context)!.bookHagakureWhyRead,
       keyPhrase:
-          "La Voie du Samouraï se trouve dans la mort (le dépassement de soi).",
+          AppLocalizations.of(context)!.bookHagakureKeyPhrase,
       arc: "Winter Arc",
       pdfPath: "assets/books/hagakure.pdf",
       thumbnailUrl: "assets/images/covers/b_hagakure.webp",
     ),
-    const BookEntity(
+    BookEntity(
       id: "b_obstacle",
-      title: "L'Obstacle est le Chemin",
+      title: AppLocalizations.of(context)!.bookObstacleTitle,
       author: "Ryan Holiday",
-      tag: "Stoïcisme",
-      theme: "Transformer la difficulté en avantage.",
+      tag: AppLocalizations.of(context)!.bookObstacleTag,
+      theme: AppLocalizations.of(context)!.bookObstacleTheme,
       whyRead:
-          "Apprendre à voir les problèmes non pas comme des murs, mais comme des opportunités pour grow et devenir meilleur.",
+          AppLocalizations.of(context)!.bookObstacleWhyRead,
       keyPhrase:
-          "Le but de l'obstacle n'est pas de t'arrêter, mais de te montrer à quel point tu désires avancer.",
+          AppLocalizations.of(context)!.bookObstacleKeyPhrase,
       arc: "Winter Arc",
       pdfPath: "assets/books/obstacle.pdf",
       thumbnailUrl: "assets/images/covers/b_obstacle.webp",
     ),
-    const BookEntity(
+    BookEntity(
       id: "b_epictete",
-      title: "Le Manuel",
+      title: AppLocalizations.of(context)!.bookEpicteteTitle,
       author: "Épictète",
-      tag: "Stoïcisme",
-      theme: "Stoïcisme Radical et Maîtrise de soi.",
+      tag: AppLocalizations.of(context)!.bookObstacleTag,
+      theme: AppLocalizations.of(context)!.bookEpicteteTheme,
       whyRead:
-          "La base absolue. Il apprend à ne plus gaspiller d'énergie sur ce qu'on ne controlle pas pour se concentrer uniquement sur son effort.",
+          AppLocalizations.of(context)!.bookEpicteteWhyRead,
       keyPhrase:
-          "Il y a des choses qui dépendent de nous, et d'autres qui n'en dépendent pas.",
+          AppLocalizations.of(context)!.bookEpicteteKeyPhrase,
       arc: "Winter Arc",
       pdfPath: "assets/books/epictete_manuel.pdf",
       thumbnailUrl: "assets/images/covers/b_epictete.webp",
     ),
-    const BookEntity(
+    BookEntity(
       id: "b_aurele",
-      title: "Pensées pour moi-même",
+      title: AppLocalizations.of(context)!.bookAureleTitle,
       author: "Marc Aurèle",
-      tag: "Stoïcisme",
-      theme: "Force mentale et Dialogue intérieur.",
+      tag: AppLocalizations.of(context)!.bookObstacleTag,
+      theme: AppLocalizations.of(context)!.bookAureleTheme,
       whyRead:
-          "Pour montrer que l'Alpha doit être son propre juge le plus strict. Idéal pour garder le cap lors des entraînements solitaires.",
+          AppLocalizations.of(context)!.bookAureleWhyRead,
       keyPhrase:
-          "L’obstacle à l’action favorise l’action. Ce qui barre le chemin devient le chemin.",
+          AppLocalizations.of(context)!.bookAureleKeyPhrase,
       arc: "Winter Arc",
       pdfPath: "assets/books/aurele_pensees.pdf",
       thumbnailUrl: "assets/images/covers/b_aurele.webp",
     ),
-    const BookEntity(
+    BookEntity(
       id: "b_seneque_temps",
-      title: "De la brièveté de la vie",
+      title: AppLocalizations.of(context)!.bookSenequeTempsTitle,
       author: "Sénèque",
-      tag: "Stoïcisme",
-      theme: "Gestion du temps et Philosophie de l'action.",
+      tag: AppLocalizations.of(context)!.bookObstacleTag,
+      theme: AppLocalizations.of(context)!.bookSenequeTempsTheme,
       whyRead:
-          "Pour supprimer l'excuse du \"je n'ai pas le temps\". Ce livre motive à couper les distractions pour se consacrer à l'essentiel.",
+          AppLocalizations.of(context)!.bookSenequeTempsWhyRead,
       keyPhrase:
-          "Ce n'est pas que nous disposions de peu de temps, c'est que nous en perdons beaucoup.",
+          AppLocalizations.of(context)!.bookSenequeTempsKeyPhrase,
       arc: "Winter Arc",
       pdfPath: "assets/books/seneque_brievete.pdf",
       thumbnailUrl: "assets/images/covers/b_seneque_temps.webp",
     ),
-    const BookEntity(
+    BookEntity(
       id: "b_seneque_ame",
-      title: "De la tranquillité de l'âme",
+      title: AppLocalizations.of(context)!.bookSenequeAmeTitle,
       author: "Sénèque",
-      tag: "Stoïcisme",
-      theme: "Sérénité et Constance.",
+      tag: AppLocalizations.of(context)!.bookObstacleTag,
+      theme: AppLocalizations.of(context)!.bookSenequeAmeTheme,
       whyRead:
-          "Apprendre à rester stable émotionnellement même quand l'entraînement est dur ou que les résultats tardent.",
+          AppLocalizations.of(context)!.bookSenequeAmeWhyRead,
       keyPhrase:
-          "Il faut s'habituer à sa condition, s'en plaindre le moins possible et saisir tous les avantages qu'elle peut offrir.",
+          AppLocalizations.of(context)!.bookSenequeAmeKeyPhrase,
       arc: "Winter Arc",
       pdfPath: "assets/books/seneque_tranquillite.pdf",
       thumbnailUrl: "assets/images/covers/b_seneque_ame.webp",
     ),
-    const BookEntity(
+    BookEntity(
       id: "b_boece",
-      title: "Consolation de la philosophie",
+      title: AppLocalizations.of(context)!.bookBoeceTitle,
       author: "Boèce",
-      tag: "Stoïcisme",
-      theme: "Résilience face à l'adversité.",
+      tag: AppLocalizations.of(context)!.bookObstacleTag,
+      theme: AppLocalizations.of(context)!.bookBoeceTheme,
       whyRead:
-          "Écrit en prison, ce livre est l'ultime leçon de force mentale : rien ni personne ne peut t'enlever ta liberté intérieure.",
+          AppLocalizations.of(context)!.bookBoeceWhyRead,
       keyPhrase:
-          "La fortune ne t'a point tout enlevé, puisque tu as encore l'usage de ta raison.",
+          AppLocalizations.of(context)!.bookBoeceKeyPhrase,
       arc: "Winter Arc",
       pdfPath: "assets/books/boece_consolation.pdf",
       thumbnailUrl: "assets/images/covers/b_boece.webp",
     ),
   ],
   'Summer Body': [
-    const BookEntity(
+    BookEntity(
       id: "b_atomic",
-      title: "Atomic Habits",
+      title: AppLocalizations.of(context)!.bookAtomicTitle,
       author: "James Clear",
-      tag: "Productivité",
-      theme: "Le pouvoir des petits changements.",
+      tag: AppLocalizations.of(context)!.bookAtomicTag,
+      theme: AppLocalizations.of(context)!.bookAtomicTheme,
       whyRead:
-          "Pour comprendre que le succès n'est pas une question d'intensité, mais de constance et de construction de systèmes viables.",
+          AppLocalizations.of(context)!.bookAtomicWhyRead,
       keyPhrase:
-          "On ne s'élève pas au niveau de ses objectifs, on tombe au niveau de ses systèmes.",
+          AppLocalizations.of(context)!.bookAtomicKeyPhrase,
       arc: "Summer Body",
       thumbnailUrl: "assets/images/covers/b_atomic.webp",
     ),
-    const BookEntity(
+    BookEntity(
       id: "b_le_bon",
-      title: "La Psychologie des foules",
+      title: AppLocalizations.of(context)!.bookLeBonTitle,
       author: "Gustave Le Bon",
-      tag: "Influence",
-      theme: "Sociologie et Psychologie des groupes.",
+      tag: AppLocalizations.of(context)!.bookLeBonTag,
+      theme: AppLocalizations.of(context)!.bookLeBonTheme,
       whyRead:
-          "Indispensable pour comprendre comment influencer son entourage et devenir un leader charismatique.",
+          AppLocalizations.of(context)!.bookLeBonWhyRead,
       keyPhrase:
-          "L'affirmation pure et simple, dégagée de tout raisonnement, est un des moyens les plus sûrs pour faire pénétrer une idée dans l'esprit des foules.",
+          AppLocalizations.of(context)!.bookLeBonKeyPhrase,
       arc: "Summer Body",
       pdfPath: "assets/books/le_bon_foules.pdf",
       thumbnailUrl: "assets/images/covers/b_le_bon.webp",
     ),
-    const BookEntity(
+    BookEntity(
       id: "b_schopenhauer",
-      title: "L'Art d'avoir toujours raison",
+      title: AppLocalizations.of(context)!.bookSchopenhauerTitle,
       author: "Arthur Schopenhauer",
-      tag: "Influence",
-      theme: "Rhétorique et Débat.",
+      tag: AppLocalizations.of(context)!.bookLeBonTag,
+      theme: AppLocalizations.of(context)!.bookSchopenhauerTheme,
       whyRead:
-          "Pour apprendre à défendre sa vision et son Arc face aux sceptiques. C'est l'armure intellectuelle de l'Alpha.",
+          AppLocalizations.of(context)!.bookSchopenhauerWhyRead,
       keyPhrase:
-          "La vérité est que chaque homme veut avoir raison, par tous les moyens possibles.",
+          AppLocalizations.of(context)!.bookSchopenhauerKeyPhrase,
       arc: "Summer Body",
       pdfPath: "assets/books/schopenhauer_raison.pdf",
       thumbnailUrl: "assets/images/covers/b_schopenhauer.webp",
     ),
-    const BookEntity(
+    BookEntity(
       id: "b_la_bruyere",
-      title: "Les Caractères",
+      title: AppLocalizations.of(context)!.bookLaBruyereTitle,
       author: "Jean de La Bruyère",
-      tag: "Influence",
-      theme: "Observation humaine et Psychologie.",
+      tag: AppLocalizations.of(context)!.bookLeBonTag,
+      theme: AppLocalizations.of(context)!.bookLaBruyereTheme,
       whyRead:
-          "Pour développer une vision perçante. Apprendre à lire les gens comme on lit un itinéraire de course.",
+          AppLocalizations.of(context)!.bookLaBruyereWhyRead,
       keyPhrase:
-          "Tout est dit, et l'on vient trop tard depuis sept mille ans qu'il y a des hommes et qui pensent.",
+          AppLocalizations.of(context)!.bookLaBruyereKeyPhrase,
       arc: "Summer Body",
       pdfPath: "assets/books/la_bruyere_caracteres.pdf",
       thumbnailUrl: "assets/images/covers/b_la_bruyere.webp",
     ),
-    const BookEntity(
+    BookEntity(
       id: "b_la_rochefoucauld",
-      title: "Maximes",
+      title: AppLocalizations.of(context)!.bookRochefoucauldTitle,
       author: "François de La Rochefoucauld",
-      tag: "Influence",
-      theme: "Nature humaine et Réalisme.",
+      tag: AppLocalizations.of(context)!.bookLeBonTag,
+      theme: AppLocalizations.of(context)!.bookRochefoucauldTheme,
       whyRead:
-          "Des phrases courtes et percutantes (parfaites pour l'UI de l'app) qui révèlent les ressorts cachés de nos actions.",
-      keyPhrase: "Nos vertus ne sont, le plus souvent, que des vices déguisés.",
+          AppLocalizations.of(context)!.bookRochefoucauldWhyRead,
+      keyPhrase: AppLocalizations.of(context)!.bookRochefoucauldKeyPhrase,
       arc: "Summer Body",
       pdfPath: "assets/books/rochefoucauld_maximes.pdf",
       thumbnailUrl: "assets/images/covers/b_la_rochefoucauld.webp",
     ),
-    const BookEntity(
+    BookEntity(
       id: "b_balzac",
-      title: "Traité de la vie élégante",
+      title: AppLocalizations.of(context)!.bookBalzacTitle,
       author: "Honoré de Balzac",
-      tag: "Influence",
-      theme: "Style, Énergie et Présence sociale.",
+      tag: AppLocalizations.of(context)!.bookLeBonTag,
+      theme: AppLocalizations.of(context)!.bookBalzacTheme,
       whyRead:
-          "Pour l'utilisateur qui cherche l'excellence esthétique et le rayonnement en société après avoir forgé son corps.",
+          AppLocalizations.of(context)!.bookBalzacWhyRead,
       keyPhrase:
-          "L'élégance est tout à la fois un art, une science, un goût, un enthousiasme.",
+          AppLocalizations.of(context)!.bookBalzacKeyPhrase,
       arc: "Summer Body",
       pdfPath: "assets/books/rochefoucauld_maximes.pdf", // TEMPORAIRE : balzac_elegance.pdf retiré pour l'App Bundle
       thumbnailUrl: "assets/images/covers/b_balzac.webp",
     ),
   ],
   'Royal Arc': [
-    const BookEntity(
+    BookEntity(
       id: "b_art_of_war",
-      title: "L'Art de la Guerre",
+      title: AppLocalizations.of(context)!.bookArtOfWarTitle,
       author: "Sun Tzu",
-      tag: "48 Lois du Pouvoir",
-      theme: "Stratégie et Maîtrise émotionnelle.",
+      tag: AppLocalizations.of(context)!.bookArtOfWarTag,
+      theme: AppLocalizations.of(context)!.bookArtOfWarTheme,
       whyRead:
-          "La bible de l'efficacité. Apprendre à économiser ses forces pour frapper au moment opportun.",
+          AppLocalizations.of(context)!.bookArtOfWarWhyRead,
       keyPhrase:
-          "Le plus grand conquérant est celui qui sait vaincre sans bataille.",
+          AppLocalizations.of(context)!.bookArtOfWarKeyPhrase,
       arc: "Royal Arc",
       pdfPath: "assets/books/sun_tzu_art_de_la_guerre_.pdf",
       thumbnailUrl: "assets/images/covers/b_art_of_war.webp",
     ),
-    const BookEntity(
+    BookEntity(
       id: "b_machaivel",
-      title: "Le Prince",
+      title: AppLocalizations.of(context)!.bookMachiavelTitle,
       author: "Nicolas Machiavel",
-      tag: "48 Lois du Pouvoir",
-      theme: "Leadership et Réalisme de pouvoir.",
+      tag: AppLocalizations.of(context)!.bookArtOfWarTag,
+      theme: AppLocalizations.of(context)!.bookMachiavelTheme,
       whyRead:
-          "Comprendre les dynamiques de groupe et la hiérarchie pour diriger son propre Clan dans Valérion.",
+          AppLocalizations.of(context)!.bookMachiavelWhyRead,
       keyPhrase:
-          "Il n'y a pas d'autre moyen de se garder de la flatterie que de faire comprendre aux hommes que dire la vérité ne vous offense pas.",
+          AppLocalizations.of(context)!.bookMachiavelKeyPhrase,
       arc: "Royal Arc",
       pdfPath: "assets/books/machiavel_le_prince.pdf",
       thumbnailUrl: "assets/images/covers/b_machiavel.webp",
     ),
-    const BookEntity(
+    BookEntity(
       id: "b_musashi",
-      title: "Traité des cinq roues",
+      title: AppLocalizations.of(context)!.bookMusashiTitle,
       author: "Miyamoto Musashi",
-      tag: "Stratégie",
-      theme: "Discipline martiale et Maîtrise totale.",
+      tag: AppLocalizations.of(context)!.bookMusashiTag,
+      theme: AppLocalizations.of(context)!.bookMusashiTheme,
       whyRead:
-          "Le plus grand samouraï explique comment appliquer la stratégie dans chaque petit geste. Parfait pour le Calisthenics technique.",
-      keyPhrase: "D'une chose, apprends-en dix mille.",
+          AppLocalizations.of(context)!.bookMusashiWhyRead,
+      keyPhrase: AppLocalizations.of(context)!.bookMusashiKeyPhrase,
       arc: "Royal Arc",
       pdfPath: "assets/books/musashi_cinq_roues.pdf",
       thumbnailUrl: "assets/images/covers/b_musashi.webp",
     ),
-    const BookEntity(
+    BookEntity(
       id: "b_lao_tseu",
-      title: "Tao Te King",
+      title: AppLocalizations.of(context)!.bookLaoTseuTitle,
       author: "Lao-Tseu",
-      tag: "Stratégie",
-      theme: "Équilibre, Fluidité et Harmonie.",
+      tag: AppLocalizations.of(context)!.bookMusashiTag,
+      theme: AppLocalizations.of(context)!.bookLaoTseuTheme,
       whyRead:
-          "Pour contrebalancer la force brute. C'est le livre qui aide à atteindre l'Indice d'Harmonie maximal.",
+          AppLocalizations.of(context)!.bookLaoTseuWhyRead,
       keyPhrase:
-          "Rien au monde n'est plus souple et plus faible que l'eau. Pourtant, pour attaquer ce qui est dur et fort, rien ne la surpasse.",
+          AppLocalizations.of(context)!.bookLaoTseuKeyPhrase,
       arc: "Royal Arc",
       pdfPath: "assets/books/lao_tseu_tao.pdf",
       thumbnailUrl: "assets/images/covers/b_lao_tseu.webp",
     ),
-    const BookEntity(
+    BookEntity(
       id: "b_castiglione",
-      title: "Le Livre du Courtisan",
+      title: AppLocalizations.of(context)!.bookCastiglioneTitle,
       author: "Baldassare Castiglione",
-      tag: "Stratégie",
-      theme: "Maîtrise de soi et Sprezzatura (aisance).",
+      tag: AppLocalizations.of(context)!.bookMusashiTag,
+      theme: AppLocalizations.of(context)!.bookCastiglioneTheme,
       whyRead:
-          "Pour cultiver cette aisance naturelle où l'effort colossal derrière la performance ne doit jamais se voir.",
+          AppLocalizations.of(context)!.bookCastiglioneWhyRead,
       keyPhrase:
-          "Faire paraître sans effort ce qui a été accompli avec une grande peine.",
+          AppLocalizations.of(context)!.bookCastiglioneKeyPhrase,
       arc: "Royal Arc",
       pdfPath: "assets/books/castiglione_courtisan.pdf",
       thumbnailUrl: "assets/images/covers/b_castiglione.webp",
     ),
   ],
 };
+}

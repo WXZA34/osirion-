@@ -1,3 +1,4 @@
+import '../../l10n/app_localizations.dart';
 import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
@@ -215,7 +216,7 @@ class _ArenaActiveScreenState extends ConsumerState<ArenaActiveScreen> with Sing
               Navigator.pop(context);
               Navigator.pop(context);
             },
-            child: const Text("RETOUR", style: TextStyle(color: Colors.cyanAccent)),
+            child: Text(AppLocalizations.of(context)!.commonReturn, style: TextStyle(color: Colors.cyanAccent)),
           ),
         ],
       ),
@@ -460,15 +461,13 @@ class _ArenaActiveScreenState extends ConsumerState<ArenaActiveScreen> with Sing
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFF13161C),
-        title: const Text(
-          "ANOMALIE DÉTECTÉE",
+        title: Text(AppLocalizations.of(context)!.arenaAnomalieDTectE,
           style: TextStyle(
             color: Colors.redAccent,
             fontWeight: FontWeight.w900,
           ),
         ),
-        content: const Text(
-          "L'utilisation d'une position GPS simulée est interdite par les protocoles de Valerion. Votre session a été interrompue.",
+        content: Text(AppLocalizations.of(context)!.arenaLUtilisationDUne,
           style: TextStyle(color: Colors.white70),
         ),
         actions: [
@@ -666,8 +665,8 @@ class _ArenaActiveScreenState extends ConsumerState<ArenaActiveScreen> with Sing
     debugPrint("TACTICAL REROUTE TRIGGERED");
     
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("ALERTE : ZONE COMPROMISE - RECALCUL TACTIQUE", 
+      SnackBar(
+        content: Text(AppLocalizations.of(context)!.arenaAlerteZoneCompromiseRecalcul, 
           style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.black,
         duration: Duration(seconds: 4),
@@ -747,8 +746,8 @@ class _ArenaActiveScreenState extends ConsumerState<ArenaActiveScreen> with Sing
     final point = GeoPoint(_currentPosition!.latitude, _currentPosition!.longitude);
     
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("SIGNALEMENT ENVOYÉ - UPLINK TACTIQUE ÉTABLI", style: TextStyle(color: Colors.cyanAccent, fontWeight: FontWeight.bold)),
+      SnackBar(
+        content: Text(AppLocalizations.of(context)!.arenaSignalementEnvoyUplinkTactique, style: TextStyle(color: Colors.cyanAccent, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.black87,
       ),
     );
@@ -795,8 +794,7 @@ class _ArenaActiveScreenState extends ConsumerState<ArenaActiveScreen> with Sing
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
-            "VÉRIFICATION DES PROTOCOLES ALPHA...",
+          Text(AppLocalizations.of(context)!.arenaVRificationDesProtocoles,
             style: TextStyle(color: Colors.white24, fontSize: 10),
           ),
         ],
@@ -1195,7 +1193,7 @@ class _ArenaActiveScreenState extends ConsumerState<ArenaActiveScreen> with Sing
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("RIVAL GHOST",
+              Text(AppLocalizations.of(context)!.arenaRivalGhost,
                   style: TextStyle(color: Colors.white38, fontSize: 8, fontWeight: FontWeight.bold, letterSpacing: 1)),
               ValueListenableBuilder<double>(
                 valueListenable: _ghostDistanceNotifier,

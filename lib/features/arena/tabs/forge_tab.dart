@@ -1,3 +1,4 @@
+import '../../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../arena_active_screen.dart';
@@ -30,30 +31,30 @@ class _ForgeTabState extends ConsumerState<ForgeTab> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildHeader("1. DISCIPLINE"),
+          _buildHeader(AppLocalizations.of(context)!.arenaForgeDiscipline),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildSportOption("RUNNING", "Course", Icons.directions_run, Colors.redAccent),
-              _buildSportOption("WALKING", "Marche", Icons.directions_walk, Colors.blueAccent),
-              _buildSportOption("CYCLING", "Vélo", Icons.directions_bike, Colors.greenAccent),
+              _buildSportOption("RUNNING", AppLocalizations.of(context)!.commonCourse, Icons.directions_run, Colors.redAccent),
+              _buildSportOption("WALKING", AppLocalizations.of(context)!.commonMarche, Icons.directions_walk, Colors.blueAccent),
+              _buildSportOption("CYCLING", AppLocalizations.of(context)!.commonVelo, Icons.directions_bike, Colors.greenAccent),
             ],
           ),
           const SizedBox(height: 40),
 
-          _buildHeader("2. DÉNIVELÉ"),
+          _buildHeader(AppLocalizations.of(context)!.arenaForgeDenivele),
           const SizedBox(height: 16),
           Row(
             children: [
-              _buildTerrainOption("PLAT", "Plat", Icons.straighten),
+              _buildTerrainOption("PLAT", AppLocalizations.of(context)!.arenaForgePlat, Icons.straighten),
               const SizedBox(width: 12),
-              _buildTerrainOption("VALLONNE", "Vallonné", Icons.terrain),
+              _buildTerrainOption("VALLONNE", AppLocalizations.of(context)!.arenaForgeVallonne, Icons.terrain),
             ],
           ),
           const SizedBox(height: 40),
 
-          _buildHeader("3. DISTANCE (BOUCLE IA)"),
+          _buildHeader(AppLocalizations.of(context)!.arenaForgeDistanceBoucle),
           const SizedBox(height: 16),
           _buildDistanceSelector(isSummer),
           const SizedBox(height: 48),
@@ -78,7 +79,7 @@ class _ForgeTabState extends ConsumerState<ForgeTab> {
               elevation: 10,
             ),
             child: Text(
-              "GÉNÉRER LA BOUCLE",
+              AppLocalizations.of(context)!.arenaGNRerLa,
               style: TextStyle(
                 color: isSummer ? Colors.white : Colors.black,
                 fontWeight: FontWeight.w900,

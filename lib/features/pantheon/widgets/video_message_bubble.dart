@@ -1,3 +1,5 @@
+import 'package:valerion/l10n/app_localizations.dart';
+import '../../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:cached_video_player_plus/cached_video_player_plus.dart';
@@ -71,14 +73,14 @@ class _VideoMessageBubbleState extends State<VideoMessageBubble> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Vidéo enregistrée dans la pellicule ! ✅")),
+          SnackBar(content: Text(AppLocalizations.of(context)!.pantheonVidOEnregistrE)),
         );
       }
     } catch (e) {
       debugPrint("❌ Erreur Download: $e");
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Erreur téléchargement: $e")),
+          SnackBar(content: Text(AppLocalizations.of(context)!.commonError(e.toString()))),
         );
       }
     } finally {
@@ -139,7 +141,7 @@ class _VideoMessageBubbleState extends State<VideoMessageBubble> {
               ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
               : const Icon(Icons.download, size: 20, color: Colors.white54),
           onPressed: _downloadVideo,
-          tooltip: "Enregistrer dans la pellicule",
+          tooltip: AppLocalizations.of(context)!.pantheonEnregistrerDansLaPellicule,
         ),
       ],
     );

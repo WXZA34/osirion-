@@ -1,3 +1,4 @@
+import '../../l10n/app_localizations.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -140,7 +141,7 @@ class _VisionAIScreenState extends State<VisionAIScreen> {
             right: 0,
             child: Center(
               child: Text(
-                "Vision AI Active",
+                AppLocalizations.of(context)!.visionAiVisionAiActive,
                 style: TextStyle(
                   color: Colors.white,
                   backgroundColor: Colors.black54,

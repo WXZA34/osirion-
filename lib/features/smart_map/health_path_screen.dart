@@ -1,3 +1,4 @@
+import '../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 
@@ -7,7 +8,7 @@ class HealthPathScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Parcours de Santé")),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.smartMapParcoursDeSant)),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -19,11 +20,11 @@ class HealthPathScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              "Parcours Optimisés",
+              AppLocalizations.of(context)!.smartMapParcoursOptimisS,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 10),
-            const Text("Découvrez des itinéraires adaptés à votre niveau."),
+            Text(AppLocalizations.of(context)!.smartMapDCouvrezDesItin),
             const SizedBox(height: 30),
             // Placeholder list
             _buildPathCard(context, "Circuit Forêt", "5 km", "Modéré"),

@@ -1,3 +1,5 @@
+import 'package:valerion/features/dojo/utils/dojo_translator.dart';
+import '../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import '../home/models/arc_data.dart';
 import 'models/exercise_config.dart';
@@ -33,8 +35,7 @@ class ExerciseSelectorScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: const Text(
-          "SÉLECTION DE L'EXERCICE",
+        title: Text(AppLocalizations.of(context)!.dojoSLectionDeL,
           style: TextStyle(letterSpacing: 2, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.transparent,
@@ -44,9 +45,7 @@ class ExerciseSelectorScreen extends ConsumerWidget {
       ),
       body:
           exercises.isEmpty
-              ? const Center(
-                child: Text(
-                  "Aucun protocole disponible pour cette configuration.",
+              ? Center(child: Text(AppLocalizations.of(context)!.dojoAucunProtocoleDisponiblePour,
                   style: TextStyle(color: Colors.white54),
                 ),
               )
@@ -101,7 +100,7 @@ class ExerciseSelectorScreen extends ConsumerWidget {
                 children: [
                     Expanded(
                       child: Text(
-                        config.name.toUpperCase(),
+                        DojoTranslator.translate(context, config.name).toUpperCase(),
                         style: TextStyle(
                           color: isSummer ? Colors.black : Colors.greenAccent,
                           fontSize: 18,
@@ -121,7 +120,7 @@ class ExerciseSelectorScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                config.description,
+                DojoTranslator.translateDescription(context, config.description),
                 style: TextStyle(color: isSummer ? Colors.black87 : Colors.white70, fontSize: 13),
               ),
               const SizedBox(height: 16),

@@ -1,3 +1,5 @@
+import 'package:valerion/features/dojo/utils/dojo_translator.dart';
+import '../../l10n/app_localizations.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -167,9 +169,9 @@ class _DojoExerciseScreenState extends ConsumerState<DojoExerciseScreen> {
 
             // Petit feedback visuel - Sécurisé avec mounted
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
+              SnackBar(
                 content: Text(
-                  "🏆 QUÊTE QUOTIDIENNE ACCOMPLIE : 50 POMPES ! (+20 XP)",
+                  AppLocalizations.of(context)!.dojoQuTeQuotidienneAccomplie,
                 ),
                 backgroundColor: Colors.cyan,
                 duration: Duration(seconds: 4),
@@ -329,14 +331,14 @@ class _DojoExerciseScreenState extends ConsumerState<DojoExerciseScreen> {
               ),
             ),
           ] else
-            const Center(
+            Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   CircularProgressIndicator(color: Colors.greenAccent),
                   SizedBox(height: 16),
                   Text(
-                    "Connexion Neurologique...",
+                    AppLocalizations.of(context)!.dojoConnexionNeurologique,
                     style: TextStyle(
                       color: Colors.white54,
                       fontFamily: 'monospace',
@@ -375,7 +377,7 @@ class _DojoExerciseScreenState extends ConsumerState<DojoExerciseScreen> {
                     )
                   ],
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(Icons.stop, color: Colors.white, size: 18),
@@ -420,7 +422,7 @@ class _DojoExerciseScreenState extends ConsumerState<DojoExerciseScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "CALIBRATION IA EN COURS...",
+                      AppLocalizations.of(context)!.dojoCalibrationIaEnCours,
                       style: TextStyle(
                         color: Colors.cyanAccent.withValues(alpha: 0.8),
                         fontSize: 10,
@@ -429,8 +431,7 @@ class _DojoExerciseScreenState extends ConsumerState<DojoExerciseScreen> {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    const Text(
-                      "ADAPTATION À VOTRE MORPHOLOGIE",
+                    Text(AppLocalizations.of(context)!.dojoAdaptationVotreMorphologie,
                       style: TextStyle(
                         color: Colors.white24,
                         fontSize: 8,
@@ -547,8 +548,7 @@ class _DojoExerciseScreenState extends ConsumerState<DojoExerciseScreen> {
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(color: Colors.redAccent),
                     ),
-                    child: const Text(
-                      "CORPS NON DÉTECTÉ",
+                    child: Text(AppLocalizations.of(context)!.dojoCorpsNonDTect,
                       style: TextStyle(
                         color: Colors.redAccent,
                         fontSize: 10,

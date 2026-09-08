@@ -6,11 +6,15 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:valerion/firebase_options.dart';
 import 'package:valerion/core/theme/app_theme.dart';
 import 'package:valerion/core/navigation/main_navigation_shell.dart';
 import 'package:valerion/features/auth/welcome_screen.dart';
+import 'package:valerion/features/auth/onboarding/language_selection_screen.dart';
+import 'package:valerion/features/splash/animated_splash_screen.dart';
 import 'package:valerion/core/providers/repository_providers.dart';
+import 'package:valerion/core/providers/locale_provider.dart';
 import 'package:valerion/l10n/app_localizations.dart';
 import 'package:valerion/core/services/notification_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -27,15 +31,16 @@ void main() async {
   // 2. Initialiser Firebase sans bloquer l'interface si possible (nécessaire pour ProviderScope)
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(const ProviderScope(child: OsirionApp()));
+
 
   // 3. Initialisations secondaires en arrière-plan (Après le premier frame)
   WidgetsBinding.instance.addPostFrameCallback((_) async {
-    // App Check
-    await FirebaseAppCheck.instance.activate(
-      androidProvider: kDebugMode ? AndroidProvider.debug : AndroidProvider.playIntegrity,
-      appleProvider: kDebugMode ? AppleProvider.debug : AppleProvider.appAttest,
-    );
+    if (!kDebugMode) {
+      await FirebaseAppCheck.instance.activate(
+        androidProvider: AndroidProvider.playIntegrity,
+        appleProvider: AppleProvider.appAttest,
+      );
+    }
 
     // Configuration Firestore
     firestore.FirebaseFirestore.instance.settings = firestore.Settings(
@@ -103,10 +108,13 @@ class OsirionApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentLocale = ref.watch(localeProvider);
+
     return MaterialApp(
       title: 'OSIRION',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.winterTheme,
+      locale: currentLocale,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -117,7 +125,7 @@ class OsirionApp extends ConsumerWidget {
         Locale('fr'), // Français
         Locale('en'), // English
       ],
-      home: const AuthWrapper(),
+      home: const AnimatedSplashScreen(),
       navigatorObservers: [
         FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
       ],
@@ -137,7 +145,7 @@ class AuthWrapper extends ConsumerWidget {
         if (user != null) {
           return const MainNavigationShell();
         } else {
-          return const WelcomeScreen();
+          return const OnboardingChecker();
         }
       },
       loading:
@@ -156,5 +164,50 @@ class AuthWrapper extends ConsumerWidget {
             ),
           ),
     );
+  }
+}
+
+class OnboardingChecker extends StatefulWidget {
+  const OnboardingChecker({super.key});
+
+  @override
+  State<OnboardingChecker> createState() => _OnboardingCheckerState();
+}
+
+class _OnboardingCheckerState extends State<OnboardingChecker> {
+  bool _isLoading = true;
+  bool _onboardingCompleted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkOnboarding();
+  }
+
+  Future<void> _checkOnboarding() async {
+    final prefs = await SharedPreferences.getInstance();
+    final completed = prefs.getBool('onboarding_completed') ?? false;
+    if (mounted) {
+      setState(() {
+        _onboardingCompleted = completed;
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(child: CircularProgressIndicator(color: Colors.white)),
+      );
+    }
+
+    if (_onboardingCompleted) {
+      return const WelcomeScreen();
+    } else {
+      return const LanguageSelectionScreen();
+    }
   }
 }

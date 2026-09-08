@@ -1,3 +1,5 @@
+import 'package:valerion/features/dojo/utils/dojo_translator.dart';
+import '../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -117,7 +119,7 @@ class _ExerciseDemoScreenState extends ConsumerState<ExerciseDemoScreen>
     final id = widget.config.id;
 
     if (!widget.config.hasAiSupport) {
-      return MockCounter(widget.config.name);
+      return MockCounter(DojoTranslator.translate(context, widget.config.name));
     }
 
     if (id.contains("pushups") || id.contains("pompes") || id.contains("tractions") ||
@@ -130,7 +132,7 @@ class _ExerciseDemoScreenState extends ConsumerState<ExerciseDemoScreen>
     } else if (id.contains("jumping") || id.contains("sauts")) {
       return ExplosiveEngine(exerciseId: id, sensitivity: sensitivity);
     } else {
-      return MockCounter(widget.config.name);
+      return MockCounter(DojoTranslator.translate(context, widget.config.name));
     }
   }
 
@@ -189,9 +191,7 @@ class _ExerciseDemoScreenState extends ConsumerState<ExerciseDemoScreen>
                         icon: const Icon(Icons.close, color: Colors.white54),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
-                      const Expanded(
-                        child: Text(
-                          "DÉMONSTRATION",
+                      Expanded(child: Text(AppLocalizations.of(context)!.dojoDMonstration,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white38,
@@ -238,7 +238,7 @@ class _ExerciseDemoScreenState extends ConsumerState<ExerciseDemoScreen>
 
                         // Nom de l'exercice
                         Text(
-                          widget.config.name,
+                          DojoTranslator.translate(context, widget.config.name),
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 28,
@@ -250,7 +250,7 @@ class _ExerciseDemoScreenState extends ConsumerState<ExerciseDemoScreen>
 
                         // Description
                         Text(
-                          widget.config.description,
+                          DojoTranslator.translateDescription(context, widget.config.description),
                           style: const TextStyle(
                             color: Colors.white60,
                             fontSize: 15,
@@ -275,8 +275,7 @@ class _ExerciseDemoScreenState extends ConsumerState<ExerciseDemoScreen>
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    "ANGLE CAMÉRA REQUIS",
+                                  Text(AppLocalizations.of(context)!.dojoAngleCamRaRequis,
                                     style: TextStyle(
                                       color: Colors.white38,
                                       fontSize: 10,
@@ -312,8 +311,7 @@ class _ExerciseDemoScreenState extends ConsumerState<ExerciseDemoScreen>
                       child: ElevatedButton.icon(
                         onPressed: _startExercise,
                         icon: const Icon(Icons.play_arrow, size: 28),
-                        label: const Text(
-                          "COMMENCER LE PROTOCOLE",
+                        label: Text(AppLocalizations.of(context)!.dojoCommencerLeProtocole,
                           style: TextStyle(
                             fontWeight: FontWeight.w900,
                             fontSize: 16,
@@ -383,8 +381,7 @@ class _ExerciseDemoScreenState extends ConsumerState<ExerciseDemoScreen>
                     ),
                   ),
                   const SizedBox(height: 12),
-                  const Text(
-                    "PRÉPARE-TOI",
+                  Text(AppLocalizations.of(context)!.dojoPrPareToi,
                     style: TextStyle(
                       color: Colors.cyanAccent,
                       fontSize: 13,
@@ -393,8 +390,7 @@ class _ExerciseDemoScreenState extends ConsumerState<ExerciseDemoScreen>
                     ),
                   ),
                   const SizedBox(height: 4),
-                  const Text(
-                    "Vidéo de démonstration\nbientôt disponible",
+                  Text(AppLocalizations.of(context)!.dojoVidODeD,
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white30, fontSize: 10),
                   ),
@@ -416,7 +412,7 @@ class _ExerciseDemoScreenState extends ConsumerState<ExerciseDemoScreen>
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    "CHARGEMENT DÉMO...",
+                    AppLocalizations.of(context)!.dojoChargementDMo,
                     style: TextStyle(
                       color: Colors.cyanAccent.withValues(alpha: 0.7),
                       fontSize: 10,
@@ -436,8 +432,7 @@ class _ExerciseDemoScreenState extends ConsumerState<ExerciseDemoScreen>
                   children: [
                     const Icon(Icons.wifi_off, color: Colors.white38, size: 36),
                     const SizedBox(height: 8),
-                    const Text(
-                      "Vidéo non disponible\nVous pourrez quand même démarrer l'exercice",
+                    Text(AppLocalizations.of(context)!.dojoVidONonDisponible,
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.white38, fontSize: 11),
                     ),
@@ -455,8 +450,7 @@ class _ExerciseDemoScreenState extends ConsumerState<ExerciseDemoScreen>
                     _showSkipButton = false;
                   }),
                   icon: const Icon(Icons.skip_next, color: Colors.white54, size: 16),
-                  label: const Text(
-                    "IGNORER LA DÉMO",
+                  label: Text(AppLocalizations.of(context)!.dojoIgnorerLaDMo,
                     style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold),
                   ),
                   style: TextButton.styleFrom(

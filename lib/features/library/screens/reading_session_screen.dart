@@ -1,3 +1,4 @@
+import '../../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -89,8 +90,7 @@ class _ReadingSessionScreenState extends State<ReadingSessionScreen> {
               borderRadius: BorderRadius.circular(20),
               side: BorderSide(color: _accentColor),
             ),
-            title: const Text(
-              "TEMPS ÉCOULÉ",
+            title: Text(AppLocalizations.of(context)!.libraryTempsCoul,
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w900,
@@ -113,8 +113,7 @@ class _ReadingSessionScreenState extends State<ReadingSessionScreen> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 12),
-                const Text(
-                  "Souhaitez-vous continuer à lire pour 15 minutes supplémentaires, ou sceller la session et rédiger votre contrat d'honneur ?",
+                Text(AppLocalizations.of(context)!.librarySouhaitezVousContinuerLire,
                   style: TextStyle(color: Colors.white54, fontSize: 13),
                   textAlign: TextAlign.center,
                 ),
@@ -130,8 +129,7 @@ class _ReadingSessionScreenState extends State<ReadingSessionScreen> {
                   });
                   _startTimer();
                 },
-                child: const Text(
-                  "FORGER (+15 MIN)",
+                child: Text(AppLocalizations.of(context)!.libraryForger15Min,
                   style: TextStyle(color: Colors.white54),
                 ),
               ),
@@ -147,8 +145,7 @@ class _ReadingSessionScreenState extends State<ReadingSessionScreen> {
                     true,
                   ); // Ferme la page de lecture et renvoie 'true' pour aller au Contrat
                 },
-                child: const Text(
-                  "SCELLER LA SESSION",
+                child: Text(AppLocalizations.of(context)!.libraryScellerLaSession,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
@@ -198,8 +195,7 @@ class _ReadingSessionScreenState extends State<ReadingSessionScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Temps Restant",
+                    Text(AppLocalizations.of(context)!.libraryTempsRestant,
                       style: TextStyle(color: Colors.white54, fontSize: 10),
                     ),
                     Text(
@@ -269,7 +265,7 @@ class _ReadingSessionScreenState extends State<ReadingSessionScreen> {
 
                           // Section Pourquoi Intégrer
                           _buildSection(
-                            "POURQUOI L'INTÉGRER ?",
+                            AppLocalizations.of(context)!.libraryPourquoiLIntGrer,
                             widget.book.whyRead,
                           ),
 

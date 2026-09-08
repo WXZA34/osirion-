@@ -1,3 +1,6 @@
+import 'package:valerion/features/dojo/utils/dojo_translator.dart';
+import 'package:valerion/l10n/app_localizations.dart';
+import '../../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import '../models/exercise_config.dart';
 
@@ -19,12 +22,12 @@ class RecapDialog extends StatelessWidget {
 
   int get _xpEarned => repCount * config.defaultXpPerRep;
 
-  String get _coachMessage {
-    if (repCount == 0) return "Commence par te placer devant la caméra. L'IA veille sur toi !";
-    if (repCount < 5) return "Bon début ! La régularité forge les champions.";
-    if (repCount < 15) return "Solide. Tu construis une base en béton armé. 💪";
-    if (repCount < 30) return "Impressionnant ! Ton moteur tourne à plein régime. 🔥";
-    return "LÉGENDAIRE ! Tu repousses tes limites à chaque session. 🏆";
+  String getCoachMessage(BuildContext context) {
+    if (repCount == 0) return DojoTranslator.translate(context, "Commence par te placer devant la caméra. L'IA veille sur toi !");
+    if (repCount < 5) return DojoTranslator.translate(context, "Bon début ! La régularité forge les champions.");
+    if (repCount < 15) return DojoTranslator.translate(context, "Solide. Tu construis une base en béton armé. 💪");
+    if (repCount < 30) return DojoTranslator.translate(context, "Impressionnant ! Ton moteur tourne à plein régime. 🔥");
+    return DojoTranslator.translate(context, "LÉGENDAIRE ! Tu repousses tes limites à chaque session. 🏆");
   }
 
   String _formatDuration(Duration d) {
@@ -59,8 +62,7 @@ class RecapDialog extends StatelessWidget {
           const SizedBox(height: 24),
 
           // Titre
-          const Text(
-            "RAPPORT DE MISSION",
+          Text(AppLocalizations.of(context)!.dojoRapportDeMission,
             style: TextStyle(
               color: Colors.white,
               fontSize: 13,
@@ -70,7 +72,7 @@ class RecapDialog extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            config.name.toUpperCase(),
+            DojoTranslator.translate(context, config.name).toUpperCase(),
             style: const TextStyle(
               color: Colors.cyanAccent,
               fontSize: 22,
@@ -87,21 +89,21 @@ class RecapDialog extends StatelessWidget {
               _buildStat(
                 icon: Icons.repeat,
                 value: repCount.toString(),
-                label: config.unit == 'seconds' ? 'SECONDES' : 'RÉPÉTITIONS',
+                label: config.unit == 'seconds' ? DojoTranslator.translate(context, 'SECONDES') : AppLocalizations.of(context)!.dojoRPTitions,
                 color: Colors.cyanAccent,
               ),
               Container(width: 1, height: 50, color: Colors.white10),
               _buildStat(
                 icon: Icons.timer,
                 value: _formatDuration(sessionDuration),
-                label: 'DURÉE',
+                label: AppLocalizations.of(context)!.dojoDurE,
                 color: Colors.white,
               ),
               Container(width: 1, height: 50, color: Colors.white10),
               _buildStat(
                 icon: Icons.bolt,
                 value: '+$_xpEarned',
-                label: 'XP GAGNÉS',
+                label: AppLocalizations.of(context)!.dojoXpGagnS,
                 color: Colors.orangeAccent,
               ),
             ],
@@ -118,11 +120,11 @@ class RecapDialog extends StatelessWidget {
             ),
             child: Row(
               children: [
-                const Text("🧠", style: TextStyle(fontSize: 24)),
+                Text(AppLocalizations.of(context)!.dojoEmptyKey, style: TextStyle(fontSize: 24)),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    _coachMessage,
+                    getCoachMessage(context),
                     style: const TextStyle(
                       color: Colors.white70,
                       fontSize: 13,
@@ -142,7 +144,7 @@ class RecapDialog extends StatelessWidget {
                 child: OutlinedButton.icon(
                   onPressed: onReplay,
                   icon: const Icon(Icons.replay, size: 18),
-                  label: const Text("REJOUER"),
+                  label: Text(AppLocalizations.of(context)!.commonReplay),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.cyanAccent,
                     side: const BorderSide(color: Colors.cyanAccent),
@@ -158,7 +160,7 @@ class RecapDialog extends StatelessWidget {
                 child: ElevatedButton.icon(
                   onPressed: onQuit,
                   icon: const Icon(Icons.check, size: 18),
-                  label: const Text("TERMINER"),
+                  label: Text(AppLocalizations.of(context)!.commonFinish),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.cyanAccent,
                     foregroundColor: Colors.black,

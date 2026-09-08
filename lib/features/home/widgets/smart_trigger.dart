@@ -1,3 +1,4 @@
+import 'package:valerion/features/home/utils/smart_trigger_translator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/smart_trigger_provider.dart';
@@ -101,7 +102,7 @@ class SmartTrigger extends ConsumerWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              (isAlert ? "ALERTE - " : "SMART TRIGGER - ") + data.cityName.toUpperCase(),
+                              (isAlert ? Localizations.localeOf(context).languageCode == "en" ? "ALERT - " : "ALERTE - " : "SMART TRIGGER - ") + data.cityName.toUpperCase(),
                               style: TextStyle(
                                 color: isSummer ? arc.primaryColor.withValues(alpha: 0.7) : Colors.white70,
                                 fontWeight: FontWeight.w900,
@@ -128,9 +129,7 @@ class SmartTrigger extends ConsumerWidget {
                         ],
                       ),
                       const SizedBox(height: 4),
-                      Text(
-                        data.title,
-                        style: TextStyle(
+                      Text(SmartTriggerTranslator.translateTitle(context, data.title), style: TextStyle(
                           color: isSummer ? Colors.black87 : Colors.white,
                           fontWeight: FontWeight.w900,
                           fontSize: 14,
@@ -138,9 +137,7 @@ class SmartTrigger extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      Text(
-                        data.subtitle,
-                        style: TextStyle(
+                      Text(SmartTriggerTranslator.translateSubtitle(context, data.subtitle), style: TextStyle(
                           color: isSummer ? Colors.black54 : Colors.white,
                           fontSize: 11,
                           height: 1.3,

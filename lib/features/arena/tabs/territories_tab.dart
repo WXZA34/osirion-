@@ -1,3 +1,4 @@
+import '../../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../home/models/arc_data.dart';
@@ -18,7 +19,7 @@ class TerritoriesTab extends ConsumerWidget {
           Icon(Icons.grid_4x4, size: 80, color: arc.primaryColor.withValues(alpha: 0.3)),
           const SizedBox(height: 24),
           Text(
-            "LES TERRITOIRES",
+            AppLocalizations.of(context)!.arenaLesTerritoires,
             style: TextStyle(
               color: isSummer ? arc.onSurfaceColor : Colors.white,
               fontSize: 20,
@@ -30,7 +31,7 @@ class TerritoriesTab extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Text(
-              "Conquêtes géolocalisées via grille hexagonale. Courez pour dominer votre quartier.",
+              AppLocalizations.of(context)!.arenaConquTesGOlocalis,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: isSummer ? arc.onSurfaceColor.withValues(alpha: 0.6) : Colors.white54,
@@ -47,7 +48,7 @@ class TerritoriesTab extends ConsumerWidget {
               border: Border.all(color: arc.primaryColor.withValues(alpha: 0.3)),
             ),
             child: Text(
-              "DÉVELOPPEMENT EN COURS (MAP ENGINE)",
+              AppLocalizations.of(context)!.arenaDVeloppementEnCours,
               style: TextStyle(color: arc.primaryColor, fontSize: 10, fontWeight: FontWeight.bold),
             ),
           ),

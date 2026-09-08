@@ -1,3 +1,5 @@
+import 'package:valerion/l10n/app_localizations.dart';
+import '../../../l10n/app_localizations.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -78,8 +80,8 @@ class _FocusTimerState extends ConsumerState<FocusTimer> {
 
     if (completed) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("✨ Méditation achevée. +20 XP de Sagesse."),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.profileMDitationAchevE),
           backgroundColor: Colors.purpleAccent,
         ),
       );
@@ -120,8 +122,7 @@ class _FocusTimerState extends ConsumerState<FocusTimer> {
       ),
       child: Column(
         children: [
-          const Text(
-            "MÉDITATION & DEEP WORK",
+          Text(AppLocalizations.of(context)!.profileMDitationDeepWork,
             style: TextStyle(
               color: Colors.white54,
               letterSpacing: 2,
@@ -198,7 +199,7 @@ class _FocusTimerState extends ConsumerState<FocusTimer> {
                 ElevatedButton.icon(
                   onPressed: _pauseTimer,
                   icon: const Icon(Icons.pause, color: Colors.black),
-                  label: const Text("SUSPENDRE"),
+                  label: Text(AppLocalizations.of(context)!.commonSuspend),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white70,
                     foregroundColor: Colors.black,
@@ -217,7 +218,7 @@ class _FocusTimerState extends ConsumerState<FocusTimer> {
                   onPressed: _resetTimer,
                   icon: const Icon(Icons.stop),
                   color: Colors.white54,
-                  tooltip: "Réinitialiser",
+                  tooltip: AppLocalizations.of(context)!.profileRInitialiser,
                 ),
               ],
             ],

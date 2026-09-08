@@ -1,3 +1,4 @@
+import '../../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -73,10 +74,10 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
       if (e.toString().contains("POS_MOCKED")) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               backgroundColor: Colors.redAccent,
               content: Text(
-                "TRICHE DÉTECTÉE : Veuillez désactiver les fausses positions GPS (Mock Locations).",
+                AppLocalizations.of(context)!.arenaTricheDTectE,
               ),
             ),
           );
@@ -120,7 +121,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
               return AlertDialog(
                 backgroundColor: arc.surfaceColor,
                 title: Text(
-                  "DÉFI : ${spot.name}",
+                  AppLocalizations.of(context)!.arenaDefiPrefix + spot.name,
                   style: TextStyle(
                     color: arc.primaryColor,
                     fontWeight: FontWeight.w900,
@@ -132,7 +133,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        "DÉCLAREZ VOS RÉSULTATS POUR PRENDRE LE CONTRÔLE.",
+                        AppLocalizations.of(context)!.arenaDClarezVosR,
                         style: TextStyle(
                           color: arc.onSurfaceColor.withValues(alpha: 0.5),
                           fontSize: 10,
@@ -144,7 +145,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                         children: [
                           Expanded(
                             child: _buildExerciseInput(
-                              "TRACTIONS",
+                              AppLocalizations.of(context)!.arenaTractions,
                               pullupsController,
                               arc,
                             ),
@@ -152,7 +153,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                           const SizedBox(width: 16),
                           Expanded(
                             child: _buildExerciseInput(
-                              "DIPS",
+                              AppLocalizations.of(context)!.arenaDips,
                               dipsController,
                               arc,
                             ),
@@ -164,7 +165,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                         children: [
                           Expanded(
                             child: _buildExerciseInput(
-                              "POMPES",
+                              AppLocalizations.of(context)!.arenaPompes,
                               pushupsController,
                               arc,
                             ),
@@ -172,7 +173,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                           const SizedBox(width: 16),
                           Expanded(
                             child: _buildExerciseInput(
-                              "ABDOS",
+                              AppLocalizations.of(context)!.arenaAbdos,
                               absController,
                               arc,
                             ),
@@ -194,7 +195,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                   TextButton(
                     onPressed: isSaving ? null : () => Navigator.pop(context),
                     child: Text(
-                      "ANNULER",
+                      AppLocalizations.of(context)!.commonCancel,
                       style: TextStyle(
                         color: arc.onSurfaceColor.withValues(alpha: 0.3),
                       ),
@@ -221,9 +222,9 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
 
                               if (total <= 0) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
+                                  SnackBar(
                                     content: Text(
-                                      "ERREUR : VOUS DEVEZ EFFECTUER AU MOINS UNE RÉPÉTITION.",
+                                      AppLocalizations.of(context)!.arenaErreurVousDevezEffectuer,
                                     ),
                                     backgroundColor: Colors.redAccent,
                                   ),
@@ -260,7 +261,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                                       SnackBar(
                                         backgroundColor: arc.primaryColor,
                                         content: Text(
-                                          "CONQUÊTE RÉUSSIE : $total REPS TOTALES ! VOUS ÊTES LE BOSS DE ${spot.name.toUpperCase()}.",
+                                          AppLocalizations.of(context)!.arenaConqueteReussie(total.toString(), spot.name.toUpperCase()),
                                           style: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold,
@@ -273,11 +274,11 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                                 }
                               } catch (e) {
                                 setDialogState(() => isSaving = false);
-                                String errorMsg = "ERREUR DE TRANSMISSION.";
+                                String errorMsg = AppLocalizations.of(context)!.arenaErreurTransmission;
                                 if (e.toString().contains("TOO_FAR") ||
                                     e.toString().contains("SIGNAL GPS")) {
                                   errorMsg =
-                                      "ÉCHEC : SIGNAL GPS DÉGRADÉ OU TROP LOIN DU SPOT.";
+                                      AppLocalizations.of(context)!.arenaEchecSignalGps;
                                 }
                                 if (mounted) {
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -289,8 +290,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                                 }
                               }
                             },
-                    child: const Text(
-                      "CONQUÉRIR",
+                    child: Text(AppLocalizations.of(context)!.arenaConquRir,
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w900,
@@ -378,8 +378,8 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
   Widget _buildHeader(Color color) {
     String nearestInfo =
         _spots.isNotEmpty
-            ? "LE PLUS PROCHE : ${_formatDistance(_spots.first.position)}"
-            : "SCAN DES STATIONS À PROXIMITÉ";
+            ? AppLocalizations.of(context)!.arenaLePlusProche + _formatDistance(_spots.first.position)
+            : AppLocalizations.of(context)!.arenaScanDesStations;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -398,7 +398,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "RADAR DE BASTIONS",
+                  AppLocalizations.of(context)!.arenaRadarDeBastions,
                   style: TextStyle(
                     color: color,
                     fontWeight: FontWeight.bold,
@@ -428,8 +428,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
         children: [
           CircularProgressIndicator(color: color),
           const SizedBox(height: 20),
-          const Text(
-            "PROTOCOLE OSIRION : SCAN...",
+          Text(AppLocalizations.of(context)!.arenaProtocoleOsirionScan,
             style: TextStyle(color: Colors.white38, fontSize: 10),
           ),
         ],
@@ -448,8 +447,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
             color: color.withValues(alpha: 0.3),
           ),
           const SizedBox(height: 16),
-          const Text(
-            "QUARTIER SÉCURISÉ : AUCUN BASTION",
+          Text(AppLocalizations.of(context)!.arenaQuartierSCurisAucun,
             style: TextStyle(color: Colors.white38),
           ),
         ],
@@ -506,7 +504,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                       ),
                     ),
                     subtitle: Text(
-                      "$distStr • ESTIMATION: ${_getWalkTime(spot.position)}",
+                      "$distStr • ${AppLocalizations.of(context)!.arenaEstimation}${_getWalkTime(spot.position)}",
                       style: const TextStyle(
                         color: Colors.white38,
                         fontSize: 9,
@@ -576,8 +574,8 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                                   children: [
                                     Text(
                                       currentBoss != null
-                                          ? "BOSS: ${currentBoss.pseudo.toUpperCase()}"
-                                          : "ZONE VIERGE",
+                                          ? AppLocalizations.of(context)!.arenaBossPrefix + currentBoss.pseudo.toUpperCase()
+                                          : AppLocalizations.of(context)!.arenaZoneVierge,
                                       style: TextStyle(
                                         color: _getStatusColor(status),
                                         fontWeight: FontWeight.bold,
@@ -586,7 +584,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                                     ),
                                     if (currentBoss != null)
                                       Text(
-                                        "RÈGNE DEPUIS: ${_getReignTime(currentBoss.achievedAt)}",
+                                        AppLocalizations.of(context)!.arenaRegneDepuis + _getReignTime(currentBoss.achievedAt),
                                         style: const TextStyle(
                                           color: Colors.white38,
                                           fontSize: 8,
@@ -611,7 +609,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                             Padding(
                               padding: const EdgeInsets.only(top: 8),
                               child: Text(
-                                "⚠️ RENSEIGNEMENT : ${spot.failedAttemptsCount} JOUEURS ONT ÉCHOUÉ CETTE SEMAINE",
+                                AppLocalizations.of(context)!.arenaRenseignementEchecs(spot.failedAttemptsCount.toString()),
                                 style: const TextStyle(
                                   color: Colors.orangeAccent,
                                   fontSize: 7,
@@ -623,7 +621,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                             Padding(
                               padding: const EdgeInsets.only(top: 8),
                               child: Text(
-                                "📝 BRIEFING TACTIQUE (OSM) : ${spot.osmNote!.toUpperCase()}",
+                                AppLocalizations.of(context)!.arenaBriefingTactiquePrefix + spot.osmNote!.toUpperCase(),
                                 style: const TextStyle(
                                   color: Colors.white38,
                                   fontSize: 7,
@@ -644,14 +642,14 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                         _buildActionButton(
                           context,
                           Icons.info_outline,
-                          "INFO",
+                          AppLocalizations.of(context)!.arenaInfo,
                           color,
                           () => _showBastionInfo(spot),
                         ),
                         _buildActionButton(
                           context,
                           Icons.near_me,
-                          "TRACER",
+                          AppLocalizations.of(context)!.arenaTracer,
                           color,
                           () {
                             _launchNavigation(spot);
@@ -660,7 +658,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                         _buildActionButton(
                           context,
                           Icons.add_circle,
-                          "DÉFI",
+                          AppLocalizations.of(context)!.arenaDefiAction,
                           _getStatusColor(status),
                           () {
                             if (_userPos == null) return;
@@ -672,10 +670,10 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                             );
                             if (distance > 60) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
+                                SnackBar(
                                   backgroundColor: Colors.redAccent,
                                   content: Text(
-                                    "SIGNAL TROP FAIBLE : Rapprochez-vous à moins de 50m.",
+                                    AppLocalizations.of(context)!.arenaSignalTropFaibleRapprochez,
                                   ),
                                 ),
                               );
@@ -739,14 +737,14 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
       pos.longitude,
     );
     int minutes = (meters / 80).round(); // ~5km/h = 80m/min
-    return minutes == 0 ? "MOINS D'UNE MINUTE" : "ENV. $minutes MIN";
+    return minutes == 0 ? AppLocalizations.of(context)!.arenaMoinsDuneMinute : AppLocalizations.of(context)!.arenaEnvMinutes(minutes.toString());
   }
 
   String _getReignTime(DateTime start) {
     final diff = DateTime.now().difference(start);
     if (diff.inDays > 0) return "${diff.inDays} JOURS";
     if (diff.inHours > 0) return "${diff.inHours} HEURES";
-    return "RÉCENT";
+    return AppLocalizations.of(context)!.arenaRecent;
   }
 
   Widget _buildEquipmentIcon(String type, Color color) {
@@ -908,8 +906,8 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                                                 const SizedBox(width: 8),
                                                 Text(
                                                   spot.images.isEmpty
-                                                      ? "TRANSMETTRE LE RENSEIGNEMENT (+250 XP)"
-                                                      : "COMPLÉTER LE RENSEIGNEMENT (${spot.images.length}/4)",
+                                                      ? AppLocalizations.of(context)!.arenaTransmettreRenseignement
+                                                      : AppLocalizations.of(context)!.arenaCompleterRenseignement(spot.images.length.toString()),
                                                   style: TextStyle(
                                                     color: arc.primaryColor,
                                                     fontSize: 10,
@@ -960,12 +958,11 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
 
                                   const SizedBox(height: 32),
                                   _buildInfoSection(
-                                    "ARSENAL TACTIQUE",
+                                    AppLocalizations.of(context)!.arenaArsenalTactique,
                                     Icons.fitness_center,
                                     [
                                       if (spot.equipment.isEmpty)
-                                        const Text(
-                                          "Aucun équipement spécifique détecté par les capteurs OSM.",
+                                        Text(AppLocalizations.of(context)!.arenaAucunQuipementSpCifique,
                                           style: TextStyle(
                                             color: Colors.white38,
                                             fontSize: 12,
@@ -1038,21 +1035,21 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
 
                                   const SizedBox(height: 32),
                                   _buildInfoSection(
-                                    "RENSEIGNEMENT ALPHA",
+                                    AppLocalizations.of(context)!.arenaRenseignementAlpha,
                                     Icons.shield,
                                     [
                                       _buildIntelRow(
-                                        "Boss Actuel",
-                                        spot.currentBoss?.pseudo ?? "INCONNU",
+                                        AppLocalizations.of(context)!.arenaBossActuel,
+                                        spot.currentBoss?.pseudo ?? AppLocalizations.of(context)!.arenaInconnuCaps,
                                       ),
                                       _buildIntelRow(
-                                        "Record d'Effort",
+                                        AppLocalizations.of(context)!.arenaRecordEffort,
                                         spot.currentBoss != null
                                             ? "${spot.currentBoss!.effectiveReps} REPS"
                                             : "---",
                                       ),
                                       _buildIntelRow(
-                                        "Temps de Règne",
+                                        AppLocalizations.of(context)!.arenaTempsDeRegne,
                                         spot.currentBoss != null
                                             ? _getReignTime(
                                               spot.currentBoss!.achievedAt,
@@ -1060,7 +1057,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                                             : "---",
                                       ),
                                       _buildIntelRow(
-                                        "Échecs récents",
+                                        AppLocalizations.of(context)!.arenaEchecsRecents,
                                         "${spot.failedAttemptsCount} TENTATIVES",
                                       ),
                                     ],
@@ -1069,7 +1066,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                                   const SizedBox(height: 32),
                                   if (spot.osmNote != null)
                                     _buildInfoSection(
-                                      "BRIEFING TACTIQUE (OSM)",
+                                      AppLocalizations.of(context)!.arenaBriefingTactiqueSansIcone,
                                       Icons.description,
                                       [
                                         Text(
@@ -1086,21 +1083,21 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
 
                                   const SizedBox(height: 32),
                                   _buildInfoSection(
-                                    "COORDONNÉES DE MISSION",
+                                    AppLocalizations.of(context)!.arenaCoordonneesMission,
                                     Icons.location_on,
                                     [
                                       _buildIntelRow(
-                                        "Quartier",
-                                        spot.neighborhood ?? "Inconnu",
+                                        AppLocalizations.of(context)!.arenaQuartier,
+                                        spot.neighborhood ?? AppLocalizations.of(context)!.arenaInconnuCamel,
                                       ),
                                       _buildIntelRow(
-                                        "Latitude",
+                                        AppLocalizations.of(context)!.arenaLatitude,
                                         spot.position.latitude.toStringAsFixed(
                                           6,
                                         ),
                                       ),
                                       _buildIntelRow(
-                                        "Longitude",
+                                        AppLocalizations.of(context)!.arenaLongitude,
                                         spot.position.longitude.toStringAsFixed(
                                           6,
                                         ),
@@ -1131,8 +1128,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                                             Icons.near_me,
                                             size: 18,
                                           ),
-                                          label: const Text(
-                                            "POSITION SATELLITE (GUIDAGE)",
+                                          label: Text(AppLocalizations.of(context)!.arenaPositionSatelliteGuidage,
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 11,
@@ -1309,7 +1305,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
               Icon(Icons.camera_enhance, color: color, size: 40),
               const SizedBox(height: 12),
               Text(
-                "MISSION DE RECONNAISSANCE",
+                AppLocalizations.of(context)!.arenaMissionDeReconnaissance,
                 style: TextStyle(
                   color: color,
                   fontWeight: FontWeight.bold,
@@ -1317,8 +1313,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                   fontSize: 12,
                 ),
               ),
-              const Text(
-                "FOURNISSEZ LE RENSEIGNEMENT VISUEL",
+              Text(AppLocalizations.of(context)!.arenaFournissezLeRenseignementVisuel,
                 style: TextStyle(color: Colors.white38, fontSize: 8),
               ),
               const SizedBox(height: 20),
@@ -1333,8 +1328,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                 ),
                 onPressed: () => _captureBastionIntel(spot),
                 icon: const Icon(Icons.camera),
-                label: const Text(
-                  "CAPTURER L'INTEL",
+                label: Text(AppLocalizations.of(context)!.arenaCapturerLIntel,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
@@ -1351,8 +1345,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
                 borderRadius: BorderRadius.circular(4),
                 border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
               ),
-              child: const Text(
-                "+250 XP",
+              child: Text(AppLocalizations.of(context)!.arena250Xp,
                 style: TextStyle(
                   color: Colors.orange,
                   fontSize: 10,
@@ -1374,7 +1367,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
     Position pos = await Geolocator.getCurrentPosition();
     if (pos.isMocked) {
       _showTacticalAlert(
-        title: "VIOLATION DE SÉCURITÉ",
+        title: AppLocalizations.of(context)!.arenaViolationDeSCurit,
         message:
             "L'utilisation de fausses positions GPS (Fake GPS) est strictement interdite par le protocole Osirion.",
         isError: true,
@@ -1385,10 +1378,10 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
     if (_userPos == null) {
       debugPrint("❌ Erreur: _userPos est NULL");
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           backgroundColor: Colors.orangeAccent,
           content: Text(
-            "ERREUR SIGNAL GPS : Position non détectée. Attendez le fix GPS.",
+            AppLocalizations.of(context)!.arenaErreurSignalGpsPosition,
           ),
         ),
       );
@@ -1406,7 +1399,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
     if (distance > 60) {
       debugPrint("❌ Erreur: Distance trop grande (${distance.toInt()}m)");
       _showTacticalAlert(
-        title: "VOUS ÊTES TROP LOIN",
+        title: AppLocalizations.of(context)!.arenaVousTesTropLoin,
         message:
             "Pour prendre la photo et gagner les XP, vous devez être sur place (à moins de 50m).\n\nVous êtes actuellement à ${distance.toInt()}m du spot.",
         isError: true,
@@ -1428,7 +1421,7 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
       if (status.isDenied) {
         debugPrint("❌ Permission refusée par l'utilisateur.");
         _showTacticalAlert(
-          title: "AUTORISATION REQUISE",
+          title: AppLocalizations.of(context)!.arenaAutorisationRequise,
           message:
               "L'œil de Valérion (Caméra) doit être activé pour authentifier votre présence sur le Bastion.",
         );
@@ -1466,10 +1459,10 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
         if (mounted) {
           Navigator.pop(context); // Fermer le hub info
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               backgroundColor: Colors.greenAccent,
               content: Text(
-                "RENSEIGNEMENT TRANSMIS : +250 XP ! OSIRION vous remercie, Éclaireur.",
+                AppLocalizations.of(context)!.arenaRenseignementTransmis250Xp,
               ),
             ),
           );
@@ -1505,8 +1498,8 @@ class _BastionsTabState extends ConsumerState<BastionsTab> {
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Impossible de lancer le guidage satellite."),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.arenaImpossibleDeLancerLe),
             backgroundColor: Colors.redAccent,
           ),
         );

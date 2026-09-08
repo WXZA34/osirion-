@@ -1,3 +1,4 @@
+import '../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class ReviewsScreen extends StatelessWidget {
@@ -6,13 +7,12 @@ class ReviewsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Avis & Feedback")),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.profileAvisFeedback)),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            const Text(
-              "Votre avis compte",
+            Text(AppLocalizations.of(context)!.profileVotreAvisCompte,
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -20,8 +20,7 @@ class ReviewsScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            const Text(
-              "Aidez-nous à améliorer OSIRION pour le Winter Arc.",
+            Text(AppLocalizations.of(context)!.profileAidezNousAmLiorer,
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white70),
             ),
@@ -30,7 +29,7 @@ class ReviewsScreen extends StatelessWidget {
               maxLines: 5,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                hintText: "Partagez votre expérience...",
+                hintText: AppLocalizations.of(context)!.profilePartagezVotreExpRience,
                 hintStyle: const TextStyle(color: Colors.white30),
                 filled: true,
                 fillColor: Colors.white10,
@@ -53,7 +52,7 @@ class ReviewsScreen extends StatelessWidget {
                 ),
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Merci pour votre avis !")),
+                    SnackBar(content: Text(AppLocalizations.of(context)!.profileMerciPourVotreAvis)),
                   );
                 },
                 child: const Text(

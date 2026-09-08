@@ -1,15 +1,20 @@
+import 'package:valerion/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../core/providers/repository_providers.dart';
 import '../../core/domain/entities/user_entity.dart';
 import '../arsenal/models/relic.dart';
+
+import '../../core/constants/default_relics.dart';
 import '../library/models/journal_entry.dart';
 import 'widgets/focus_timer.dart';
 import 'package:intl/intl.dart';
 import '../../core/widgets/avatar_viewer.dart';
 import '../home/models/arc_data.dart';
 import '../../core/providers/arc_provider.dart';
+import '../../core/providers/locale_provider.dart';
+import '../../l10n/app_localizations.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -45,7 +50,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Upload de la photo en cours...')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.profileUploadDeLaPhoto)),
       );
 
       final bytes = await pickedFile.readAsBytes();
@@ -61,8 +66,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Profil à jour !'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.profileProfilJour),
           backgroundColor: Colors.greenAccent,
         ),
       );
@@ -70,7 +75,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Erreur : $e'),
+          content: Text(AppLocalizations.of(context)!.commonError(e.toString())),
           backgroundColor: Colors.redAccent,
         ),
       );
@@ -87,7 +92,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       backgroundColor: _bgBlack,
       appBar: AppBar(
         title: Text(
-          "LE SANCTUAIRE",
+          AppLocalizations.of(context)!.profileLeSanctuaire,
           style: TextStyle(
             color: _isSummer ? _onSurfaceColor : Colors.white,
             fontWeight: FontWeight.w300,
@@ -135,10 +140,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildNavTab(0, "Évolution"),
-          _buildNavTab(1, "Physique"),
-          _buildNavTab(2, "Esprit"),
-          _buildNavTab(3, "Réglages"),
+          _buildNavTab(0, AppLocalizations.of(context)!.profileTabEvolution),
+          _buildNavTab(1, AppLocalizations.of(context)!.profileTabPhysique),
+          _buildNavTab(2, AppLocalizations.of(context)!.profileTabEsprit),
+          _buildNavTab(3, AppLocalizations.of(context)!.profileTabReglages),
         ],
       ),
     );
@@ -149,7 +154,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return GestureDetector(
       onTap: () => setState(() => _selectedTabIndex = index),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
@@ -200,16 +205,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return userProfileAsync.when(
       data: (user) {
         if (user == null) {
-          return const Center(
+          return Center(
             child: Text(
-              "Profil introuvable",
-              style: TextStyle(color: Colors.red),
+              AppLocalizations.of(context)!.profileNotFound,
+              style: const TextStyle(color: Colors.red),
             ),
           );
         }
 
-        final Relic? activeHalo = Relic.findById(user.activeHalo);
-        final Relic? activeTitle = Relic.findById(user.activeTitle);
+        final Relic? activeHalo = defaultRelicsToSeed.where((r) => r.id == user.activeHalo).firstOrNull;
+        final Relic? activeTitle = defaultRelicsToSeed.where((r) => r.id == user.activeTitle).firstOrNull;
         final Color haloColor = activeHalo?.color ?? _accentWinter;
 
         return Column(
@@ -327,7 +332,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          "DUAL-TRACK",
+          AppLocalizations.of(context)!.profileDualTrack,
           style: TextStyle(
             color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.5) : Colors.white54,
             letterSpacing: 2,
@@ -369,7 +374,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         const SizedBox(height: 40),
 
         Text(
-          "CALENDRIER DE COHÉRENCE",
+          AppLocalizations.of(context)!.profileCalendrierDeCohRence,
           style: TextStyle(
             color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.5) : Colors.white54,
             letterSpacing: 2,
@@ -544,7 +549,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          "LABORATOIRE BIOMÉTRIQUE",
+          AppLocalizations.of(context)!.profileLaboratoireBiomTrique,
           style: TextStyle(
             color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.5) : Colors.white54,
             letterSpacing: 2,
@@ -606,7 +611,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         const SizedBox(height: 32),
 
         Text(
-          "REGISTRE : LE DOJO (IA)",
+          AppLocalizations.of(context)!.profileRegistreLeDojoIa,
           style: TextStyle(
             color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.5) : Colors.white54,
             letterSpacing: 2,
@@ -626,7 +631,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
         const SizedBox(height: 24),
         Text(
-          "GESTION DU SANCTUAIRE",
+          AppLocalizations.of(context)!.profileGestionDuSanctuaire,
           style: TextStyle(
             color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.5) : Colors.white54,
             letterSpacing: 2,
@@ -769,7 +774,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          "LE CODEX DE L'ESPRIT",
+          AppLocalizations.of(context)!.profileLeCodexDeL,
           style: TextStyle(
             color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.5) : Colors.white54,
             letterSpacing: 2,
@@ -801,7 +806,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "SÉRIE D'HONNEUR",
+                          AppLocalizations.of(context)!.profileSRieDHonneur,
                           style: TextStyle(
                             color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.6) : arc.primaryColor.withValues(alpha: 0.7),
                             fontSize: 10,
@@ -824,7 +829,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              "JOURS CONSÉCUTIFS",
+                              AppLocalizations.of(context)!.profileJoursConsCutifs,
                               style: TextStyle(
                                 color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.4) : Colors.white38,
                                 fontSize: 10,
@@ -873,7 +878,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
         const SizedBox(height: 40),
         Text(
-          "ARCHIVES DU JOURNAL",
+          AppLocalizations.of(context)!.profileArchivesDuJournal,
           style: TextStyle(
             color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.5) : Colors.white54,
             letterSpacing: 2,
@@ -893,17 +898,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 );
               }
               if (snapshot.hasError) {
-                return const Text(
-                  "Erreur lors du chargement des archives.",
+                return Text(AppLocalizations.of(context)!.profileErreurLorsDuChargement,
                   style: TextStyle(color: Colors.red),
                 );
               }
               final entries = snapshot.data ?? [];
               if (entries.isEmpty) {
-                return const Center(
+                return Center(
                   child: Text(
-                    "Aucune archive de journalisée.",
-                    style: TextStyle(
+                    AppLocalizations.of(context)!.profileNoJournalArchives,
+                    style: const TextStyle(
                       color: Colors.white24,
                       fontStyle: FontStyle.italic,
                     ),
@@ -1006,7 +1010,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          "REGISTRE : L'ARÈNE (GPS)",
+          AppLocalizations.of(context)!.profileRegistreArene,
           style: TextStyle(
             color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.5) : Colors.white54,
             letterSpacing: 2,
@@ -1016,19 +1020,54 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         const SizedBox(height: 16),
 
         _buildSettingsButton(
+          Icons.language,
+          AppLocalizations.of(context)!.profileLangueTitle,
+          AppLocalizations.of(context)!.profileLangueSubtitle,
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  backgroundColor: const Color(0xFF1A1D24),
+                  title: Text(AppLocalizations.of(context)!.profileChangerLangueDialog, style: TextStyle(color: Colors.white)),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ListTile(
+                        title: const Text("Fran�ais", style: TextStyle(color: Colors.white)),
+                        onTap: () {
+                          ref.read(localeProvider.notifier).setLocale(const Locale('fr'));
+                          Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        title: Text(AppLocalizations.of(context)!.commonEnglish, style: TextStyle(color: Colors.white)),
+                        onTap: () {
+                          ref.read(localeProvider.notifier).setLocale(const Locale('en'));
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+        ),
+        _buildSettingsButton(
           Icons.color_lens,
-          "Thème & Arc Actif",
-          "Basculer manuellement d'Arc",
+          AppLocalizations.of(context)!.profileThemeTitle,
+          AppLocalizations.of(context)!.profileThemeSubtitle,
         ),
         _buildSettingsButton(
           Icons.download,
-          "Export des Données",
-          "Télécharger le rapport PDF",
+          AppLocalizations.of(context)!.profileExportTitle,
+          AppLocalizations.of(context)!.profileExportSubtitle,
         ),
         _buildSettingsButton(
           Icons.lock,
-          "Confidentialité",
-          "Visibilité dans le Panthéon",
+          AppLocalizations.of(context)!.profileConfidentialiteTitle,
+          AppLocalizations.of(context)!.profileConfidentialiteSubtitle,
         ),
 
         const SizedBox(height: 32),
@@ -1052,7 +1091,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "PASS ALPHA+ INACTIF",
+                      AppLocalizations.of(context)!.profilePassAlphaInactif,
                       style: TextStyle(
                         color: Colors.amber,
                         fontWeight: FontWeight.w900,
@@ -1061,7 +1100,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      "Soutenir le projet et débloquer les stats avancées.",
+                      AppLocalizations.of(context)!.profileSoutenirLeProjetEt,
                       style: TextStyle(
                         color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.7) : Colors.white70, 
                         fontSize: 10
@@ -1077,8 +1116,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
-  Widget _buildSettingsButton(IconData icon, String title, String subtitle) {
-    return Container(
+  Widget _buildSettingsButton(IconData icon, String title, String subtitle, {VoidCallback? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -1116,6 +1157,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           const Icon(Icons.chevron_right, color: Colors.white24),
         ],
       ),
+    ),
     );
   }
 }

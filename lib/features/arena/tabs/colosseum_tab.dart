@@ -1,3 +1,4 @@
+import 'package:valerion/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/providers/repository_providers.dart';
@@ -56,9 +57,9 @@ class _ColosseumTabState extends ConsumerState<ColosseumTab> {
       ),
       child: Row(
         children: [
-          _buildSportTab('RUNNING', 'COURSE', Icons.directions_run, arc, isSummer),
-          _buildSportTab('WALKING', 'MARCHE', Icons.directions_walk, arc, isSummer),
-          _buildSportTab('CYCLING', 'VÉLO', Icons.directions_bike, arc, isSummer),
+          _buildSportTab('RUNNING', AppLocalizations.of(context)!.commonCourse.toUpperCase(), Icons.directions_run, arc, isSummer),
+          _buildSportTab('WALKING', AppLocalizations.of(context)!.commonMarche.toUpperCase(), Icons.directions_walk, arc, isSummer),
+          _buildSportTab('CYCLING', AppLocalizations.of(context)!.commonVelo.toUpperCase(), Icons.directions_bike, arc, isSummer),
         ],
       ),
     );
@@ -120,7 +121,7 @@ class _ColosseumTabState extends ConsumerState<ColosseumTab> {
           Icon(Icons.history_edu, size: 80, color: isSummer ? arc.onSurfaceColor.withValues(alpha: 0.1) : Colors.white24),
           const SizedBox(height: 16),
           Text(
-            "AUCUN TRACÉ DE $sportName GRAVÉ",
+            AppLocalizations.of(context)!.arenaAucunTraceDeGrave(sportName),
             style: TextStyle(
               color: isSummer ? arc.onSurfaceColor.withValues(alpha: 0.4) : Colors.white54,
               fontWeight: FontWeight.bold,
@@ -128,7 +129,7 @@ class _ColosseumTabState extends ConsumerState<ColosseumTab> {
           ),
           const SizedBox(height: 8),
           Text(
-            "Soyez le premier à graver votre exploit !",
+            AppLocalizations.of(context)!.arenaSoyezLePremierGraver,
             style: TextStyle(
               color: isSummer ? arc.onSurfaceColor.withValues(alpha: 0.2) : Colors.white24,
               fontSize: 12,
@@ -174,7 +175,9 @@ class _ColosseumTabState extends ConsumerState<ColosseumTab> {
                     children: [
                       Expanded(
                         child: Text(
-                          run.title.toUpperCase(),
+                          run.title.toLowerCase().startsWith('parcours de ') 
+                              ? (AppLocalizations.of(context)!.arenaParcoursDePrefix + run.title.substring(12)).toUpperCase()
+                              : run.title.toUpperCase(),
                           style: TextStyle(
                             color: isSummer ? arc.onSurfaceColor : Colors.white,
                             fontWeight: FontWeight.w900,
@@ -206,7 +209,7 @@ class _ColosseumTabState extends ConsumerState<ColosseumTab> {
                       Icon(Icons.person, size: 14, color: isSummer ? arc.onSurfaceColor.withValues(alpha: 0.4) : Colors.white54),
                       const SizedBox(width: 4),
                       Text(
-                        "PAR ${run.creatorPseudo.toUpperCase()}",
+                        AppLocalizations.of(context)!.arenaParPrefix + run.creatorPseudo.toUpperCase(),
                         style: TextStyle(
                           color: isSummer ? arc.onSurfaceColor.withValues(alpha: 0.5) : Colors.white54,
                           fontSize: 11,
@@ -231,7 +234,7 @@ class _ColosseumTabState extends ConsumerState<ColosseumTab> {
                       Icon(Icons.auto_awesome, size: 12, color: arc.primaryColor),
                       const SizedBox(width: 6),
                       Text(
-                        "MATCHMAKING GLOBAL ALPHA DISPONIBLE",
+                        AppLocalizations.of(context)!.arenaMatchmakingGlobalAlphaDisponible,
                         style: TextStyle(
                           color: arc.primaryColor,
                           fontSize: 9,
@@ -262,7 +265,7 @@ class _ColosseumTabState extends ConsumerState<ColosseumTab> {
           side: BorderSide(color: arc.primaryColor, width: 2),
         ),
         title: Text(
-          "DÉFIER ${run.creatorPseudo.toUpperCase()}",
+          AppLocalizations.of(context)!.arenaDefierPrefix + run.creatorPseudo.toUpperCase(),
           style: TextStyle(
             color: isSummer ? arc.onSurfaceColor : Colors.white,
             fontWeight: FontWeight.w900,
@@ -273,27 +276,27 @@ class _ColosseumTabState extends ConsumerState<ColosseumTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Mode : Matchmaking Relatif Global",
+              AppLocalizations.of(context)!.arenaModeMatchmakingRelatifGlobal,
               style: TextStyle(color: arc.primaryColor, fontWeight: FontWeight.bold, fontSize: 12),
             ),
             const SizedBox(height: 8),
             Text(
-              "Vous allez affronter le fantôme de ce coureur sur votre propre terrain.",
+              AppLocalizations.of(context)!.arenaVousAllezAffronterLe,
               style: TextStyle(
                 color: isSummer ? arc.onSurfaceColor.withValues(alpha: 0.7) : Colors.white70,
                 fontSize: 13,
               ),
             ),
             const SizedBox(height: 16),
-            _buildStatRow(arc, "Distance", "${run.distance} km"),
-            _buildStatRow(arc, "Record", _formatDuration(run.recordDuration)),
+            _buildStatRow(arc, AppLocalizations.of(context)!.commonDistanceTitle, "${run.distance} km"),
+            _buildStatRow(arc, AppLocalizations.of(context)!.commonRecordTitle, _formatDuration(run.recordDuration)),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              "ANNULER",
+              AppLocalizations.of(context)!.commonCancel,
               style: TextStyle(color: isSummer ? arc.onSurfaceColor.withValues(alpha: 0.4) : Colors.white24),
             ),
           ),
@@ -321,7 +324,7 @@ class _ColosseumTabState extends ConsumerState<ColosseumTab> {
               foregroundColor: isSummer ? Colors.white : Colors.black,
               textStyle: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            child: const Text("LANCER LE DUEL"),
+            child: Text(AppLocalizations.of(context)!.arenaLancerLeDuel),
           ),
         ],
       ),

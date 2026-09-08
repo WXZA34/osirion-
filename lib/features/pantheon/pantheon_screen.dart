@@ -1,4 +1,6 @@
+import 'package:valerion/l10n/app_localizations.dart';
 // OSIRION - PANTHEON ALPHA MODULE
+import '../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,7 +12,7 @@ import '../../core/widgets/avatar_viewer.dart';
 import '../home/models/arc_data.dart';
 import '../../core/providers/arc_provider.dart';
 import '../../core/widgets/clickable_text.dart';
-import '../arsenal/models/relic.dart';
+import '../../core/constants/default_relics.dart';
 import 'widgets/audio_message_bubble.dart';
 import 'widgets/video_message_bubble.dart';
 import 'package:gal/gal.dart';
@@ -30,7 +32,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 class PantheonScreen extends ConsumerStatefulWidget {
   final int initialTabIndex;
 
-  const PantheonScreen({
+  PantheonScreen({
     super.key,
     this.initialTabIndex = 0,
   });
@@ -68,7 +70,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Upload du logo en cours...')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.pantheonUploadDuLogoEn)),
       );
 
       final bytes = await pickedFile.readAsBytes();
@@ -80,8 +82,8 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Logo du clan mis à jour !'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.pantheonLogoDuClanMis),
           backgroundColor: Colors.greenAccent,
         ),
       );
@@ -89,7 +91,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Erreur : $e'),
+          content: Text(AppLocalizations.of(context)!.commonError(e.toString())),
           backgroundColor: Colors.redAccent,
         ),
       );
@@ -106,14 +108,14 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
     final bool isSummer = arc.arcType == AlphaArc.summer;
 
     // Theme colors for Pantheon
-    final Color accentColor = isSummer ? arc.primaryColor : const Color(0xFFFFD700);
+    final Color accentColor = isSummer ? arc.primaryColor : Color(0xFFFFD700);
     final Color surfaceColor = arc.surfaceColor;
 
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text(
-          "LE PANTHÉON",
+          AppLocalizations.of(context)!.pantheonLePanthOn,
           style: TextStyle(
             color: accentColor,
             fontWeight: FontWeight.w900,
@@ -132,9 +134,9 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
           _buildTopNavigationBar(surfaceColor, accentColor, arc, isSummer),
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 120),
+              padding: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 120),
               child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
+                duration: Duration(milliseconds: 300),
                 transitionBuilder:
                     (child, animation) =>
                         FadeTransition(opacity: animation, child: child),
@@ -149,7 +151,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
 
   Widget _buildTopNavigationBar(Color surfaceColor, Color accentColor, ArcData arc, bool isSummer) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(15),
@@ -160,7 +162,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
         children: [
           _buildNavTab(0, "Connect", Icons.forum, accentColor, arc, isSummer),
           _buildNavTab(1, "Clans", Icons.shield, accentColor, arc, isSummer),
-          _buildNavTab(2, "Classements", Icons.emoji_events, accentColor, arc, isSummer),
+          _buildNavTab(2, AppLocalizations.of(context)!.pantheonTabClassements, Icons.emoji_events, accentColor, arc, isSummer),
           _buildNavTab(3, "Domination", Icons.location_on, accentColor, arc, isSummer),
         ],
       ),
@@ -179,7 +181,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
     return GestureDetector(
       onTap: () => setState(() => _selectedTabIndex = index),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
@@ -197,7 +199,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                   : (isSummer ? arc.onSurfaceColor.withValues(alpha: 0.4) : Colors.white54),
               size: 20,
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(
               label,
               style: TextStyle(
@@ -237,34 +239,34 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
           onSurfaceColor,
         ); // Trophées -> Domination
       default:
-        return const SizedBox.shrink();
+        return SizedBox.shrink();
     }
   }
 
   // --- Tab 0: Alpha Connect (Messagerie) ---
   Widget _buildConnectTab(Color surfaceColor, Color accentColor, ArcData arc, bool isSummer, Color onSurfaceColor) {
     return Column(
-      key: const ValueKey(0),
+      key: ValueKey(0),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         // Statut Personnel Actuel
         _buildAlphaStatusPanel(surfaceColor, accentColor, arc, isSummer, onSurfaceColor),
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
 
         // 2. Gestion des Demandes d'Amis
         _buildFriendRequestsSection(accentColor),
 
         // Cercle de Confiance (Amis)
         _buildSectionTitle("CERCLE DE CONFIANCE", Icons.group, accentColor),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         _buildHorizontalFriendsList(accentColor),
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
 
         // Discussions Actives
         _buildSectionTitle("TRANSMISSIONS", Icons.forum, accentColor),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         _buildChatList(surfaceColor, accentColor, arc, isSummer, onSurfaceColor),
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
       ],
     );
   }
@@ -273,7 +275,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
     return Row(
       children: [
         Icon(icon, color: color, size: 18),
-        const SizedBox(width: 8),
+        SizedBox(width: 8),
         Text(
           title,
           style: TextStyle(
@@ -292,7 +294,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
         .watch(userFriendRequestsProvider)
         .when(
           data: (requests) {
-            if (requests.isEmpty) return const SizedBox.shrink();
+            if (requests.isEmpty) return SizedBox.shrink();
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -301,11 +303,11 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                   Icons.person_add,
                   Colors.cyanAccent,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 ...requests.map(
                   (req) => Container(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    padding: const EdgeInsets.all(12),
+                    margin: EdgeInsets.only(bottom: 12),
+                    padding: EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.05),
                       borderRadius: BorderRadius.circular(15),
@@ -317,18 +319,18 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                           imageUrl: req.profileImageUrl,
                           radius: 20,
                         ),
-                        const SizedBox(width: 12),
+                        SizedBox(width: 12),
                         Expanded(
                           child: Text(
                             req.username,
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.check,
                             color: Colors.greenAccent,
                           ),
@@ -343,7 +345,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                           },
                         ),
                         IconButton(
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.close,
                             color: Colors.redAccent,
                           ),
@@ -361,18 +363,18 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
               ],
             );
           },
-          loading: () => const SizedBox.shrink(),
-          error: (_, __) => const SizedBox.shrink(),
+          loading: () => SizedBox.shrink(),
+          error: (_, __) => SizedBox.shrink(),
         );
   }
 
   Widget _buildAlphaStatusPanel(Color surfaceColor, Color accentColor, ArcData arc, bool isSummer, Color onSurfaceColor) {
     final user = ref.watch(userProfileProvider).valueOrNull;
-    if (user == null) return const SizedBox.shrink();
+    if (user == null) return SizedBox.shrink();
 
     Color statusColor;
     String statusText = user.status ?? "online";
@@ -403,7 +405,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
     }
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(16),
@@ -423,7 +425,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                   boxShadow: [BoxShadow(color: statusColor, blurRadius: 8)],
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Text(
                 statusText,
                 style: TextStyle(
@@ -442,13 +444,13 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
               backgroundColor: isSummer ? arc.onSurfaceColor.withValues(alpha: 0.1) : Colors.white10,
               foregroundColor: isSummer ? arc.onSurfaceColor : Colors.white,
               elevation: 0,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-              minimumSize: const Size(60, 30),
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+              minimumSize: Size(60, 30),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
             ),
-            child: const Text("MODIFIER", style: TextStyle(fontSize: 10)),
+            child: Text(AppLocalizations.of(context)!.commonModify, style: TextStyle(fontSize: 10)),
           ),
         ],
       ),
@@ -473,23 +475,22 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF111115),
+      backgroundColor: Color(0xFF111115),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       builder: (context) {
         return Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: EdgeInsets.all(24.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                "CHANGER VOTRE STATUT",
+              Text(AppLocalizations.of(context)!.pantheonChangerVotreStatut,
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.5,
                 ),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
               ...statuses.map(
                 (s) => ListTile(
                   leading: CircleAvatar(
@@ -498,11 +499,11 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                   ),
                   title: Text(
                     s['label'] as String,
-                    style: const TextStyle(color: Colors.white70),
+                    style: TextStyle(color: Colors.white70),
                   ),
                   trailing:
                       currentStatus == s['value']
-                          ? const Icon(Icons.check, color: Colors.cyanAccent)
+                          ? Icon(Icons.check, color: Colors.cyanAccent)
                           : null,
                   onTap: () {
                     ref
@@ -566,7 +567,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                   }
 
                   return Padding(
-                    padding: const EdgeInsets.only(right: 16),
+                    padding: EdgeInsets.only(right: 16),
                     child: GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -576,7 +577,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                                 (context) => PantheonChatScreen(
                                   chatName: friend.username,
                                   friendId: friend.id,
-                                  surfaceColor: const Color(
+                                  surfaceColor: Color(
                                     0xFF1E293B,
                                   ), // Couleur sombre
                                   accentColor: accentColor,
@@ -611,7 +612,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                                   color: statusColor,
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: const Color(0xFF111115),
+                                    color: Color(0xFF111115),
                                     width: 3,
                                   ),
                                 ),
@@ -624,21 +625,21 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                                     final unreadMap = metadata?['unreadCount'] as Map<String, dynamic>?;
                                     final score = unreadMap?[currentUser?.id] ?? 0;
                                     
-                                    if (score == 0) return const SizedBox.shrink();
+                                    if (score == 0) return SizedBox.shrink();
                                     
                                     return Positioned(
                                       top: 0,
                                       right: 0,
                                       child: Container(
-                                        padding: const EdgeInsets.all(4),
+                                        padding: EdgeInsets.all(4),
                                         decoration: BoxDecoration(
                                           color: Colors.redAccent,
                                           shape: BoxShape.circle,
-                                          border: Border.all(color: const Color(0xFF111115), width: 2),
+                                          border: Border.all(color: Color(0xFF111115), width: 2),
                                         ),
                                         child: Text(
                                           score.toString(),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 8,
                                             fontWeight: FontWeight.bold,
@@ -650,10 +651,10 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                                 ),
                             ],
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: 8),
                           Text(
                             friend.username,
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.white70,
                               fontSize: 11,
                             ),
@@ -669,7 +670,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
             );
           },
           loading:
-              () => const SizedBox(
+              () => SizedBox(
                 height: 100,
                 child: Center(
                   child: CircularProgressIndicator(color: Colors.white10),
@@ -681,7 +682,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                 child: Center(
                   child: Text(
                     "Erreur: $e",
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.redAccent,
                       fontSize: 10,
                     ),
@@ -701,7 +702,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
             backgroundColor: accentColor.withValues(alpha: 0.2),
             child: Icon(Icons.person_add, color: accentColor, size: 30),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Text(
             "Ajouter",
             style: TextStyle(
@@ -761,15 +762,15 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
             );
           },
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12),
 
         // Section Clans
         clansAsync.when(
           data: (clans) {
-            if (clans.isEmpty) return const SizedBox.shrink();
+            if (clans.isEmpty) return SizedBox.shrink();
             return ListView.builder(
               shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
+              physics: NeverScrollableScrollPhysics(),
               itemCount: clans.length,
               itemBuilder: (context, index) {
                 final clan = clans[index];
@@ -807,17 +808,17 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
               },
             );
           },
-          loading: () => const SizedBox.shrink(),
-          error: (e, s) => const SizedBox.shrink(),
+          loading: () => SizedBox.shrink(),
+          error: (e, s) => SizedBox.shrink(),
         ),
 
         // Section Amis
         friendsAsync.when(
           data: (friends) {
-            if (friends.isEmpty) return const SizedBox.shrink();
+            if (friends.isEmpty) return SizedBox.shrink();
             return ListView.builder(
               shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
+              physics: NeverScrollableScrollPhysics(),
               itemCount: friends.length,
               itemBuilder: (context, index) {
                 final friend = friends[index];
@@ -872,8 +873,8 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
               },
             );
           },
-          loading: () => const SizedBox.shrink(),
-          error: (e, s) => const SizedBox.shrink(),
+          loading: () => SizedBox.shrink(),
+          error: (e, s) => SizedBox.shrink(),
         ),
 
         // Message si rien
@@ -881,9 +882,9 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
             friendsAsync.valueOrNull?.isEmpty == true)
           Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
+              padding: EdgeInsets.symmetric(vertical: 20),
               child: Text(
-                "AUCUN CANAL ACTIF.\nREJOIGNEZ UN CLAN OU AJOUTEZ DES AMIS.",
+                AppLocalizations.of(context)!.pantheonAucunCanalActifNrejoignez,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white.withValues(alpha: 0.2),
@@ -914,8 +915,8 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(16),
+        margin: EdgeInsets.only(bottom: 12),
+        padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: hasUnread 
               ? accentColor.withValues(alpha: isSummer ? 0.1 : 0.05) 
@@ -935,7 +936,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
               enableFullScreen: true,
               fallbackIcon: name.startsWith("Groupe") ? Icons.group : Icons.person,
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -949,12 +950,12 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                       fontSize: 14,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   Row(
                     children: [
                       if (isAudio) ...[
-                        const Icon(Icons.mic, color: Colors.cyan, size: 14),
-                        const SizedBox(width: 4),
+                        Icon(Icons.mic, color: Colors.cyan, size: 14),
+                        SizedBox(width: 4),
                       ],
                       Expanded(
                           child: Text(
@@ -985,17 +986,17 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                     fontWeight: hasUnread ? FontWeight.bold : FontWeight.normal,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 if (hasUnread)
                   Container(
-                    padding: const EdgeInsets.all(6),
+                    padding: EdgeInsets.all(6),
                     decoration: BoxDecoration(
                       color: accentColor,
                       shape: BoxShape.circle,
                     ),
                     child: Text(
                       unreadScore.toString(),
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.black,
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
@@ -1018,9 +1019,8 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              backgroundColor: const Color(0xFF111115),
-              title: const Text(
-                "RECHERCHER UN ALPHA",
+              backgroundColor: Color(0xFF111115),
+              title: Text(AppLocalizations.of(context)!.pantheonRechercherUnAlpha,
                 style: TextStyle(color: Colors.white, fontSize: 16),
               ),
               shape: RoundedRectangleBorder(
@@ -1035,10 +1035,10 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                         searchQuery = val.trim();
                       });
                     },
-                    style: const TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       hintText: "Pseudo...",
-                      hintStyle: const TextStyle(color: Colors.white24),
+                      hintStyle: TextStyle(color: Colors.white24),
                       filled: true,
                       fillColor: Colors.white10,
                       border: OutlineInputBorder(
@@ -1046,7 +1046,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                         borderSide: BorderSide.none,
                       ),
                       suffixIcon: IconButton(
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.search,
                           color: Colors.cyanAccent,
                         ),
@@ -1054,7 +1054,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
                   if (searchQuery.length >= 3)
                     SizedBox(
                       height: 200,
@@ -1064,9 +1064,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                           .when(
                             data: (users) {
                               if (users.isEmpty) {
-                                return const Center(
-                                  child: Text(
-                                    "Aucun Alpha trouvé",
+                                return Center(child: Text(AppLocalizations.of(context)!.pantheonAucunAlphaTrouv,
                                     style: TextStyle(color: Colors.white54),
                                   ),
                                 );
@@ -1078,7 +1076,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                                   final currentUser =
                                       ref.read(userProfileProvider).value;
                                   if (user.id == currentUser?.id) {
-                                    return const SizedBox.shrink();
+                                    return SizedBox.shrink();
                                   }
 
                                   bool isAlreadyFriend =
@@ -1100,32 +1098,31 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                                     ),
                                     title: Text(
                                       user.username,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),
                                     subtitle: Text(
                                       "Niveau ${user.level}",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: Colors.white38,
                                       ),
                                     ),
                                     trailing:
                                         isAlreadyFriend
-                                            ? const Icon(
+                                            ? Icon(
                                               Icons.check_circle,
                                               color: Colors.greenAccent,
                                             )
                                             : isPending
-                                            ? const Text(
-                                              "EN ATTENTE",
+                                            ? Text(AppLocalizations.of(context)!.pantheonEnAttente,
                                               style: TextStyle(
                                                 color: Colors.white24,
                                                 fontSize: 10,
                                               ),
                                             )
                                             : IconButton(
-                                              icon: const Icon(
+                                              icon: Icon(
                                                 Icons.person_add,
                                                 color: Colors.cyanAccent,
                                               ),
@@ -1156,10 +1153,10 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                               );
                             },
                             loading:
-                                () => const Center(
+                                () => Center(
                                   child: CircularProgressIndicator(),
                                 ),
-                            error: (e, s) => Text("Erreur: $e"),
+                            error: (e, s) => Text(AppLocalizations.of(context)!.commonError(e.toString())),
                           ),
                     ),
                 ],
@@ -1167,7 +1164,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text(
+                  child: Text(
                     "FERMER",
                     style: TextStyle(color: Colors.white54),
                   ),
@@ -1183,14 +1180,14 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
   // --- Tab 3: Domination Urbaine (Spots) ---
   Widget _buildDominationSpots(Color surfaceColor, Color accentColor, ArcData arc, bool isSummer, Color onSurfaceColor) {
     return Column(
-      key: const ValueKey(3),
+      key: ValueKey(3),
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const SizedBox(height: 100),
+        SizedBox(height: 100),
         Icon(Icons.construction, color: accentColor, size: 64),
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
         Text(
-          "MODULE EN COURS DE DÉVELOPPEMENT",
+          AppLocalizations.of(context)!.pantheonModuleEnCoursDe,
           textAlign: TextAlign.center,
           style: TextStyle(
             color: accentColor,
@@ -1199,11 +1196,11 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
             letterSpacing: 2,
           ),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
+          padding: EdgeInsets.symmetric(horizontal: 40),
           child: Text(
-            "Le centre de commandement stratégique OSIRION arrive bientôt. Préparez vos clans pour la conquête territoriale.",
+            AppLocalizations.of(context)!.pantheonLeCentreDeCommandement,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: onSurfaceColor.withValues(alpha: 0.5),
@@ -1219,7 +1216,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
   // --- Tab 2: Le Panthéon (Classements) ---
   Widget _buildLeaderboards(Color surfaceColor, Color accentColor, ArcData arc, bool isSummer, Color onSurfaceColor) {
     return Column(
-      key: const ValueKey(2),
+      key: ValueKey(2),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         // En-tête Filtres
@@ -1227,12 +1224,12 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _buildSectionTitle(
-              "LES IMMORTELS",
+              AppLocalizations.of(context)!.pantheonLesImmortels,
               Icons.emoji_events,
               accentColor,
             ),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.white10,
                 borderRadius: BorderRadius.circular(12),
@@ -1244,9 +1241,9 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                     color: isSummer ? onSurfaceColor.withValues(alpha: 0.5) : Colors.white54,
                     size: 12,
                   ),
-                  const SizedBox(width: 4),
+                  SizedBox(width: 4),
                   Text(
-                    "Mondial",
+                    AppLocalizations.of(context)!.pantheonMondial,
                     style: TextStyle(
                       color: isSummer ? onSurfaceColor.withValues(alpha: 0.5) : Colors.white54,
                       fontSize: 10,
@@ -1262,23 +1259,23 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
 
         // Clan Search Bar (Only for Clans Tab)
         if (_currentSortBy == 'clans') ...[
           TextField(
-            style: const TextStyle(color: Colors.white, fontSize: 13),
+            style: TextStyle(color: Colors.white, fontSize: 13),
             decoration: InputDecoration(
-              hintText: "RECHERCHER UNE FACTION...",
-              hintStyle: const TextStyle(color: Colors.white24),
-              prefixIcon: const Icon(Icons.search, color: Colors.white24),
+              hintText: AppLocalizations.of(context)!.pantheonRechercherUneFaction,
+              hintStyle: TextStyle(color: Colors.white24),
+              prefixIcon: Icon(Icons.search, color: Colors.white24),
               filled: true,
               fillColor: Colors.white.withValues(alpha: 0.05),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide.none,
               ),
-              contentPadding: const EdgeInsets.symmetric(vertical: 0),
+              contentPadding: EdgeInsets.symmetric(vertical: 0),
             ),
             onChanged: (val) {
               setState(() {
@@ -1286,7 +1283,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
               });
             },
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
         ],
 
         // Category Selector (Les 3 Piliers)
@@ -1295,13 +1292,13 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
           child: Row(
             children:
                 [
-                  {'label': 'Alpha Suprême (Harmonie)', 'value': 'xp'},
-                  {'label': 'Maîtres du Dojo (Force)', 'value': 'forceXp'},
+                  {'label': AppLocalizations.of(context)!.pantheonAlphaSupreme, 'value': 'xp'},
+                  {'label': AppLocalizations.of(context)!.pantheonMaitresDuDojo, 'value': 'forceXp'},
                   {
-                    'label': 'Sages de l\'Arène (Sagesse)',
+                    'label': AppLocalizations.of(context)!.pantheonSagesArN,
                     'value': 'wisdomXp',
                   },
-                  {'label': 'Factions (Top Clans)', 'value': 'clans'},
+                  {'label': AppLocalizations.of(context)!.pantheonFactionsTopClans, 'value': 'clans'},
                 ].map((cat) {
                   bool isSelected = _currentSortBy == cat['value'];
                   return GestureDetector(
@@ -1311,8 +1308,8 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                       });
                     },
                     child: Container(
-                      margin: const EdgeInsets.only(right: 8),
-                      padding: const EdgeInsets.symmetric(
+                      margin: EdgeInsets.only(right: 8),
+                      padding: EdgeInsets.symmetric(
                         horizontal: 16,
                         vertical: 10,
                       ),
@@ -1343,7 +1340,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                 }).toList(),
           ),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
 
         // Podiums & Leaderboard List via Riverpod
         if (_currentSortBy == 'clans')
@@ -1354,11 +1351,11 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
               .when(
                 data: (users) {
                   if (users.isEmpty) {
-                    return const Padding(
+                    return Padding(
                       padding: EdgeInsets.all(32.0),
                       child: Center(
                         child: Text(
-                          "Aucun immortel trouvé...",
+                          AppLocalizations.of(context)!.pantheonAucunImmortelTrouv,
                           style: TextStyle(color: Colors.white54),
                         ),
                       ),
@@ -1392,9 +1389,9 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                       
                       // Phase 22 : Affichage du rang personnel (Hors Top 50)
                       if (currentUser != null && !users.any((u) => u.id == currentUser.id)) ...[
-                        const SizedBox(height: 24),
-                        _buildSectionTitle("VOTRE POSITION", Icons.person_pin_circle, accentColor),
-                        const SizedBox(height: 12),
+                        SizedBox(height: 24),
+                        _buildSectionTitle(AppLocalizations.of(context)!.pantheonVotrePosition, Icons.person_pin_circle, accentColor),
+                        SizedBox(height: 12),
                         ref.watch(userRankProvider(_currentSortBy)).when(
                           data: (rank) => Container(
                             decoration: BoxDecoration(
@@ -1411,15 +1408,15 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                               onSurfaceColor: onSurfaceColor,
                             ),
                           ),
-                          loading: () => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
-                          error: (_, __) => const SizedBox.shrink(),
+                          loading: () => Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                          error: (_, __) => SizedBox.shrink(),
                         ),
                       ],
                     ],
                   );
                 },
                 loading:
-                    () => const Center(
+                    () => Center(
                       child: CircularProgressIndicator(
                         color: Colors.cyanAccent,
                       ),
@@ -1428,7 +1425,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                     (err, stack) => Center(
                       child: Text(
                         "Erreur de connexion aux archives: $err",
-                        style: const TextStyle(color: Colors.redAccent),
+                        style: TextStyle(color: Colors.redAccent),
                       ),
                     ),
               ),
@@ -1470,11 +1467,11 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
         );
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color:
               isUser ? accentColor.withValues(alpha: 0.1) : Colors.transparent,
-          border: const Border(bottom: BorderSide(color: Colors.white10)),
+          border: Border(bottom: BorderSide(color: Colors.white10)),
         ),
         child: Row(
           children: [
@@ -1490,7 +1487,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                 ),
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12),
             AvatarViewer(
               imageUrl: user.profileImageUrl,
               radius: 16,
@@ -1498,7 +1495,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
               fallbackIcon: Icons.person,
               borderColor: isUser ? accentColor.withValues(alpha: 0.5) : null,
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1515,9 +1512,9 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                   ),
                   if (user.activeTitle != null)
                     Text(
-                      Relic.findById(user.activeTitle)?.name ?? "",
+                      defaultRelicsToSeed.where((r) => r.id == user.activeTitle).firstOrNull?.name ?? "",
                       style: TextStyle(
-                        color: Relic.findById(user.activeTitle)?.color.withValues(alpha: 0.7) ?? Colors.white54,
+                        color: defaultRelicsToSeed.where((r) => r.id == user.activeTitle).firstOrNull?.color.withValues(alpha: 0.7) ?? Colors.white54,
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
                       ),
@@ -1527,7 +1524,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
             ),
             Text(
               scoreStr,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.cyan,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'monospace',
@@ -1547,19 +1544,18 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
         .watch(userProfileProvider)
         .when(
           data: (user) {
-            if (user == null) return const SizedBox.shrink();
+            if (user == null) return SizedBox.shrink();
 
             return Column(
-              key: const ValueKey("ClansTab"),
+              key: ValueKey("ClansTab"),
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _buildClanInvitationsSection(surfaceColor, accentColor),
                 _buildUserClansSection(user, surfaceColor, accentColor, arc, isSummer),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
                 ElevatedButton.icon(
-                  icon: const Icon(Icons.add_moderator),
-                  label: const Text(
-                    "FONDER UN NOUVEAU CLAN",
+                  icon: Icon(Icons.add_moderator),
+                  label: Text(AppLocalizations.of(context)!.pantheonFonderUnNouveauClan,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1.5,
@@ -1568,7 +1564,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: accentColor,
                     foregroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    padding: EdgeInsets.symmetric(vertical: 20),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -1579,14 +1575,14 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
             );
           },
           loading:
-              () => const Center(
+              () => Center(
                 child: CircularProgressIndicator(color: Colors.cyanAccent),
               ),
           error:
               (e, s) => Center(
                 child: Text(
                   "Erreur: $e",
-                  style: const TextStyle(color: Colors.red),
+                  style: TextStyle(color: Colors.red),
                 ),
               ),
         );
@@ -1598,21 +1594,21 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
         .watch(userClanRequestsProvider)
         .when(
           data: (requests) {
-            if (requests.isEmpty) return const SizedBox.shrink();
+            if (requests.isEmpty) return SizedBox.shrink();
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildSectionTitle(
-                  "INVITATIONS REÇUES",
+                  AppLocalizations.of(context)!.pantheonInvitationsRecues,
                   Icons.mail,
                   Colors.orangeAccent,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 ...requests
                     .map(
                       (req) => Container(
-                        margin: const EdgeInsets.only(bottom: 12),
-                        padding: const EdgeInsets.all(16),
+                        margin: EdgeInsets.only(bottom: 12),
+                        padding: EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           color: Colors.orangeAccent.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(16),
@@ -1622,22 +1618,22 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                         ),
                         child: Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.shield,
                               color: Colors.orangeAccent,
                             ),
-                            const SizedBox(width: 12),
+                            SizedBox(width: 12),
                             Expanded(
                               child: Text(
-                                "Rejoindre ${req.clanName}",
-                                style: const TextStyle(
+                                "${AppLocalizations.of(context)!.pantheonRejoindre} ${req.clanName}",
+                                style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
                             IconButton(
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.check_circle,
                                 color: Colors.greenAccent,
                               ),
@@ -1648,7 +1644,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                               },
                             ),
                             IconButton(
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.cancel,
                                 color: Colors.redAccent,
                               ),
@@ -1662,15 +1658,15 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                         ),
                       ),
                     ),
-                const SizedBox(height: 32),
+                SizedBox(height: 32),
               ],
             );
           },
-          loading: () => const SizedBox.shrink(),
+          loading: () => SizedBox.shrink(),
           error:
               (e, s) => Text(
                 "Erreur invitations: $e",
-                style: const TextStyle(color: Colors.red),
+                style: TextStyle(color: Colors.red),
               ),
         );
   }
@@ -1682,17 +1678,17 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
         : ref.watch(clanSearchProvider(_clanSearchQuery));
 
     return Column(
-      key: const ValueKey("ClansLeaderboard"),
+      key: ValueKey("ClansLeaderboard"),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         clansAsync.when(
               data: (clans) {
                 if (clans.isEmpty) {
-                  return const Padding(
+                  return Padding(
                     padding: EdgeInsets.all(32.0),
                     child: Center(
                       child: Text(
-                        "Aucun clan n'existe encore...",
+                        AppLocalizations.of(context)!.pantheonAucunClanNExiste,
                         style: TextStyle(color: Colors.white54),
                       ),
                     ),
@@ -1719,7 +1715,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                const SizedBox(width: 12),
+                                SizedBox(width: 12),
                                 CircleAvatar(
                                   radius: 16,
                                   backgroundColor: accentColor.withValues(
@@ -1732,7 +1728,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                                             width: 32,
                                             height: 32,
                                             fit: BoxFit.cover,
-                                            placeholder: (context, url) => const Opacity(opacity: 0.5, child: Icon(Icons.shield, size: 20)),
+                                            placeholder: (context, url) => Opacity(opacity: 0.5, child: Icon(Icons.shield, size: 20)),
                                             errorWidget: (ctx, url, error) => Icon(
                                               Icons.shield,
                                               size: 20,
@@ -1750,18 +1746,18 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                             ),
                             title: Text(
                               clan.name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             subtitle: Text(
                               "${clan.membersCount} membres",
-                              style: const TextStyle(color: Colors.white54),
+                              style: TextStyle(color: Colors.white54),
                             ),
                             trailing: Text(
                               "${clan.totalXp} XP",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.cyanAccent,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -1781,13 +1777,13 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                 );
               },
               loading:
-                  () => const Center(
+                  () => Center(
                     child: CircularProgressIndicator(color: Colors.cyan),
                   ),
               error:
                   (e, s) => Text(
                     "Erreur: $e",
-                    style: const TextStyle(color: Colors.red),
+                    style: TextStyle(color: Colors.red),
                   ),
             ),
       ],
@@ -1807,11 +1803,11 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
         .when(
           data: (clans) {
             if (clans.isEmpty) {
-              return const Padding(
+              return Padding(
                 padding: EdgeInsets.all(32.0),
                 child: Center(
                   child: Text(
-                    "Vous ne faites partie d'aucun clan.\nRejoignez-en un via les classements ou fondez le vôtre !",
+                    AppLocalizations.of(context)!.pantheonVousNeFaitesPartie,
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white54, height: 1.5),
                   ),
@@ -1820,11 +1816,11 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
             }
 
             return Column(
-              key: const ValueKey("MyClansList"),
+              key: ValueKey("MyClansList"),
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _buildSectionTitle("MES FACTIONS", Icons.shield, accentColor),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 ...clans.map((clan) {
                   final isLeader = clan.leaderId == user.id;
                   final isLight = ThemeData.estimateBrightnessForColor(surfaceColor) == Brightness.light;
@@ -1832,13 +1828,13 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                   final textDimColor = isLight ? Colors.black54 : Colors.white70;
 
                   return Container(
-                    margin: const EdgeInsets.only(bottom: 24),
+                    margin: EdgeInsets.only(bottom: 24),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         // Header: Clan Name & Stats
                         Container(
-                          padding: const EdgeInsets.all(24),
+                          padding: EdgeInsets.all(24),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
@@ -1875,7 +1871,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                                   ),
                                   child: CircleAvatar(
                                     radius: 40,
-                                    backgroundColor: const Color(0xFF111111),
+                                    backgroundColor: Color(0xFF111111),
                                   child: ClipOval(
                                     child: clan.logoUrl != null
                                         ? CachedNetworkImage(
@@ -1883,7 +1879,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                                             width: 80,
                                             height: 80,
                                             fit: BoxFit.cover,
-                                            placeholder: (context, url) => const SizedBox(width: 80, height: 80, child: CircularProgressIndicator(strokeWidth: 2)),
+                                            placeholder: (context, url) => SizedBox(width: 80, height: 80, child: CircularProgressIndicator(strokeWidth: 2)),
                                             errorWidget: (ctx, url, error) => Icon(
                                               Icons.shield,
                                               color: accentColor,
@@ -1899,7 +1895,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 12),
+                              SizedBox(height: 12),
                               Text(
                                 clan.name.toUpperCase(),
                                 style: TextStyle(
@@ -1909,7 +1905,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                                   letterSpacing: 2,
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              SizedBox(height: 8),
                               Text(
                                 clan.description,
                                 textAlign: TextAlign.center,
@@ -1918,7 +1914,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                                   fontStyle: FontStyle.italic,
                                 ),
                               ),
-                              const SizedBox(height: 24),
+                              SizedBox(height: 24),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
@@ -1940,22 +1936,22 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16),
 
                         // Boutons d'Action Rapide pour ce Clan
                         Row(
                           children: [
                             Expanded(
                               child: ElevatedButton.icon(
-                                icon: const Icon(Icons.forum, size: 18),
-                                label: const Text(
+                                icon: Icon(Icons.forum, size: 18),
+                                label: Text(
                                   "TRANSMISSION",
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: surfaceColor,
                                   foregroundColor: textColor,
-                                  padding: const EdgeInsets.symmetric(
+                                  padding: EdgeInsets.symmetric(
                                     vertical: 16,
                                   ),
                                   shape: RoundedRectangleBorder(
@@ -1979,12 +1975,12 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                                 },
                               ),
                             ),
-                            const SizedBox(width: 8),
+                            SizedBox(width: 8),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.orangeAccent,
                                 foregroundColor: Colors.black,
-                                padding: const EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                   vertical: 16,
                                 ),
                                 shape: RoundedRectangleBorder(
@@ -2005,47 +2001,47 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                                   ),
                                 );
                               },
-                              child: const Icon(Icons.people_alt),
+                              child: Icon(Icons.people_alt),
                             ),
                             if (!isLeader) ...[
-                              const SizedBox(width: 8),
+                              SizedBox(width: 8),
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.white10,
                                   foregroundColor: Colors.white70,
-                                  padding: const EdgeInsets.symmetric(
+                                  padding: EdgeInsets.symmetric(
                                     vertical: 16,
                                   ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(16),
-                                    side: const BorderSide(color: Colors.white24),
+                                    side: BorderSide(color: Colors.white24),
                                   ),
                                 ),
                                 onPressed: () => _confirmLeaveClan(context, clan),
-                                child: const Icon(Icons.exit_to_app),
+                                child: Icon(Icons.exit_to_app),
                               ),
                             ],
                             if (isLeader) ...[
-                              const SizedBox(width: 8),
+                              SizedBox(width: 8),
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.redAccent.withValues(
                                     alpha: 0.1,
                                   ),
                                   foregroundColor: Colors.redAccent,
-                                  padding: const EdgeInsets.symmetric(
+                                  padding: EdgeInsets.symmetric(
                                     vertical: 16,
                                   ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(16),
-                                    side: const BorderSide(
+                                    side: BorderSide(
                                       color: Colors.redAccent,
                                     ),
                                   ),
                                 ),
                                 onPressed:
                                     () => _confirmDeleteClan(context, clan),
-                                child: const Icon(Icons.delete_forever),
+                                child: Icon(Icons.delete_forever),
                               ),
                             ],
                           ],
@@ -2058,12 +2054,12 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
             );
           },
           loading:
-              () => const Center(
+              () => Center(
                 child: CircularProgressIndicator(color: Colors.cyanAccent),
               ),
           error:
               (e, s) =>
-                  Text("Erreur: $e", style: const TextStyle(color: Colors.red)),
+                  Text("Erreur: $e", style: TextStyle(color: Colors.red)),
         );
   }
 
@@ -2079,7 +2075,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
             fontFamily: 'monospace',
           ),
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: 4),
         Text(
           label,
           style: TextStyle(
@@ -2102,20 +2098,19 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          backgroundColor: const Color(0xFF1E293B), // slate-800
+          backgroundColor: Color(0xFF1E293B), // slate-800
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24),
             side: BorderSide(color: accentColor.withValues(alpha: 0.5)),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: EdgeInsets.all(24.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(Icons.shield, color: accentColor, size: 48),
-                const SizedBox(height: 16),
-                const Text(
-                  "FORGER UN NOUVEAU CLAN",
+                SizedBox(height: 16),
+                Text(AppLocalizations.of(context)!.pantheonForgerUnNouveauClan,
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w900,
@@ -2124,17 +2119,17 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
                 TextField(
                   controller: nameController,
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: "Nom du Clan",
-                    labelStyle: const TextStyle(color: Colors.white54),
-                    hintText: "Ex : Les Spartiates du Parc",
-                    hintStyle: const TextStyle(color: Colors.white24),
+                    labelStyle: TextStyle(color: Colors.white54),
+                    hintText: AppLocalizations.of(context)!.pantheonExLesSpartiatesDu,
+                    hintStyle: TextStyle(color: Colors.white24),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white24),
+                      borderSide: BorderSide(color: Colors.white24),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -2143,18 +2138,18 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 TextField(
                   controller: descController,
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white),
                   maxLines: 2,
                   decoration: InputDecoration(
                     labelText: "Devise / Description",
-                    labelStyle: const TextStyle(color: Colors.white54),
+                    labelStyle: TextStyle(color: Colors.white54),
                     hintText: "Optionnel",
-                    hintStyle: const TextStyle(color: Colors.white24),
+                    hintStyle: TextStyle(color: Colors.white24),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white24),
+                      borderSide: BorderSide(color: Colors.white24),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -2163,7 +2158,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -2189,7 +2184,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                           if (!context.mounted) return;
                           ScaffoldMessenger.of(
                             context,
-                          ).showSnackBar(SnackBar(content: Text("Erreur: $e")));
+                          ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.commonError(e.toString()))));
                         }
                       }
                     },
@@ -2199,18 +2194,17 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: EdgeInsets.symmetric(vertical: 16),
                     ),
-                    child: const Text(
-                      "CRÉER LE CLAN",
+                    child: Text(AppLocalizations.of(context)!.pantheonCrErLeClan,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text(
+                  child: Text(
                     "ANNULER",
                     style: TextStyle(color: Colors.white54),
                   ),
@@ -2229,19 +2223,18 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
       context: context,
       builder:
           (context) => AlertDialog(
-            backgroundColor: const Color(0xFF1E293B),
-            title: const Text(
-              "Dissoudre le Clan",
+            backgroundColor: Color(0xFF1E293B),
+            title: Text(AppLocalizations.of(context)!.pantheonDissoudreLeClan,
               style: TextStyle(color: Colors.redAccent),
             ),
             content: Text(
               "Êtes-vous sûr de vouloir dissoudre définitivement ${clan.name} ? Cette action est irréversible et retirera le clan de tous ses membres.",
-              style: const TextStyle(color: Colors.white70),
+              style: TextStyle(color: Colors.white70),
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: const Text(
+                child: Text(
                   "Annuler",
                   style: TextStyle(color: Colors.white54),
                 ),
@@ -2251,7 +2244,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                   backgroundColor: Colors.redAccent,
                 ),
                 onPressed: () => Navigator.pop(context, true),
-                child: const Text(
+                child: Text(
                   "Dissoudre",
                   style: TextStyle(color: Colors.white),
                 ),
@@ -2266,8 +2259,8 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
         await ref.read(clanRepositoryProvider).deleteClan(clan.id);
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Le clan a été dissous avec succès."),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.pantheonLeClanAT),
             backgroundColor: Colors.greenAccent,
           ),
         );
@@ -2275,7 +2268,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Erreur: $e"),
+            content: Text(AppLocalizations.of(context)!.commonError(e.toString())),
             backgroundColor: Colors.redAccent,
           ),
         );
@@ -2288,19 +2281,18 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
       context: context,
       builder:
           (context) => AlertDialog(
-            backgroundColor: const Color(0xFF1E293B),
-            title: const Text(
-              "Quitter le Clan",
+            backgroundColor: Color(0xFF1E293B),
+            title: Text(AppLocalizations.of(context)!.pantheonQuitterLeClan,
               style: TextStyle(color: Colors.orangeAccent),
             ),
             content: Text(
               "Voulez-vous vraiment quitter le clan ${clan.name} ? Vous perdrez l'accès au chat et aux bonus de faction.",
-              style: const TextStyle(color: Colors.white70),
+              style: TextStyle(color: Colors.white70),
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: const Text(
+                child: Text(
                   "Annuler",
                   style: TextStyle(color: Colors.white54),
                 ),
@@ -2311,7 +2303,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                   foregroundColor: Colors.black,
                 ),
                 onPressed: () => Navigator.pop(context, true),
-                child: const Text(
+                child: Text(
                   "Quitter",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
@@ -2338,7 +2330,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Erreur: $e"),
+            content: Text(AppLocalizations.of(context)!.commonError(e.toString())),
             backgroundColor: Colors.redAccent,
           ),
         );
@@ -2355,7 +2347,7 @@ class PantheonChatScreen extends ConsumerStatefulWidget {
   final Color accentColor;
   final bool isSystem;
 
-  const PantheonChatScreen({
+  PantheonChatScreen({
     super.key,
     required this.chatName,
     this.clanId,
@@ -2479,7 +2471,7 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
           final cleanMsg = errorStr.replaceAll("Exception:", "").replaceAll("error_envoi:", "").trim();
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text("Oups, erreur d'envoi : $cleanMsg")));
+          ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.commonError(cleanMsg.toString()))));
         }
       }
     } finally {
@@ -2496,23 +2488,23 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1E293B),
+        backgroundColor: Color(0xFF1E293B),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Row(
+        title: Row(
           children: [
             Icon(Icons.warning_amber_rounded, color: Colors.orangeAccent),
             SizedBox(width: 12),
-            Text("Action Requise", style: TextStyle(color: Colors.white)),
+            Text(AppLocalizations.of(context)!.pantheonActionRequise, style: TextStyle(color: Colors.white)),
           ],
         ),
         content: Text(
           message,
-          style: const TextStyle(color: Colors.white70),
+          style: TextStyle(color: Colors.white70),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text("FERMER", style: TextStyle(color: Colors.white38)),
+            child: Text(AppLocalizations.of(context)!.commonClose, style: TextStyle(color: Colors.white38)),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -2527,19 +2519,19 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
                   await ref.read(valerionRepositoryProvider).sendFriendRequest(currentUser.id, widget.friendId!);
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Nouvelle demande lancée !")),
+                      SnackBar(content: Text(AppLocalizations.of(context)!.pantheonNouvelleDemandeLancE)),
                     );
                   }
                 } catch (e) {
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Erreur : $e")),
+                      SnackBar(content: Text(AppLocalizations.of(context)!.commonError(e.toString()))),
                     );
                   }
                 }
               }
             },
-            child: const Text("RÉ-INVITER", style: TextStyle(fontWeight: FontWeight.bold)),
+            child: Text(AppLocalizations.of(context)!.pantheonRInviter, style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -2569,7 +2561,7 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
         debugPrint("🎤 [_startRecording] Permission refusée en permanence");
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("L'accès au micro est requis dans les paramètres de votre téléphone.")),
+            SnackBar(content: Text(AppLocalizations.of(context)!.pantheonLAccSAu)),
           );
         }
         return;
@@ -2603,7 +2595,7 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
         debugPrint("🎤 [_startRecording] Permission refusée");
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Permission micro refusée.")),
+            SnackBar(content: Text(AppLocalizations.of(context)!.pantheonPermissionMicroRefusE)),
           );
         }
       }
@@ -2611,7 +2603,7 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
       debugPrint("❌ [_startRecording] ERREUR FATALE: $e");
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Erreur micro: $e")),
+          SnackBar(content: Text(AppLocalizations.of(context)!.commonError(e.toString()))),
         );
       }
     }
@@ -2711,7 +2703,7 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
           _showDeletedBlockDialog(cleanMsg);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Oups, erreur d'envoi vocal : $e")),
+            SnackBar(content: Text(AppLocalizations.of(context)!.commonError(e.toString()))),
           );
         }
       }
@@ -2732,31 +2724,31 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
   Future<void> _showAttachmentPicker() async {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E293B),
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      backgroundColor: Color(0xFF1E293B),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
       builder: (context) {
         return SafeArea(
           child: Wrap(
             children: [
               ListTile(
-                leading: const Icon(Icons.camera_alt, color: Colors.blueAccent),
-                title: const Text("Prendre une photo", style: TextStyle(color: Colors.white)),
+                leading: Icon(Icons.camera_alt, color: Colors.blueAccent),
+                title: Text(AppLocalizations.of(context)!.pantheonPrendreUnePhoto, style: TextStyle(color: Colors.white)),
                 onTap: () {
                   Navigator.pop(context);
                   _pickAndSendPhotos(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.photo_library, color: Colors.greenAccent),
-                title: const Text("Photos (Galerie)", style: TextStyle(color: Colors.white)),
+                leading: Icon(Icons.photo_library, color: Colors.greenAccent),
+                title: Text(AppLocalizations.of(context)!.pantheonPhotosGalerie, style: TextStyle(color: Colors.white)),
                 onTap: () {
                   Navigator.pop(context);
                   _pickAndSendPhotos(ImageSource.gallery, multiple: true);
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.videocam, color: Colors.redAccent),
-                title: const Text("Vidéoclip (15s max)", style: TextStyle(color: Colors.white)),
+                leading: Icon(Icons.videocam, color: Colors.redAccent),
+                title: Text(AppLocalizations.of(context)!.pantheonVidOclip15sMax, style: TextStyle(color: Colors.white)),
                 onTap: () {
                   Navigator.pop(context);
                   _pickAndSendVideo();
@@ -2855,7 +2847,7 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
       debugPrint("❌ [_processSinglePhotoUpload] Erreur: $e");
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Échec de l'envoi d'une photo: $e")),
+          SnackBar(content: Text(AppLocalizations.of(context)!.commonError(e.toString()))),
         );
       }
     } finally {
@@ -2875,7 +2867,7 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
       // --- APPEL DE L'ALPHA CAMERA (Custom Recording) ---
       final XFile? picked = await Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const AlphaCameraScreen()),
+        MaterialPageRoute(builder: (context) => AlphaCameraScreen()),
       );
 
       if (picked == null) return;
@@ -2962,7 +2954,7 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
       debugPrint("❌ [_processVideoUploadAndSync] Erreur: $e");
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Oups, échec de l'envoi vidéo : $e")),
+          SnackBar(content: Text(AppLocalizations.of(context)!.commonError(e.toString()))),
         );
       }
     } finally {
@@ -2980,7 +2972,7 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
     final textColor = isLight ? Colors.black87 : Colors.white;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0D0D12), // Toujours sombre dans le chat
+      backgroundColor: Color(0xFF0D0D12), // Toujours sombre dans le chat
       appBar: AppBar(
         title: Text(
           widget.chatName,
@@ -2996,7 +2988,7 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
         actions: [
           if (widget.friendId != null)
             IconButton(
-              icon: const Icon(Icons.person),
+              icon: Icon(Icons.person),
               tooltip: "Profil",
               onPressed: () async {
                 final userAsync = ref.read(otherUserProfileProvider(widget.friendId!));
@@ -3013,7 +3005,7 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
                 } else {
                   // Si pas encore chargé, on le force
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Chargement du profil...")),
+                    SnackBar(content: Text(AppLocalizations.of(context)!.pantheonChargementDuProfil)),
                   );
                   final fetchedUser = await ref.read(otherUserProfileProvider(widget.friendId!).future);
                   if (mounted && fetchedUser != null) {
@@ -3039,9 +3031,7 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
                 Expanded(
                   child:
                       (widget.clanId == null && widget.friendId == null && !widget.isSystem)
-                          ? const Center(
-                            child: Text(
-                              "Chat indisponible (Mockup)",
+                          ? Center(child: Text(AppLocalizations.of(context)!.pantheonChatIndisponibleMockup,
                               style: TextStyle(color: Colors.white54),
                             ),
                           )
@@ -3058,22 +3048,21 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const CircularProgressIndicator(color: Colors.cyanAccent),
-                        const SizedBox(height: 20),
+                        CircularProgressIndicator(color: Colors.cyanAccent),
+                        SizedBox(height: 20),
                         Text(
                           _isCompressing 
                             ? "OPTIMISATION ALPHA... ${(_compressionProgress * 100).toInt()}%"
                             : "TRANSMISSION SÉCURISÉE...",
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.cyanAccent,
                             fontFamily: 'monospace',
                             fontWeight: FontWeight.bold,
                             letterSpacing: 2,
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        const Text(
-                          "Codage H.264 & Réduction Bitrate",
+                        SizedBox(height: 8),
+                        Text(AppLocalizations.of(context)!.pantheonCodageH264R,
                           style: TextStyle(color: Colors.white30, fontSize: 10),
                         ),
                       ],
@@ -3091,16 +3080,15 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1E293B),
-        title: const Text("Effacer définitivement ?", style: TextStyle(color: Colors.white, fontSize: 16)),
-        content: const Text(
-          "Ce message sera supprimé pour tout le monde et sera irrécupérable dans la base de données.",
+        backgroundColor: Color(0xFF1E293B),
+        title: Text(AppLocalizations.of(context)!.pantheonEffacerDFinitivement, style: TextStyle(color: Colors.white, fontSize: 16)),
+        content: Text(AppLocalizations.of(context)!.pantheonCeMessageSeraSupprim,
           style: TextStyle(color: Colors.white70, fontSize: 13),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("ANNULER", style: TextStyle(color: Colors.white38)),
+            child: Text(AppLocalizations.of(context)!.commonCancel, style: TextStyle(color: Colors.white38)),
           ),
           TextButton(
             onPressed: () async {
@@ -3128,18 +3116,18 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
                 
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Message effacé définitivement.")),
+                    SnackBar(content: Text(AppLocalizations.of(context)!.pantheonMessageEffacDFinitivement)),
                   );
                 }
               } catch (e) {
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Échec de la suppression : $e")),
+                    SnackBar(content: Text(AppLocalizations.of(context)!.commonError(e.toString()))),
                   );
                 }
               }
             },
-            child: const Text("EFFACER", style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
+            child: Text(AppLocalizations.of(context)!.commonErase, style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -3176,9 +3164,7 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
         allMessages.sort((a, b) => b.timestamp.compareTo(a.timestamp));
 
         if (allMessages.isEmpty) {
-          return const Center(
-            child: Text(
-              "Début de la conversation sécurisée alpha.",
+          return Center(child: Text(AppLocalizations.of(context)!.pantheonDButDeLa,
               style: TextStyle(color: Colors.white38, fontSize: 12),
             ),
           );
@@ -3189,7 +3175,7 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
         return ListView.builder(
           reverse:
               true, // Affiche les messages du plus récent au plus ancien en bas
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20),
           itemCount: allMessages.length,
           itemBuilder: (context, index) {
             final msg = allMessages[index];
@@ -3202,8 +3188,8 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
                 child: GestureDetector(
                 onLongPress: () => _showDeleteConfirmation(msg),
                 child: Container(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  padding: const EdgeInsets.symmetric(
+                  margin: EdgeInsets.only(bottom: 12),
+                  padding: EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 10,
                   ),
@@ -3211,16 +3197,16 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
                     color:
                         isMe
                             ? widget.accentColor.withValues(alpha: 0.25)
-                            : const Color(0xFF1A1A2E), // Toujours sombre, jamais blanc
+                            : Color(0xFF1A1A2E), // Toujours sombre, jamais blanc
                     borderRadius: BorderRadius.circular(16).copyWith(
                       bottomRight:
                           isMe
-                              ? const Radius.circular(0)
-                              : const Radius.circular(16),
+                              ? Radius.circular(0)
+                              : Radius.circular(16),
                       bottomLeft:
                           !isMe
-                              ? const Radius.circular(0)
-                              : const Radius.circular(16),
+                              ? Radius.circular(0)
+                              : Radius.circular(16),
                     ),
                     border: Border.all(
                       color:
@@ -3242,7 +3228,7 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
                           fontSize: 10,
                         ),
                       ),
-                    if (!isMe) const SizedBox(height: 4),
+                    if (!isMe) SizedBox(height: 4),
                     if (msg.type == 'audio' && msg.audioUrl != null)
                       AudioMessageBubble(
                         audioUrl: msg.audioUrl!,
@@ -3261,24 +3247,24 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
                                 imageUrl: msg.imageUrl!,
                                 width: 200,
                                 fit: BoxFit.cover,
-                                placeholder: (context, url) => const SizedBox(width: 200, height: 200, child: Center(child: CircularProgressIndicator(strokeWidth: 2))),
-                                errorWidget: (context, url, error) => const Icon(Icons.broken_image, color: Colors.white54, size: 50),
+                                placeholder: (context, url) => SizedBox(width: 200, height: 200, child: Center(child: CircularProgressIndicator(strokeWidth: 2))),
+                                errorWidget: (context, url, error) => Icon(Icons.broken_image, color: Colors.white54, size: 50),
                               )
                             : Image.file(
                                 File(msg.imageUrl!),
                                 width: 200,
                                 fit: BoxFit.cover,
-                                errorBuilder: (ctx, err, stack) => const Icon(Icons.broken_image, color: Colors.white54, size: 50),
+                                errorBuilder: (ctx, err, stack) => Icon(Icons.broken_image, color: Colors.white54, size: 50),
                               ),
                           ),
                           IconButton(
-                            constraints: const BoxConstraints(),
-                            padding: const EdgeInsets.only(top: 4),
-                            icon: const Icon(Icons.download, size: 20, color: Colors.white54),
-                            tooltip: "Enregistrer dans la pellicule",
+                            constraints: BoxConstraints(),
+                            padding: EdgeInsets.only(top: 4),
+                            icon: Icon(Icons.download, size: 20, color: Colors.white54),
+                            tooltip: AppLocalizations.of(context)!.pantheonEnregistrerDansLaPellicule,
                             onPressed: () async {
                               try {
-                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Téléchargement de la photo...")));
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.pantheonTLChargementDe)));
                                 final hasAccess = await Gal.hasAccess();
                                 if (!hasAccess) await Gal.requestAccess();
                                 final tempDir = await getTemporaryDirectory();
@@ -3287,7 +3273,7 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
                                 await File(savePath).writeAsBytes(res.bodyBytes);
                                 await Gal.putImage(savePath);
                                 if (mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Photo enregistrée ! ✅")));
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.pantheonPhotoEnregistrE)));
                                 }
                               } catch (e) {
                                 debugPrint("❌ Erreur téléchargement Image: $e");
@@ -3305,7 +3291,7 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
                     else
                       ClickableText(
                         text: msg.text ?? "",
-                        style: const TextStyle(color: Colors.white, fontSize: 14),
+                        style: TextStyle(color: Colors.white, fontSize: 14),
                         textAlign: isMe ? TextAlign.end : TextAlign.start,
                       ),
                   ],
@@ -3318,14 +3304,14 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
         );
       },
       loading:
-          () => const Center(
+          () => Center(
             child: CircularProgressIndicator(color: Colors.cyanAccent),
           ),
       error:
           (e, s) => Center(
             child: Text(
               "Erreur: $e",
-              style: const TextStyle(color: Colors.red),
+              style: TextStyle(color: Colors.red),
             ),
           ),
     );
@@ -3333,10 +3319,10 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
 
   Widget _buildMessageInputBox() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      margin: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      margin: EdgeInsets.only(bottom: 8, left: 8, right: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1A2E), // Toujours sombre pour que le texte blanc soit lisible
+        color: Color(0xFF1A1A2E), // Toujours sombre pour que le texte blanc soit lisible
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: Colors.white12),
       ),
@@ -3344,18 +3330,18 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
         children: [
           IconButton(
             icon: _isUploadingMedia
-                ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                : const Icon(Icons.add),
+                ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                : Icon(Icons.add),
             color: widget.accentColor,
             onPressed: _isUploadingMedia ? null : _showAttachmentPicker,
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: 8),
           Expanded(
             child: TextField(
               controller: _msgController,
-              style: const TextStyle(color: Colors.white, fontSize: 14),
-              decoration: const InputDecoration(
-                hintText: "Transmettre un message...",
+              style: TextStyle(color: Colors.white, fontSize: 14),
+              decoration: InputDecoration(
+                hintText: AppLocalizations.of(context)!.pantheonTransmettreUnMessage,
                 hintStyle: TextStyle(color: Colors.white38),
                 border: InputBorder.none,
                 isDense: true,
@@ -3375,7 +3361,7 @@ class _PantheonChatScreenState extends ConsumerState<PantheonChatScreen> {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.send),
+            icon: Icon(Icons.send),
             color: widget.accentColor,
             onPressed: _sendMessage,
           ),
@@ -3393,7 +3379,7 @@ class PublicProfileDialog extends ConsumerWidget {
   final UserEntity user;
   final Color accentColor;
 
-  const PublicProfileDialog({
+  PublicProfileDialog({
     super.key,
     required this.user,
     required this.accentColor,
@@ -3402,13 +3388,13 @@ class PublicProfileDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Dialog(
-      backgroundColor: const Color(0xFF1E293B),
+      backgroundColor: Color(0xFF1E293B),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
         side: BorderSide(color: accentColor.withValues(alpha: 0.3)),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: EdgeInsets.all(24.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -3417,10 +3403,10 @@ class PublicProfileDialog extends ConsumerWidget {
               imageUrl: user.profileImageUrl,
               radius: 40,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             Text(
               user.username,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w900,
                 fontSize: 24,
@@ -3429,17 +3415,17 @@ class PublicProfileDialog extends ConsumerWidget {
             ),
             if (user.clanIds.isNotEmpty)
               Padding(
-                padding: const EdgeInsets.only(top: 8.0),
+                padding: EdgeInsets.only(top: 8.0),
                 child: Text(
                   "Membre de ${user.clanIds.length} Clan(s)",
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white54,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1,
                   ),
                 ),
               ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
 
             // Main Stats Row
             Row(
@@ -3454,9 +3440,9 @@ class PublicProfileDialog extends ConsumerWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 24),
-            const Divider(color: Colors.white10),
-            const SizedBox(height: 16),
+            SizedBox(height: 24),
+            Divider(color: Colors.white10),
+            SizedBox(height: 16),
 
             // Detailed Stats (Force / Sagesse / Records)
             _buildDetailRow(
@@ -3465,14 +3451,14 @@ class PublicProfileDialog extends ConsumerWidget {
               user.forceXp.toString(),
               Colors.redAccent,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             _buildDetailRow(
               Icons.directions_run,
               "XP Sagesse (Arène)",
               user.wisdomXp.toString(),
               Colors.cyanAccent,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             _buildDetailRow(
               Icons.star,
               "Record Pompes",
@@ -3480,7 +3466,7 @@ class PublicProfileDialog extends ConsumerWidget {
               Colors.yellowAccent,
             ),
 
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
 
             // Actions
             Row(
@@ -3490,16 +3476,16 @@ class PublicProfileDialog extends ConsumerWidget {
                     onPressed: () => Navigator.pop(context),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: Colors.white70,
-                      side: const BorderSide(color: Colors.white24),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      side: BorderSide(color: Colors.white24),
+                      padding: EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
-                    child: const Text("FERMER"),
+                    child: Text(AppLocalizations.of(context)!.commonClose),
                   ),
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: 16),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () async {
@@ -3548,9 +3534,9 @@ class PublicProfileDialog extends ConsumerWidget {
                         // Sinon simple info
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
+                            SnackBar(
                               content: Text(
-                                "Vous devez être chef pour recruter.",
+                                AppLocalizations.of(context)!.pantheonVousDevezTreChef,
                               ),
                             ),
                           );
@@ -3560,14 +3546,13 @@ class PublicProfileDialog extends ConsumerWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: accentColor,
                       foregroundColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
                       elevation: 0,
                     ),
-                    child: const Text(
-                      "RECRUTER / AMIS",
+                    child: Text(AppLocalizations.of(context)!.pantheonRecruterAmis,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 13,
@@ -3577,14 +3562,14 @@ class PublicProfileDialog extends ConsumerWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             // Action Supprimer Ami (si déjà ami)
             Consumer(
               builder: (context, ref, child) {
                 final currentUser = ref.watch(userProfileProvider).valueOrNull;
                 final isFriend = currentUser?.friendIds.contains(user.id) ?? false;
                 
-                if (!isFriend) return const SizedBox.shrink();
+                if (!isFriend) return SizedBox.shrink();
                 
                 return SizedBox(
                   width: double.infinity,
@@ -3596,20 +3581,19 @@ class PublicProfileDialog extends ConsumerWidget {
                       final purgeHistory = await showDialog<bool>(
                         context: context,
                         builder: (ctx) => AlertDialog(
-                          backgroundColor: const Color(0xFF1E293B),
-                          title: const Text("Retirer des amis ?", style: TextStyle(color: Colors.white)),
-                          content: const Text(
-                            "Voulez-vous également effacer définitivement tout l'historique de votre conversation ?",
+                          backgroundColor: Color(0xFF1E293B),
+                          title: Text(AppLocalizations.of(context)!.pantheonRetirerDesAmis, style: TextStyle(color: Colors.white)),
+                          content: Text(AppLocalizations.of(context)!.pantheonVoulezVousGalementEffacer,
                             style: TextStyle(color: Colors.white70),
                           ),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.pop(ctx, false),
-                              child: const Text("GARDER CHAT", style: TextStyle(color: Colors.white38)),
+                              child: Text(AppLocalizations.of(context)!.pantheonGarderChat, style: TextStyle(color: Colors.white38)),
                             ),
                             TextButton(
                               onPressed: () => Navigator.pop(ctx, true),
-                              child: const Text("EFFACER TOUT", style: TextStyle(color: Colors.redAccent)),
+                              child: Text(AppLocalizations.of(context)!.pantheonEffacerTout, style: TextStyle(color: Colors.redAccent)),
                             ),
                           ],
                         ),
@@ -3631,15 +3615,14 @@ class PublicProfileDialog extends ConsumerWidget {
                         } catch (e) {
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Erreur : $e")),
+                              SnackBar(content: Text(AppLocalizations.of(context)!.commonError(e.toString()))),
                             );
                           }
                         }
                       }
                     },
-                    icon: const Icon(Icons.person_remove, color: Colors.redAccent, size: 18),
-                    label: const Text(
-                      "RETIRER DE MES AMIS",
+                    icon: Icon(Icons.person_remove, color: Colors.redAccent, size: 18),
+                    label: Text(AppLocalizations.of(context)!.pantheonRetirerDeMesAmis,
                       style: TextStyle(color: Colors.redAccent, fontSize: 12, fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -3664,10 +3647,10 @@ class PublicProfileDialog extends ConsumerWidget {
             fontFamily: 'monospace',
           ),
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: 4),
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.white54,
             fontSize: 10,
             fontWeight: FontWeight.bold,
@@ -3687,16 +3670,16 @@ class PublicProfileDialog extends ConsumerWidget {
     return Row(
       children: [
         Icon(icon, color: iconColor, size: 20),
-        const SizedBox(width: 12),
+        SizedBox(width: 12),
         Expanded(
           child: Text(
             label,
-            style: const TextStyle(color: Colors.white70, fontSize: 13),
+            style: TextStyle(color: Colors.white70, fontSize: 13),
           ),
         ),
         Text(
           value,
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 14,
@@ -3718,7 +3701,7 @@ class ClanMembersScreen extends ConsumerStatefulWidget {
   final Color surfaceColor;
   final Color accentColor;
 
-  const ClanMembersScreen({
+  ClanMembersScreen({
     super.key,
     required this.clan,
     required this.currentUserId,
@@ -3758,7 +3741,7 @@ class _ClanMembersScreenState extends ConsumerState<ClanMembersScreen> {
         setState(() => _isLoading = false);
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text("Erreur de récupération : $e")));
+        ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.commonError(e.toString()))));
       }
     }
   }
@@ -3767,7 +3750,7 @@ class _ClanMembersScreenState extends ConsumerState<ClanMembersScreen> {
     // S'assurer de ne pas se bannir soi-même
     if (memberId == widget.clan.leaderId) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Le créateur ne peut pas être banni.")),
+        SnackBar(content: Text(AppLocalizations.of(context)!.pantheonLeCrAteurNe)),
       );
       return;
     }
@@ -3776,19 +3759,19 @@ class _ClanMembersScreenState extends ConsumerState<ClanMembersScreen> {
       context: context,
       builder:
           (ctx) => AlertDialog(
-            backgroundColor: const Color(0xFF1E293B),
-            title: const Text(
+            backgroundColor: Color(0xFF1E293B),
+            title: Text(
               "Bannissement",
               style: TextStyle(color: Colors.redAccent),
             ),
             content: Text(
               "Voulez-vous vraiment bannir $memberName de ${widget.clan.name} ?",
-              style: const TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.white),
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(ctx, false),
-                child: const Text(
+                child: Text(
                   "ANNULER",
                   style: TextStyle(color: Colors.white54),
                 ),
@@ -3798,7 +3781,7 @@ class _ClanMembersScreenState extends ConsumerState<ClanMembersScreen> {
                   backgroundColor: Colors.redAccent,
                 ),
                 onPressed: () => Navigator.pop(ctx, true),
-                child: const Text(
+                child: Text(
                   "BANNIR",
                   style: TextStyle(color: Colors.white),
                 ),
@@ -3823,7 +3806,7 @@ class _ClanMembersScreenState extends ConsumerState<ClanMembersScreen> {
         if (mounted) {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text("Erreur : $e")));
+          ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.commonError(e.toString()))));
         }
       }
     }
@@ -3836,7 +3819,7 @@ class _ClanMembersScreenState extends ConsumerState<ClanMembersScreen> {
     final textDimColor = isLight ? Colors.black54 : Colors.white54;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF111115),
+      backgroundColor: Color(0xFF111115),
       appBar: AppBar(
         title: Text(
           "Membres de ${widget.clan.name}",
@@ -3853,26 +3836,24 @@ class _ClanMembersScreenState extends ConsumerState<ClanMembersScreen> {
       body: SafeArea(
         child:
             _isLoading
-                ? const Center(
+                ? Center(
                   child: CircularProgressIndicator(color: Colors.orangeAccent),
                 )
                 : _members == null || _members!.isEmpty
-                ? const Center(
-                  child: Text(
-                    "Aucun membre trouvé.",
+                ? Center(child: Text(AppLocalizations.of(context)!.pantheonAucunMembreTrouv,
                     style: TextStyle(color: Colors.white54),
                   ),
                 )
                 : ListView.builder(
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.all(16),
                   itemCount: _members!.length,
                   itemBuilder: (context, index) {
                     final m = _members![index];
                     final isLeader = m['id'] == widget.clan.leaderId;
 
                     return Container(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      padding: const EdgeInsets.all(16),
+                      margin: EdgeInsets.only(bottom: 12),
+                      padding: EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: widget.surfaceColor,
                         borderRadius: BorderRadius.circular(16),
@@ -3892,7 +3873,7 @@ class _ClanMembersScreenState extends ConsumerState<ClanMembersScreen> {
                                       : textDimColor,
                             ),
                           ),
-                          const SizedBox(width: 16),
+                          SizedBox(width: 16),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -3910,8 +3891,8 @@ class _ClanMembersScreenState extends ConsumerState<ClanMembersScreen> {
                                       ),
                                     ),
                                     if (isLeader) ...[
-                                      const SizedBox(width: 8),
-                                      const Icon(
+                                      SizedBox(width: 8),
+                                      Icon(
                                         Icons.star,
                                         color: Colors.orangeAccent,
                                         size: 14,
@@ -3933,7 +3914,7 @@ class _ClanMembersScreenState extends ConsumerState<ClanMembersScreen> {
                           if (widget.clan.leaderId == widget.currentUserId &&
                               !isLeader)
                             IconButton(
-                              icon: const Icon(Icons.person_remove),
+                              icon: Icon(Icons.person_remove),
                               color: Colors.redAccent,
                               tooltip: "Bannir",
                               onPressed:
@@ -3960,7 +3941,7 @@ class ClanDetailsDialog extends ConsumerWidget {
   final ClanEntity clan;
   final Color accentColor;
 
-  const ClanDetailsDialog({
+  ClanDetailsDialog({
     super.key,
     required this.clan,
     required this.accentColor,
@@ -3972,13 +3953,13 @@ class ClanDetailsDialog extends ConsumerWidget {
     final isMember = user?.clanIds.contains(clan.id) ?? false;
 
     return Dialog(
-      backgroundColor: const Color(0xFF1E293B),
+      backgroundColor: Color(0xFF1E293B),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
         side: BorderSide(color: accentColor.withValues(alpha: 0.3)),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: EdgeInsets.all(24.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -3989,10 +3970,10 @@ class ClanDetailsDialog extends ConsumerWidget {
               borderColor: accentColor,
               fallbackIcon: Icons.shield,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             Text(
               clan.name.toUpperCase(),
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w900,
                 fontSize: 24,
@@ -4000,16 +3981,16 @@ class ClanDetailsDialog extends ConsumerWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Text(
               clan.description,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white70,
                 fontStyle: FontStyle.italic,
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
 
             // Stats Row
             Row(
@@ -4023,7 +4004,7 @@ class ClanDetailsDialog extends ConsumerWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
 
             // Actions
             Row(
@@ -4033,17 +4014,17 @@ class ClanDetailsDialog extends ConsumerWidget {
                     onPressed: () => Navigator.pop(context),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: Colors.white70,
-                      side: const BorderSide(color: Colors.white24),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      side: BorderSide(color: Colors.white24),
+                      padding: EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
-                    child: const Text("FERMER"),
+                    child: Text(AppLocalizations.of(context)!.commonClose),
                   ),
                 ),
                 if (!isMember) ...[
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () async {
@@ -4056,8 +4037,8 @@ class ClanDetailsDialog extends ConsumerWidget {
                           );
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Demande d'adhésion envoyée !"),
+                              SnackBar(
+                                content: Text(AppLocalizations.of(context)!.pantheonDemandeDAdhSion),
                                 backgroundColor: Colors.greenAccent,
                               ),
                             );
@@ -4066,7 +4047,7 @@ class ClanDetailsDialog extends ConsumerWidget {
                         } catch (e) {
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Erreur: $e")),
+                              SnackBar(content: Text(AppLocalizations.of(context)!.commonError(e.toString()))),
                             );
                           }
                         }
@@ -4074,12 +4055,12 @@ class ClanDetailsDialog extends ConsumerWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: accentColor,
                         foregroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        padding: EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         "REJOINDRE",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
@@ -4106,10 +4087,10 @@ class ClanDetailsDialog extends ConsumerWidget {
             fontFamily: 'monospace',
           ),
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: 4),
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.white54,
             fontSize: 10,
             fontWeight: FontWeight.bold,

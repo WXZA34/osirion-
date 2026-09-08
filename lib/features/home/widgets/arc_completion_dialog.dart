@@ -1,3 +1,4 @@
+import '../../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/arc_data.dart';
@@ -50,7 +51,7 @@ class _ArcCompletionDialogState extends ConsumerState<ArcCompletionDialog> {
       if (mounted) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Récompenses ajoutées à ton profil ! 🏆")),
+          SnackBar(content: Text(AppLocalizations.of(context)!.homeRCompensesAjoutEs)),
         );
       }
     } catch (e) {
@@ -92,7 +93,7 @@ class _ArcCompletionDialogState extends ConsumerState<ArcCompletionDialog> {
                     Icon(Icons.emoji_events, color: Colors.amber, size: 64),
                     const SizedBox(height: 20),
                     Text(
-                      "ARC TERMINÉ",
+                      AppLocalizations.of(context)!.homeArcTermin,
                       style: TextStyle(
                         color: accent,
                         fontSize: 12,
@@ -149,7 +150,7 @@ class _ArcCompletionDialogState extends ConsumerState<ArcCompletionDialog> {
                       ),
                       child: _isClaimed 
                         ? const CircularProgressIndicator(color: Colors.black)
-                        : const Text("RÉCLAMER ET ENTRER DANS LA LUMIÈRE", style: TextStyle(fontWeight: FontWeight.bold)),
+                        : Text(AppLocalizations.of(context)!.homeRClamerEtEntrer, style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),

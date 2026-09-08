@@ -83,11 +83,11 @@ dependencies:
   cached_network_image: ^3.4.1
   cached_video_player_plus: ^4.1.0
   flutter_tts: ^4.2.5
+  lottie: ^3.3.1
+  google_sign_in: ^6.2.1
 
 dependency_overrides:
   vector_math: ^2.2.0
-  record: 5.1.0
-  record_platform_interface: 1.1.0
   # Force la version corrective du plugin CameraX (crash SDK 36)
   camera_android_camerax: ^0.6.10
 
@@ -154,17 +154,14 @@ flutter:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/branding/logo_osirion.webp"
-  adaptive_icon_background: "#0a0c10"
-  adaptive_icon_foreground: "assets/branding/logo_osirion.webp"
+  image_path: "assets/branding/logo12.jpeg"
+  adaptive_icon_background: "#000000"
+  adaptive_icon_foreground: "assets/branding/logo12.jpeg"
   min_sdk_android: 21
 
 # Configuration du Splash Screen (OSIRION)
 flutter_native_splash:
-  color: "#0a0c10"
-  image: "assets/branding/logo_osirion.webp"
-  # Utilisation de branding pour garantir le rectangle sur Android 12+
+  color: "#000000"
   android_12:
-    color: "#0a0c10"
-    branding: "assets/branding/logo_osirion.webp"
+    color: "#000000"
   fullscreen: true

@@ -1,3 +1,4 @@
+import '../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -64,14 +65,14 @@ class _DojoCameraTestScreenState extends State<DojoCameraTestScreen> {
           if (_isInit && _controller != null)
             CameraPreview(_controller!)
           else
-            const Center(
+            Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   CircularProgressIndicator(color: Colors.greenAccent),
                   SizedBox(height: 16),
                   Text(
-                    "Initialisation de la vision IA...",
+                    AppLocalizations.of(context)!.laboratoryInitialisationDeLaVision,
                     style: TextStyle(color: Colors.white54),
                   ),
                 ],
@@ -83,8 +84,8 @@ class _DojoCameraTestScreenState extends State<DojoCameraTestScreen> {
             isDojoMode: true,
             onPause: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Entraînement en pause (Simulation)"),
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.laboratoryEntraNementEnPause),
                 ),
               );
             },

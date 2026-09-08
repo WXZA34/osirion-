@@ -1,3 +1,4 @@
+import '../../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
@@ -21,14 +22,14 @@ class PerformanceChart extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: Colors.white10),
         ),
-        child: const Center(
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.timeline, color: Colors.white10, size: 40),
               SizedBox(height: 8),
               Text(
-                "SESSION TROP COURTE POUR ANALYSE",
+                AppLocalizations.of(context)!.arenaSessionTropCourtePour,
                 style: TextStyle(color: Colors.white24, fontSize: 10, fontWeight: FontWeight.bold),
               ),
             ],

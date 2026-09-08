@@ -1,3 +1,5 @@
+import 'package:valerion/features/dojo/utils/dojo_translator.dart';
+import '../../l10n/app_localizations.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -90,7 +92,7 @@ class _GuidedWorkoutScreenState extends State<GuidedWorkoutScreen> {
         _loadingTimeoutTimer?.cancel();
         if (mounted) {
           setState(() {
-            _videoError = "Erreur de chargement de la vidéo : $e";
+            _videoError = DojoTranslator.translate(context, "Erreur de chargement de la vidéo : $e");
             _showSkipButton = true;
           });
         }
@@ -160,7 +162,7 @@ class _GuidedWorkoutScreenState extends State<GuidedWorkoutScreen> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text(
-          widget.config.name.toUpperCase(),
+          DojoTranslator.translate(context, widget.config.name).toUpperCase(),
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -229,8 +231,7 @@ class _GuidedWorkoutScreenState extends State<GuidedWorkoutScreen> {
                     size: 64,
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    "SIMULATION HQ",
+                  Text(AppLocalizations.of(context)!.dojoSimulationHq,
                     style: TextStyle(
                       color: Colors.white54,
                       letterSpacing: 2,
@@ -241,7 +242,7 @@ class _GuidedWorkoutScreenState extends State<GuidedWorkoutScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 32.0),
                     child: Text(
-                      widget.config.description,
+                      DojoTranslator.translateDescription(context, widget.config.description),
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Colors.white70,
@@ -269,7 +270,7 @@ class _GuidedWorkoutScreenState extends State<GuidedWorkoutScreen> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    "CALIBRAGE DU FLUX...",
+                    AppLocalizations.of(context)!.dojoCalibrageDuFlux,
                     style: TextStyle(
                       color: Colors.blueAccent.withValues(alpha: 0.7),
                       fontSize: 10,
@@ -312,7 +313,7 @@ class _GuidedWorkoutScreenState extends State<GuidedWorkoutScreen> {
                 child: TextButton.icon(
                   onPressed: () {
                     setState(() {
-                      _videoError = "Vidéo ignorée par l'utilisateur.";
+                      _videoError = DojoTranslator.translate(context, "Vidéo ignorée par l'utilisateur.");
                       _isVideoInitialized = false;
                     });
                   },
@@ -321,8 +322,7 @@ class _GuidedWorkoutScreenState extends State<GuidedWorkoutScreen> {
                     color: Colors.white54,
                     size: 16,
                   ),
-                  label: const Text(
-                    "IGNORER LA DÉMO",
+                  label: Text(AppLocalizations.of(context)!.dojoIgnorerLaDMo,
                     style: TextStyle(
                       color: Colors.white54,
                       fontSize: 10,
@@ -367,8 +367,7 @@ class _GuidedWorkoutScreenState extends State<GuidedWorkoutScreen> {
           child: ElevatedButton.icon(
             onPressed: _startPreparation,
             icon: const Icon(Icons.bolt, color: Colors.blueAccent, size: 28),
-            label: const Text(
-              "DÉMARRER L'ENTRAÎNEMENT",
+            label: Text(AppLocalizations.of(context)!.dojoDMarrerLEntra,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,
@@ -387,9 +386,7 @@ class _GuidedWorkoutScreenState extends State<GuidedWorkoutScreen> {
         );
 
       case GuidedState.preparation:
-        return const Center(
-          child: Text(
-            "PRÉPAREZ-VOUS...",
+        return Center(child: Text(AppLocalizations.of(context)!.dojoPrParezVous,
             style: TextStyle(
               color: Colors.blueAccent,
               fontSize: 24,
@@ -445,8 +442,7 @@ class _GuidedWorkoutScreenState extends State<GuidedWorkoutScreen> {
                         height: 1.0,
                       ),
                     ),
-                    const Text(
-                      "RÉPÉTITIONS",
+                    Text(AppLocalizations.of(context)!.dojoRPTitions,
                       style: TextStyle(
                         color: Colors.blueAccent,
                         fontSize: 12,
@@ -458,8 +454,7 @@ class _GuidedWorkoutScreenState extends State<GuidedWorkoutScreen> {
                 ),
               ),
             ),
-            const Text(
-              "(Tapez le cercle à chaque répétition)",
+            Text(AppLocalizations.of(context)!.dojoTapezLeCercleChaque,
               style: TextStyle(color: Colors.white30, fontSize: 12),
             ),
 

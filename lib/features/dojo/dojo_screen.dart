@@ -1,3 +1,5 @@
+import 'package:valerion/features/dojo/utils/dojo_translator.dart';
+import '../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'exercise_selector_screen.dart';
 
@@ -36,7 +38,7 @@ class _DojoScreenState extends ConsumerState<DojoScreen> {
           Padding(
             padding: const EdgeInsets.only(bottom: 16.0),
             child: Text(
-              "LE DOJO : CONFIGURATION",
+              AppLocalizations.of(context)!.dojoLeDojoConfiguration,
               style: TextStyle(
                 color: _currentArc.arcType == AlphaArc.summer ? Colors.white : Colors.white,
                 fontSize: 16,
@@ -50,7 +52,7 @@ class _DojoScreenState extends ConsumerState<DojoScreen> {
 
           // Etape 1 : Le Ciblage Corporel
           _buildSectionTitle(
-            "1. CHOIX DE LA CIBLE",
+            AppLocalizations.of(context)!.dojoChoixCible,
             Icons.accessibility_new,
             _accentNeutral,
           ),
@@ -60,7 +62,7 @@ class _DojoScreenState extends ConsumerState<DojoScreen> {
 
           // Etape 2 : L'Intensité (Type d'exercice)
           _buildSectionTitle(
-            "2. TYPE D'ENTRAÎNEMENT",
+            AppLocalizations.of(context)!.dojoTypeEntrainement,
             Icons.local_fire_department,
             Colors.orangeAccent,
           ),
@@ -70,7 +72,7 @@ class _DojoScreenState extends ConsumerState<DojoScreen> {
 
           // Etape 3 : Le Mode d'Interaction (Vision vs Guide)
           _buildSectionTitle(
-            "3. MODE D'EXÉCUTION",
+            AppLocalizations.of(context)!.dojoModeExecution,
             Icons.remove_red_eye,
             _accentVision,
           ),
@@ -108,8 +110,8 @@ class _DojoScreenState extends ConsumerState<DojoScreen> {
             ),
             child: Text(
               _selectedMode == null
-                  ? "SÉLECTIONNEZ UN MODE"
-                  : "DÉMARRER LE PROTOCOLE",
+                  ? AppLocalizations.of(context)!.dojoSelectionnezMode
+                  : AppLocalizations.of(context)!.dojoDemarrerProtocole,
               style: TextStyle(
                 color: _selectedMode == null ? Colors.white54 : Colors.black,
                 fontWeight: FontWeight.w900,
@@ -148,12 +150,12 @@ class _DojoScreenState extends ConsumerState<DojoScreen> {
             children: [
               _buildTargetOption(
                 "FULL_BODY",
-                "Corps Entier",
+                AppLocalizations.of(context)!.dojoCorpsEntier,
                 Icons.sports_gymnastics,
               ),
               _buildTargetOption(
                 "UPPER",
-                "Haut du Corps",
+                AppLocalizations.of(context)!.dojoHautDuCorps,
                 Icons.fitness_center,
               ),
             ],
@@ -162,10 +164,10 @@ class _DojoScreenState extends ConsumerState<DojoScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildTargetOption("LOWER", "Bas du Corps", Icons.directions_run),
+              _buildTargetOption("LOWER", AppLocalizations.of(context)!.dojoBasDuCorps, Icons.directions_run),
               _buildTargetOption(
                 "CORE",
-                "Sangle Abdos",
+                AppLocalizations.of(context)!.dojoSangleAbdos,
                 Icons.sports_martial_arts,
               ),
             ],
@@ -173,7 +175,7 @@ class _DojoScreenState extends ConsumerState<DojoScreen> {
           const SizedBox(height: 12),
           _buildTargetOption(
             "LIMB",
-            "Ciblage Isolé (Rééduc.)",
+            AppLocalizations.of(context)!.dojoCiblageIsole,
             Icons.accessibility,
             isWide: true,
           ),
@@ -250,14 +252,14 @@ class _DojoScreenState extends ConsumerState<DojoScreen> {
         children: [
           _buildTypeOption(
             "FORCE",
-            "Lent & Contrôlé",
+            AppLocalizations.of(context)!.dojoLentControle,
             Icons.shield,
             Colors.redAccent,
           ),
           const SizedBox(width: 12),
           _buildTypeOption(
             "ENDURANCE",
-            "Cardio long",
+            AppLocalizations.of(context)!.dojoCardioLong,
             Icons.timer,
             Colors.orangeAccent,
           ),
@@ -302,7 +304,7 @@ class _DojoScreenState extends ConsumerState<DojoScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              id,
+              DojoTranslator.translate(context, id),
               style: TextStyle(
                 color: isSelected 
                     ? (ArcData.getCurrentArc().arcType == AlphaArc.summer ? Colors.white : baseColor) 
@@ -371,7 +373,7 @@ class _DojoScreenState extends ConsumerState<DojoScreen> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    "MODE VISION",
+                    AppLocalizations.of(context)!.dojoModeVision,
                     style: TextStyle(
                       color:
                           _selectedMode == 'VISION'
@@ -382,10 +384,10 @@ class _DojoScreenState extends ConsumerState<DojoScreen> {
                     ),
                   ),
                   const SizedBox(height: 6),
-                  const Text(
-                    "IA Active • Tracking des Articulations • Feedback Auto",
+                  Text(
+                    AppLocalizations.of(context)!.dojoIaActiveTrackingDes,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white54, fontSize: 10),
+                    style: const TextStyle(color: Colors.white54, fontSize: 10),
                   ),
                 ],
               ),
@@ -431,7 +433,7 @@ class _DojoScreenState extends ConsumerState<DojoScreen> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    "MODE GUIDE",
+                    AppLocalizations.of(context)!.dojoModeGuide,
                     style: TextStyle(
                       color:
                           _selectedMode == 'GUIDE'
@@ -442,10 +444,10 @@ class _DojoScreenState extends ConsumerState<DojoScreen> {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  const Text(
-                    "Simulation 3D • Mode Chrono • Validation Manuelle",
+                  Text(
+                    AppLocalizations.of(context)!.dojoSimulation3dModeChrono,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white54, fontSize: 10),
+                    style: const TextStyle(color: Colors.white54, fontSize: 10),
                   ),
                 ],
               ),

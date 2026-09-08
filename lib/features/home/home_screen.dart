@@ -1,3 +1,4 @@
+import '../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:valerion/features/arena/arena_screen.dart';
 import 'package:valerion/features/dojo/dojo_screen.dart';
@@ -503,20 +504,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("MENU ALPHA", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900, fontStyle: FontStyle.italic, letterSpacing: -1)),
+                  Text(AppLocalizations.of(context)!.homeMenuAlpha, style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900, fontStyle: FontStyle.italic, letterSpacing: -1)),
                   IconButton(icon: const Icon(Icons.close, color: Colors.white54), onPressed: () => Navigator.pop(context)),
                 ],
               ),
               const SizedBox(height: 40),
-              _buildDrawerItem(context, Icons.menu_book, "La Bibliothèque", const LibraryScreen()),
+              _buildDrawerItem(context, Icons.menu_book, AppLocalizations.of(context)!.localeName == "en" ? "The Library" : "La Bibliothèque", LibraryScreen()),
               const SizedBox(height: 16),
-              _buildDrawerItem(context, Icons.person, "Le Sanctuaire", const ProfileScreen()),
+              _buildDrawerItem(context, Icons.person, AppLocalizations.of(context)!.localeName == "en" ? "The Sanctuary" : "Le Sanctuaire", ProfileScreen()),
               const SizedBox(height: 16),
-              _buildDrawerItem(context, Icons.bar_chart, "Le Panthéon", const PantheonScreen()),
+              _buildDrawerItem(context, Icons.bar_chart, AppLocalizations.of(context)!.localeName == "en" ? "The Pantheon" : "Le Panthéon", PantheonScreen()),
               const SizedBox(height: 16),
-              _buildDrawerItem(context, Icons.security, "L'Arsenal", const ArsenalScreen()),
+              _buildDrawerItem(context, Icons.security, AppLocalizations.of(context)!.localeName == "en" ? "The Arsenal" : "L'Arsenal", ArsenalScreen()),
               const SizedBox(height: 16),
-              _buildDrawerItem(context, Icons.settings, "Le Laboratoire", const LaboratoryScreen()),
+              _buildDrawerItem(context, Icons.settings, AppLocalizations.of(context)!.localeName == "en" ? "The Laboratory" : "Le Laboratoire", LaboratoryScreen()),
               const Spacer(),
               GestureDetector(
                 onTap: () async {
@@ -542,7 +543,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
                     children: [
                       Icon(Icons.logout, color: Colors.redAccent[400], size: 20),
                       const SizedBox(width: 12),
-                      Text("QUITTER LA SESSION", style: TextStyle(color: Colors.redAccent[400], fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 2)),
+                      Text(AppLocalizations.of(context)!.homeQuitterLaSession, style: TextStyle(color: Colors.redAccent[400], fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 2)),
                     ],
                   ),
                 ),
@@ -603,7 +604,7 @@ class _UserXpBalanceCard extends ConsumerWidget {
             children: [
               Icon(Icons.balance, color: arc.primaryColor, size: 16),
               const SizedBox(width: 8),
-              Text("BALANCE DES FORCES", style: TextStyle(color: arc.onSurfaceColor.withValues(alpha: 0.6), fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1)),
+              Text(AppLocalizations.of(context)!.homeBalanceDesForces, style: TextStyle(color: arc.onSurfaceColor.withValues(alpha: 0.6), fontWeight: FontWeight.w900, fontSize: 10, letterSpacing: 1)),
             ],
           ),
           const SizedBox(height: 24),

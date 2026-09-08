@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
+import 'package:flutter/material.dart';
 
 class SuggestionsScreen extends StatelessWidget {
   const SuggestionsScreen({super.key});
@@ -6,12 +7,12 @@ class SuggestionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Suggestions Lecture")),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.homeSuggestionsLecture)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           Text(
-            "La Bibliothèque du Winter Arc",
+            AppLocalizations.of(context)!.homeLaBibliothQueDu,
             style: Theme.of(
               context,
             ).textTheme.headlineSmall?.copyWith(color: Colors.white),
@@ -19,7 +20,7 @@ class SuggestionsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           _buildBookCard(
-            "Atomic Habits",
+            AppLocalizations.of(context)!.libraryAtomicHabits,
             "James Clear",
             "Construction d'habitudes",
           ),

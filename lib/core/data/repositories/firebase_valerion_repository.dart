@@ -731,7 +731,7 @@ class FirebaseValerionRepository implements IValerionRepository {
 
       // 4. Métadonnées d'exportation
       exportData['export_metadata'] = {
-        'app_name': 'OSIRION',
+        'app_name': 'Valerion',
         'export_version': '1.1.1',
         'generated_at': DateTime.now().toIso8601String(),
         'uid': uid,

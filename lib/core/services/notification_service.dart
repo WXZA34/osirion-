@@ -28,24 +28,9 @@ class NotificationService {
   }
 
   static Future<void> initialize() async {
-    // 0. Pour Android 13+, demander explicitement la permission via permission_handler
-    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
-       final status = await Permission.notification.request();
-       if (kDebugMode) {
-         debugPrint('🔔 [Notifications] Statut permission Android 13+: $status');
-       }
-    }
-
-    // 1. Demander les permissions
-    NotificationSettings settings = await _messaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-
-    if (kDebugMode) {
-      debugPrint('🔔 [Notifications] Firebase Permission Status: ${settings.authorizationStatus}');
-    }
+    // Note: Les permissions ne sont plus demandées automatiquement au démarrage
+    // pour éviter le crash "Permission controller isn't responding".
+    // Appelez requestPermissions() plus tard dans le cycle de vie.
 
     // 2. Initialiser les notifications locales pour le premier plan
     const AndroidInitializationSettings androidSettings =
@@ -155,6 +140,28 @@ class NotificationService {
     }).catchError((e) {
       debugPrint('❌ [Notifications] Erreur souscription topic: $e');
     });
+  }
+
+  /// Demande explicitement les permissions de notification
+  static Future<void> requestPermissions() async {
+    // 0. Pour Android 13+, demander explicitement la permission via permission_handler
+    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+       final status = await Permission.notification.request();
+       if (kDebugMode) {
+         debugPrint('🔔 [Notifications] Statut permission Android 13+: $status');
+       }
+    }
+
+    // 1. Demander les permissions Firebase
+    NotificationSettings settings = await _messaging.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    if (kDebugMode) {
+      debugPrint('🔔 [Notifications] Firebase Permission Status: ${settings.authorizationStatus}');
+    }
   }
 
   /// Met à jour le token FCM de l'utilisateur dans Firestore
