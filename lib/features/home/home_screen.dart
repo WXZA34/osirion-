@@ -1,5 +1,6 @@
 import '../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import '../../core/utils/relic_translator.dart';
 import 'package:valerion/features/arena/arena_screen.dart';
 import 'package:valerion/features/dojo/dojo_screen.dart';
 import 'package:valerion/features/pantheon/pantheon_screen.dart';
@@ -288,7 +289,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _currentArc.arcType == AlphaArc.summer ? "OSIRION" : (activeTitle?.name.toUpperCase() ?? "OSIRION"),
+                    _currentArc.arcType == AlphaArc.summer ? "OSIRION" : (activeTitle?.getLocalizedName(context).toUpperCase() ?? "OSIRION"),
                     style: TextStyle(
                       color: _currentArc.arcType == AlphaArc.summer ? Colors.white : (activeTitle?.color ?? Colors.white),
                       fontWeight: FontWeight.w900,
@@ -509,16 +510,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
                 ],
               ),
               const SizedBox(height: 40),
-              _buildDrawerItem(context, Icons.menu_book, AppLocalizations.of(context)!.localeName == "en" ? "The Library" : "La Bibliothèque", LibraryScreen()),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildDrawerItem(context, Icons.menu_book, AppLocalizations.of(context)!.localeName == "en" ? "The Library" : "La Bibliothèque", LibraryScreen()),
+                      const SizedBox(height: 16),
+                      _buildDrawerItem(context, Icons.person, AppLocalizations.of(context)!.localeName == "en" ? "The Sanctuary" : "Le Sanctuaire", ProfileScreen()),
+                      const SizedBox(height: 16),
+                      _buildDrawerItem(context, Icons.bar_chart, AppLocalizations.of(context)!.localeName == "en" ? "The Pantheon" : "Le Panthéon", PantheonScreen()),
+                      const SizedBox(height: 16),
+                      _buildDrawerItem(context, Icons.security, AppLocalizations.of(context)!.localeName == "en" ? "The Arsenal" : "L'Arsenal", ArsenalScreen()),
+                      const SizedBox(height: 16),
+                      _buildDrawerItem(context, Icons.settings, AppLocalizations.of(context)!.localeName == "en" ? "The Laboratory" : "Le Laboratoire", LaboratoryScreen()),
+                    ],
+                  ),
+                ),
+              ),
               const SizedBox(height: 16),
-              _buildDrawerItem(context, Icons.person, AppLocalizations.of(context)!.localeName == "en" ? "The Sanctuary" : "Le Sanctuaire", ProfileScreen()),
-              const SizedBox(height: 16),
-              _buildDrawerItem(context, Icons.bar_chart, AppLocalizations.of(context)!.localeName == "en" ? "The Pantheon" : "Le Panthéon", PantheonScreen()),
-              const SizedBox(height: 16),
-              _buildDrawerItem(context, Icons.security, AppLocalizations.of(context)!.localeName == "en" ? "The Arsenal" : "L'Arsenal", ArsenalScreen()),
-              const SizedBox(height: 16),
-              _buildDrawerItem(context, Icons.settings, AppLocalizations.of(context)!.localeName == "en" ? "The Laboratory" : "Le Laboratoire", LaboratoryScreen()),
-              const Spacer(),
               GestureDetector(
                 onTap: () async {
                   Navigator.pop(context);

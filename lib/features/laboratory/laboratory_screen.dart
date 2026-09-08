@@ -126,11 +126,11 @@ class _LaboratoryScreenState extends ConsumerState<LaboratoryScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildNavTab(0, "Avatar"),
-            _buildNavTab(1, "Moteurs"),
-            _buildNavTab(2, "Données"),
-            _buildNavTab(3, "Support"),
-            _buildNavTab(4, "Bêta", isExperimental: true),
+            _buildNavTab(0, AppLocalizations.of(context)!.laboratoryAvatar),
+            _buildNavTab(1, AppLocalizations.of(context)!.laboratoryMoteurs),
+            _buildNavTab(2, AppLocalizations.of(context)!.laboratoryDonnees),
+            _buildNavTab(3, AppLocalizations.of(context)!.laboratorySupport),
+            _buildNavTab(4, AppLocalizations.of(context)!.laboratoryBeta, isExperimental: true),
           ],
         ),
       ),
@@ -234,7 +234,7 @@ class _LaboratoryScreenState extends ConsumerState<LaboratoryScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _buildSectionHeader(
-              "MODIFICATION DE L'AVATAR",
+              AppLocalizations.of(context)!.laboratoryModificationAvatar,
               Icons.person_outline,
             ),
             SizedBox(height: 16),
@@ -242,32 +242,32 @@ class _LaboratoryScreenState extends ConsumerState<LaboratoryScreen> {
               child: Column(
                 children: [
                   _buildInputRow(
-                    "Nom de code",
-                    "Identifiant public",
+                    AppLocalizations.of(context)!.laboratoryNomDeCode,
+                    AppLocalizations.of(context)!.laboratoryIdentifiantPublic,
                     _usernameCtrl,
                   ),
                   Divider(color: Colors.black12),
-                  _buildInputRow("Âge", "Années", _ageCtrl, isNumber: true),
+                  _buildInputRow(AppLocalizations.of(context)!.laboratoryAge, AppLocalizations.of(context)!.laboratoryAnnees, _ageCtrl, isNumber: true),
                   Divider(color: Colors.black12),
-                  _buildInputRow("Taille", "cm", _heightCtrl, isNumber: true),
+                  _buildInputRow(AppLocalizations.of(context)!.laboratoryTaille, AppLocalizations.of(context)!.laboratoryCm, _heightCtrl, isNumber: true),
                   Divider(color: Colors.black12),
                   _buildInputRow(
-                    "Poids (Total)",
-                    "kg",
+                    AppLocalizations.of(context)!.laboratoryPoidsTotal,
+                    AppLocalizations.of(context)!.laboratoryKg,
                     _weightCtrl,
                     isNumber: true,
                   ),
                   Divider(color: Colors.black12),
                   _buildInputRow(
-                    "Masse Grasse",
-                    "%",
+                    AppLocalizations.of(context)!.laboratoryMasseGrasse,
+                    AppLocalizations.of(context)!.laboratoryPourcentage,
                     _bodyFatCtrl,
                     isNumber: true,
                   ),
                   Divider(color: Colors.black12),
                   _buildInputRow(
-                    "Muscle",
-                    "kg",
+                    AppLocalizations.of(context)!.laboratoryMuscle,
+                    AppLocalizations.of(context)!.laboratoryKg,
                     _muscleMassCtrl,
                     isNumber: true,
                   ),
@@ -276,7 +276,7 @@ class _LaboratoryScreenState extends ConsumerState<LaboratoryScreen> {
             ),
             SizedBox(height: 24),
             _buildSectionHeader(
-              "ARCHIVES DE COMBAT (VERROUILLÉES)",
+              AppLocalizations.of(context)!.laboratoryArchivesCombat,
               Icons.lock,
             ),
             SizedBox(height: 16),
@@ -415,7 +415,7 @@ class _LaboratoryScreenState extends ConsumerState<LaboratoryScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              "Échec de la liaison: $e",
+              AppLocalizations.of(context)!.commonError(e.toString()),
               style: TextStyle(fontFamily: 'monospace'),
             ),
             backgroundColor: Colors.redAccent,
@@ -433,58 +433,58 @@ class _LaboratoryScreenState extends ConsumerState<LaboratoryScreen> {
       key: ValueKey(1),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildSectionHeader("STATION DE CALIBRATION IA", Icons.visibility),
+        _buildSectionHeader(AppLocalizations.of(context)!.laboratoryStationCalibration, Icons.visibility),
         SizedBox(height: 16),
         _buildTechContainer(
           child: Column(
             children: [
               _buildSliderSetting(
-                "Sensibilité de Détection",
-                "Ajustez selon la luminosité de la pièce",
+                AppLocalizations.of(context)!.laboratorySensibiliteDetection,
+                AppLocalizations.of(context)!.laboratoryAjustezLuminosite,
                 labSettings.aiSensitivity,
                 (val) => ref.read(labSettingsProvider.notifier).updateAiSensitivity(val),
               ),
               Divider(color: Colors.white10),
               _buildSwitchSetting(
-                "Superposition Squelettique",
-                "Afficher les lignes sur le flux vidéo",
+                AppLocalizations.of(context)!.laboratorySuperpositionSquelettique,
+                AppLocalizations.of(context)!.laboratoryAfficherLignesVideo,
                 labSettings.showSkeleton,
                 (val) => ref.read(labSettingsProvider.notifier).updateShowSkeleton(val),
               ),
               Divider(color: Colors.white10),
-              _buildDropdownSetting("Mode Énergétique", [
-                "Haute Précision",
-                "Équilibré",
-                "Économie",
+              _buildDropdownSetting(AppLocalizations.of(context)!.laboratoryModeEnergetique, [
+                AppLocalizations.of(context)!.laboratoryHautePrecision,
+                AppLocalizations.of(context)!.laboratoryEquilibre,
+                AppLocalizations.of(context)!.laboratoryEconomie,
               ]),
             ],
           ),
         ),
         SizedBox(height: 32),
 
-        _buildSectionHeader("OPTIMISATION CARTOGRAPHIE (GPS)", Icons.explore),
+        _buildSectionHeader(AppLocalizations.of(context)!.laboratoryOptimisationGPS, Icons.explore),
         SizedBox(height: 16),
         _buildTechContainer(
           child: Column(
             children: [
               _buildSliderSetting(
-                "Fréquence de Scan GPS",
-                "Précision vs Batterie",
+                AppLocalizations.of(context)!.laboratoryFrequenceScanGPS,
+                AppLocalizations.of(context)!.laboratoryPrecisionVsBatterie,
                 labSettings.gpsFrequency,
                 (val) => ref.read(labSettingsProvider.notifier).updateGpsFrequency(val),
               ),
               Divider(color: Colors.white10),
               _buildSwitchSetting(
-                "Filtre de Lissage (Kalman)",
-                "Évite les sauts de position",
+                AppLocalizations.of(context)!.laboratoryFiltreLissage,
+                AppLocalizations.of(context)!.laboratoryEviteSautsPosition,
                 true,
                 (v) {},
               ),
               Divider(color: Colors.white10),
-              _buildDropdownSetting("Calque par défaut", [
-                "Standard",
-                "Satellite",
-                "Hybride",
+              _buildDropdownSetting(AppLocalizations.of(context)!.laboratoryCalqueDefaut, [
+                AppLocalizations.of(context)!.laboratoryStandard,
+                AppLocalizations.of(context)!.laboratorySatellite,
+                AppLocalizations.of(context)!.laboratoryHybride,
               ]),
             ],
           ),
@@ -499,7 +499,7 @@ class _LaboratoryScreenState extends ConsumerState<LaboratoryScreen> {
       key: ValueKey(2),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildSectionHeader("CLOUD & SÉCURITÉ", Icons.cloud),
+        _buildSectionHeader(AppLocalizations.of(context)!.laboratoryCloudSecurite, Icons.cloud),
         SizedBox(height: 16),
         _buildTechContainer(
           child: Column(
@@ -521,8 +521,8 @@ class _LaboratoryScreenState extends ConsumerState<LaboratoryScreen> {
                       SizedBox(height: 4),
                       Text(
                         _cloudSyncStatus
-                            ? "Données alignées"
-                            : "Synchronisation en cours...",
+                            ? AppLocalizations.of(context)!.laboratoryDonneesAlignees
+                            : AppLocalizations.of(context)!.laboratorySyncEnCours,
                         style: TextStyle(
                           color:
                               _cloudSyncStatus ? _accentTech : _accentWarning,
@@ -540,21 +540,21 @@ class _LaboratoryScreenState extends ConsumerState<LaboratoryScreen> {
               SizedBox(height: 16),
               Divider(color: Colors.white10),
               _buildActionSetting(
-                "Forcer la Sauvegarde",
+                AppLocalizations.of(context)!.laboratoryForcerSauvegarde,
                 Icons.backup,
-                "Synchronisation manuelle vers le Cloud",
+                AppLocalizations.of(context)!.laboratorySyncManuelleCloud,
                 () => _handleForceBackup(),
               ),
               _buildActionSetting(
-                "Export RGPD",
+                AppLocalizations.of(context)!.laboratoryExportRGPD,
                 Icons.download,
-                "Générer et partager mon archive JSON",
+                AppLocalizations.of(context)!.laboratoryGenererArchiveJSON,
                 () => _handleDataExport(),
               ),
               _buildActionSetting(
-                "Nettoyage du Cache",
+                AppLocalizations.of(context)!.laboratoryNettoyageCache,
                 Icons.cleaning_services,
-                "Optimiser le stockage local",
+                AppLocalizations.of(context)!.laboratoryOptimiserStockageLocal,
                 () => _handleCacheCleanup(),
               ),
             ],
@@ -562,29 +562,29 @@ class _LaboratoryScreenState extends ConsumerState<LaboratoryScreen> {
         ),
         SizedBox(height: 32),
 
-        _buildSectionHeader("HORS LIGNE (OFFLINE HUB)", Icons.wifi_off),
+        _buildSectionHeader(AppLocalizations.of(context)!.laboratoryHorsLigneHub, Icons.wifi_off),
         SizedBox(height: 16),
         _buildTechContainer(
           child: Column(
             children: [
               _buildInfoRow(
-                "Modèles IA Embarqués",
-                "v1.4.2 Téléchargé",
+                AppLocalizations.of(context)!.laboratoryModelesIAEmbarques,
+                AppLocalizations.of(context)!.laboratoryV142Telecharge,
                 Icons.memory,
                 _accentTech,
               ),
               SizedBox(height: 12),
               _buildInfoRow(
-                "Cartes Locales",
+                AppLocalizations.of(context)!.laboratoryCartesLocales,
                 "Paris, Lyon",
                 Icons.map,
                 Colors.white54,
               ),
               SizedBox(height: 16),
               _buildActionSetting(
-                "Gérer le Stockage",
+                AppLocalizations.of(context)!.laboratoryGererStockage,
                 Icons.storage,
-                "Vider les fichiers temporaires",
+                AppLocalizations.of(context)!.laboratoryViderFichiersTemporaires,
                 () => _handleCacheCleanup(),
               ),
             ],
@@ -646,7 +646,7 @@ class _LaboratoryScreenState extends ConsumerState<LaboratoryScreen> {
           XFile(jsonFile.path, name: 'Archive_Technique.json'),
           XFile(txtFile.path, name: 'Resume_OSIRION.txt'),
         ],
-        text: 'Mon archive de données OSIRION (RGPD)',
+        text: AppLocalizations.of(context)!.laboratoryMonArchiveOsirion,
       );
     } catch (e) {
       if (mounted) {
@@ -718,29 +718,29 @@ Propulsé par le Moteur OSIRION v1.1
       key: ValueKey(3),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildSectionHeader("RÉSOLUTION DE PROBLÈMES", Icons.build),
+        _buildSectionHeader(AppLocalizations.of(context)!.laboratoryResolutionProblemes, Icons.build),
         SizedBox(height: 16),
         _buildTechContainer(
           child: Column(
             children: [
               _buildActionSetting(
-                "Diagnostic Rapide",
+                AppLocalizations.of(context)!.laboratoryDiagnosticRapide,
                 Icons.health_and_safety,
-                "Vérifier la caméra et le GPS",
+                AppLocalizations.of(context)!.laboratoryVerifierCameraGPS,
                 () => _handleQuickDiagnostic(),
               ),
               Divider(color: Colors.white10),
               _buildActionSetting(
-                "Signalement & Suggestions",
+                AppLocalizations.of(context)!.laboratorySignalementSuggestions,
                 Icons.bug_report,
-                "Bugs ou Améliorations",
+                AppLocalizations.of(context)!.laboratoryBugsAmeliorations,
                 () => _handleFeedback(),
               ),
               Divider(color: Colors.white10),
               _buildActionSetting(
-                "Centre d'Aide",
+                AppLocalizations.of(context)!.laboratoryCentreAide,
                 Icons.help_outline,
-                "Tutoriels de placement caméra",
+                AppLocalizations.of(context)!.laboratoryTutorielsPlacementCamera,
                 () => _showHelpCenter(),
               ),
             ],
@@ -748,29 +748,29 @@ Propulsé par le Moteur OSIRION v1.1
         ),
         SizedBox(height: 32),
 
-        _buildSectionHeader("CROWDSOURCING", Icons.groups),
+        _buildSectionHeader(AppLocalizations.of(context)!.laboratoryCrowdsourcing, Icons.groups),
         SizedBox(height: 16),
         _buildTechContainer(
           child: Column(
             children: [
               _buildActionSetting(
-                "Proposer un nouveau Parc",
+                AppLocalizations.of(context)!.laboratoryProposerParc,
                 Icons.add_location_alt,
-                "Street Workout",
+                AppLocalizations.of(context)!.laboratoryStreetWorkout,
                 () {},
               ),
               Divider(color: Colors.white10),
               _buildActionSetting(
-                "Suggérer un Livre",
+                AppLocalizations.of(context)!.laboratorySuggererLivre,
                 Icons.menu_book,
-                "Pour l'Arc Actuel",
+                AppLocalizations.of(context)!.laboratoryPourArcActuel,
                 () {},
               ),
               Divider(color: Colors.white10),
               _buildActionSetting(
-                "Déconnexion du Système",
+                AppLocalizations.of(context)!.laboratoryDeconnexionSysteme,
                 Icons.logout,
-                "Clôturer la session OSIRION",
+                AppLocalizations.of(context)!.laboratoryCloturerSession,
                 () async {
                   await ref.read(authRepositoryProvider).signOut();
                   // Le AuthWrapper dans main.dart détectera le changement
@@ -827,15 +827,15 @@ Propulsé par le Moteur OSIRION v1.1
         ),
         SizedBox(height: 24),
 
-        _buildSectionHeader("ENVIRONNEMENTS INTERACTIFS", Icons.layers),
+        _buildSectionHeader(AppLocalizations.of(context)!.laboratoryEnvironnementsInteractifs, Icons.layers),
         SizedBox(height: 16),
         _buildTechContainer(
           child: Column(
             children: [
               _buildActionSetting(
-                "Tester l'Overlay Dojo (Caméra IA)",
+                AppLocalizations.of(context)!.laboratoryTesterOverlayDojo,
                 Icons.center_focus_strong,
-                "Affiche l'overlay de sport sur flux vidéo live",
+                AppLocalizations.of(context)!.laboratoryAfficheOverlaySport,
                 () {
                   Navigator.push(
                     context,
@@ -850,21 +850,21 @@ Propulsé par le Moteur OSIRION v1.1
         ),
         SizedBox(height: 32),
 
-        _buildSectionHeader("PROJETS EN COURS", Icons.science),
+        _buildSectionHeader(AppLocalizations.of(context)!.laboratoryProjetsEnCours, Icons.science),
         SizedBox(height: 16),
         _buildExperimentalFeature(
-          "Capteur Cardiaque (Optique)",
-          "Mesure du pouls via flash caméra",
+          AppLocalizations.of(context)!.laboratoryCapteurCardiaque,
+          AppLocalizations.of(context)!.laboratoryMesurePoulsFlash,
           false,
         ),
         _buildExperimentalFeature(
-          "Nouveaux Mouvements IA",
-          "Détection Planche & Front Lever",
+          AppLocalizations.of(context)!.laboratoryNouveauxMouvementsIA,
+          AppLocalizations.of(context)!.laboratoryDetectionPlanche,
           true,
         ),
         _buildExperimentalFeature(
-          "Coach Vocal Génératif",
-          "IA conversationnelle pendant l'effort",
+          AppLocalizations.of(context)!.laboratoryCoachVocalGeneratif,
+          AppLocalizations.of(context)!.laboratoryIAConversationnelle,
           false,
         ),
       ],
@@ -1165,7 +1165,7 @@ Propulsé par le Moteur OSIRION v1.1
                 ),
                 _buildHelpItem(
                   "Synchronisation",
-                  "Si vos points d'XP ne montent pas, vérifiez votre connexion dans l'onglet 'Données' et forcez la sauvegarde.",
+                  "Si vos points d'XP ne montent pas, vérifiez votre connexion dans l'onglet AppLocalizations.of(context)!.laboratoryDonnees et forcez la sauvegarde.",
                   Icons.sync,
                 ),
               ],

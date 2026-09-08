@@ -21,12 +21,13 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' hide Settings;
+import 'package:valerion/core/constants/app_constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   // 1. Initialiser le token Mapbox (Nécessaire avant de charger un MapWidget)
-  MapboxOptions.setAccessToken("YOUR_MAPBOX_SECRET_TOKEN");
+  MapboxOptions.setAccessToken(AppConstants.mapboxAccessToken);
 
   // 2. Initialiser Firebase sans bloquer l'interface si possible (nécessaire pour ProviderScope)
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

@@ -15,6 +15,7 @@ import '../home/models/arc_data.dart';
 import '../../core/providers/arc_provider.dart';
 import '../../core/providers/locale_provider.dart';
 import '../../l10n/app_localizations.dart';
+import '../../core/utils/relic_translator.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -267,7 +268,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
             const SizedBox(height: 4),
             Text(
-              "RANG : ${activeTitle?.name.toUpperCase() ?? "DISCIPLE"}  •  LVL. ${user.level}",
+              "${AppLocalizations.of(context)!.profileRank} : ${activeTitle?.getLocalizedName(context).toUpperCase() ?? AppLocalizations.of(context)!.profileDisciple}  •  LVL. ${user.level}",
               style: TextStyle(
                 color: activeTitle?.color ?? _accentWinter,
                 fontSize: 10,
@@ -283,7 +284,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
-                "Prestige Global : ${user.xp} XP",
+                "${AppLocalizations.of(context)!.profilePrestigeGlobal} : ${user.xp} XP",
                 style: TextStyle(
                   color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.6) : Colors.white70,
                   fontSize: 10,
@@ -345,13 +346,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildCircularGauge("FORCE", forceRatio),
+            _buildCircularGauge(AppLocalizations.of(context)!.profileForce, forceRatio),
             Column(
               children: [
                 const Icon(Icons.all_inclusive, color: Colors.white, size: 24),
                 const SizedBox(height: 8),
                 Text(
-                  "HARMONIE",
+                  AppLocalizations.of(context)!.profileHarmonie,
                   style: TextStyle(
                     color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.5) : Colors.white.withValues(alpha: 0.5),
                     fontSize: 8,
@@ -368,7 +369,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 ),
               ],
             ),
-            _buildCircularGauge("SAGESSE", wisdomRatio),
+            _buildCircularGauge(AppLocalizations.of(context)!.profileSagesse, wisdomRatio),
           ],
         ),
         const SizedBox(height: 40),
@@ -388,7 +389,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Widget _buildCircularGauge(String label, double percentage) {
-    Color color = label == "FORCE" ? Colors.cyan : Colors.purpleAccent;
+    Color color = label == AppLocalizations.of(context)!.profileForce ? Colors.cyan : Colors.purpleAccent;
     int pseudoLevel = (percentage * 100).toInt(); // Simulation du Lvl
     return Column(
       children: [
@@ -473,7 +474,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                   ),
                   Text(
-                    "${history.length} / ${arcDays.length} JOURS ACTIFS",
+                    "${history.length} / ${arcDays.length} ${AppLocalizations.of(context)!.profileJoursActifs}",
                     style: TextStyle(
                       color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.4) : Colors.white38,
                       fontSize: 10,
@@ -561,7 +562,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           children: [
             Expanded(
               child: _buildDataCard(
-                "Poids",
+                AppLocalizations.of(context)!.profilePoids,
                 user?.weight != null ? user!.weight!.toStringAsFixed(1) : "--",
                 "kg",
                 Icons.monitor_weight,
@@ -571,7 +572,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             const SizedBox(width: 12),
             Expanded(
               child: _buildDataCard(
-                "Masse Grasse",
+                AppLocalizations.of(context)!.profileMasseGrasse,
                 user?.bodyFat != null
                     ? user!.bodyFat!.toStringAsFixed(1)
                     : "--",
@@ -587,7 +588,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           children: [
             Expanded(
               child: _buildDataCard(
-                "Muscle",
+                AppLocalizations.of(context)!.profileMuscle,
                 user?.muscleMass != null
                     ? user!.muscleMass!.toStringAsFixed(1)
                     : "--",
@@ -599,9 +600,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             const SizedBox(width: 12),
             Expanded(
               child: _buildDataCard(
-                "Sommeil",
+                AppLocalizations.of(context)!.profileSommeil,
                 "--h--", // Mock (Complexe à traquer sans API Santé, neutralisé temporairement)
-                "moy.",
+                AppLocalizations.of(context)!.profileMoyenne,
                 Icons.bedtime,
                 Colors.indigoAccent,
               ),
@@ -620,12 +621,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ),
         const SizedBox(height: 12),
         _buildRecordRow(
-          "Max Pompes (Unbroken)",
+          AppLocalizations.of(context)!.profileMaxPompes,
           "${user?.maxPushups ?? 0} reps",
         ),
-        _buildRecordRow("Max Tractions", "${user?.maxPullups ?? 0} reps"),
+        _buildRecordRow(AppLocalizations.of(context)!.profileMaxTractions, "${user?.maxPullups ?? 0} reps"),
         _buildRecordRow(
-          "Précision Mouvement",
+          AppLocalizations.of(context)!.profilePrecisionMouvement,
           "${(user?.movementPrecision ?? 0.0).toStringAsFixed(0)}% (${_getPrecisionGrade(user?.movementPrecision)})",
         ),
 
@@ -640,14 +641,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ),
         const SizedBox(height: 12),
         _buildRecordRow(
-          "Meilleure Allure (1km)",
+          AppLocalizations.of(context)!.profileMeilleureAllure,
           _formatPace(user?.bestPace1km ?? 0.0),
         ),
         _buildRecordRow(
-          "Boucle Alpha (6km)",
+          AppLocalizations.of(context)!.profileBoucleAlpha,
           _formatDuration(user?.bestAlphaLoop6km ?? 0.0),
         ),
-        _buildRecordRow("Distance Totale", "${user?.totalDistance ?? 0.0} km"),
+        _buildRecordRow(AppLocalizations.of(context)!.profileDistanceTotale, "${user?.totalDistance ?? 0.0} km"),
       ],
     );
   }
@@ -859,11 +860,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "DÉBUT : ${DateFormat('dd MMM').format(arc.startDate)}",
+                    "${AppLocalizations.of(context)!.profileDebut} : ${DateFormat('dd MMM').format(arc.startDate)}",
                     style: TextStyle(color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.4) : Colors.white24, fontSize: 8),
                   ),
                   Text(
-                    "FIN : ${DateFormat('dd MMM').format(arc.endDate)}",
+                    "${AppLocalizations.of(context)!.profileFin} : ${DateFormat('dd MMM').format(arc.endDate)}",
                     style: TextStyle(color: _isSummer ? _onSurfaceColor.withValues(alpha: 0.4) : Colors.white24, fontSize: 8),
                   ),
                 ],

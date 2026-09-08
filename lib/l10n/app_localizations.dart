@@ -3454,6 +3454,1362 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Continuer avec Google'**
   String get googleSignInButton;
+
+  /// No description provided for @arenaForgeNavigationMode.
+  ///
+  /// In fr, this message translates to:
+  /// **'2. MODE DE NAVIGATION'**
+  String get arenaForgeNavigationMode;
+
+  /// No description provided for @arenaForgeBoucleIA.
+  ///
+  /// In fr, this message translates to:
+  /// **'BOUCLE IA'**
+  String get arenaForgeBoucleIA;
+
+  /// No description provided for @arenaForgePointAB.
+  ///
+  /// In fr, this message translates to:
+  /// **'POINT A -> B'**
+  String get arenaForgePointAB;
+
+  /// No description provided for @arenaChoisirDestination.
+  ///
+  /// In fr, this message translates to:
+  /// **'CHOISIR LA DESTINATION'**
+  String get arenaChoisirDestination;
+
+  /// No description provided for @arenaForgeStep3Destination.
+  ///
+  /// In fr, this message translates to:
+  /// **'3. DESTINATION'**
+  String get arenaForgeStep3Destination;
+
+  /// No description provided for @arenaForgeChooseDestinationOnMap.
+  ///
+  /// In fr, this message translates to:
+  /// **'CHOISIR LA DESTINATION SUR LA CARTE'**
+  String get arenaForgeChooseDestinationOnMap;
+
+  /// No description provided for @arenaForgeDestinationSelected.
+  ///
+  /// In fr, this message translates to:
+  /// **'DESTINATION SÉLECTIONNÉE'**
+  String get arenaForgeDestinationSelected;
+
+  /// No description provided for @arenaForgePleaseChooseDestination.
+  ///
+  /// In fr, this message translates to:
+  /// **'Veuillez choisir une destination sur la carte.'**
+  String get arenaForgePleaseChooseDestination;
+
+  /// No description provided for @arenaForgeGenerateRoute.
+  ///
+  /// In fr, this message translates to:
+  /// **'GÉNÉRER LE TRACÉ'**
+  String get arenaForgeGenerateRoute;
+
+  /// No description provided for @arenaSearchAddress.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rechercher une adresse...'**
+  String get arenaSearchAddress;
+
+  /// No description provided for @arsenalFilterAll.
+  ///
+  /// In fr, this message translates to:
+  /// **'TOUS'**
+  String get arsenalFilterAll;
+
+  /// No description provided for @arsenalFilterHalo.
+  ///
+  /// In fr, this message translates to:
+  /// **'HALO'**
+  String get arsenalFilterHalo;
+
+  /// No description provided for @arsenalFilterTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'TITRE'**
+  String get arsenalFilterTitle;
+
+  /// No description provided for @arsenalFilterBoost.
+  ///
+  /// In fr, this message translates to:
+  /// **'BOOST'**
+  String get arsenalFilterBoost;
+
+  /// No description provided for @pantheonStatusDisponible.
+  ///
+  /// In fr, this message translates to:
+  /// **'DISPONIBLE'**
+  String get pantheonStatusDisponible;
+
+  /// No description provided for @pantheonStatusEnPleinEffort.
+  ///
+  /// In fr, this message translates to:
+  /// **'EN PLEIN EFFORT'**
+  String get pantheonStatusEnPleinEffort;
+
+  /// No description provided for @pantheonStatusEnRepos.
+  ///
+  /// In fr, this message translates to:
+  /// **'EN REPOS'**
+  String get pantheonStatusEnRepos;
+
+  /// No description provided for @pantheonStatusNePasDeranger.
+  ///
+  /// In fr, this message translates to:
+  /// **'NE PAS DÉRANGER'**
+  String get pantheonStatusNePasDeranger;
+
+  /// No description provided for @arsenalOwned.
+  ///
+  /// In fr, this message translates to:
+  /// **'POSSÉDÉ'**
+  String get arsenalOwned;
+
+  /// No description provided for @arsenalBlacksmithPact.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pacte du Forgeron'**
+  String get arsenalBlacksmithPact;
+
+  /// No description provided for @arsenalTransactionFailed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Échec de la transaction : {error}'**
+  String arsenalTransactionFailed(String error);
+
+  /// No description provided for @arsenalEmptyInventory.
+  ///
+  /// In fr, this message translates to:
+  /// **'Votre sac est vide. Visitez le Forgeron.'**
+  String get arsenalEmptyInventory;
+
+  /// No description provided for @laboratoryAvatar.
+  ///
+  /// In fr, this message translates to:
+  /// **'Avatar'**
+  String get laboratoryAvatar;
+
+  /// No description provided for @laboratoryMoteurs.
+  ///
+  /// In fr, this message translates to:
+  /// **'Moteurs'**
+  String get laboratoryMoteurs;
+
+  /// No description provided for @laboratoryDonnees.
+  ///
+  /// In fr, this message translates to:
+  /// **'Données'**
+  String get laboratoryDonnees;
+
+  /// No description provided for @laboratorySupport.
+  ///
+  /// In fr, this message translates to:
+  /// **'Support'**
+  String get laboratorySupport;
+
+  /// No description provided for @laboratoryBeta.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bêta'**
+  String get laboratoryBeta;
+
+  /// No description provided for @laboratoryModificationAvatar.
+  ///
+  /// In fr, this message translates to:
+  /// **'MODIFICATION DE L\'AVATAR'**
+  String get laboratoryModificationAvatar;
+
+  /// No description provided for @laboratoryNomDeCode.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom de code'**
+  String get laboratoryNomDeCode;
+
+  /// No description provided for @laboratoryIdentifiantPublic.
+  ///
+  /// In fr, this message translates to:
+  /// **'Identifiant public'**
+  String get laboratoryIdentifiantPublic;
+
+  /// No description provided for @laboratoryAge.
+  ///
+  /// In fr, this message translates to:
+  /// **'Âge'**
+  String get laboratoryAge;
+
+  /// No description provided for @laboratoryAnnees.
+  ///
+  /// In fr, this message translates to:
+  /// **'Années'**
+  String get laboratoryAnnees;
+
+  /// No description provided for @laboratoryTaille.
+  ///
+  /// In fr, this message translates to:
+  /// **'Taille'**
+  String get laboratoryTaille;
+
+  /// No description provided for @laboratoryCm.
+  ///
+  /// In fr, this message translates to:
+  /// **'cm'**
+  String get laboratoryCm;
+
+  /// No description provided for @laboratoryPoidsTotal.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poids (Total)'**
+  String get laboratoryPoidsTotal;
+
+  /// No description provided for @laboratoryKg.
+  ///
+  /// In fr, this message translates to:
+  /// **'kg'**
+  String get laboratoryKg;
+
+  /// No description provided for @laboratoryMasseGrasse.
+  ///
+  /// In fr, this message translates to:
+  /// **'Masse Grasse'**
+  String get laboratoryMasseGrasse;
+
+  /// No description provided for @laboratoryPourcentage.
+  ///
+  /// In fr, this message translates to:
+  /// **'%'**
+  String get laboratoryPourcentage;
+
+  /// No description provided for @laboratoryMuscle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Muscle'**
+  String get laboratoryMuscle;
+
+  /// No description provided for @laboratoryArchivesCombat.
+  ///
+  /// In fr, this message translates to:
+  /// **'ARCHIVES DE COMBAT (VERROUILLÉES)'**
+  String get laboratoryArchivesCombat;
+
+  /// No description provided for @laboratoryEchecLiaison.
+  ///
+  /// In fr, this message translates to:
+  /// **'Échec de la liaison:'**
+  String get laboratoryEchecLiaison;
+
+  /// No description provided for @laboratoryStationCalibration.
+  ///
+  /// In fr, this message translates to:
+  /// **'STATION DE CALIBRATION IA'**
+  String get laboratoryStationCalibration;
+
+  /// No description provided for @laboratorySensibiliteDetection.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sensibilité de Détection'**
+  String get laboratorySensibiliteDetection;
+
+  /// No description provided for @laboratoryAjustezLuminosite.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajustez selon la luminosité de la pièce'**
+  String get laboratoryAjustezLuminosite;
+
+  /// No description provided for @laboratorySuperpositionSquelettique.
+  ///
+  /// In fr, this message translates to:
+  /// **'Superposition Squelettique'**
+  String get laboratorySuperpositionSquelettique;
+
+  /// No description provided for @laboratoryAfficherLignesVideo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Afficher les lignes sur le flux vidéo'**
+  String get laboratoryAfficherLignesVideo;
+
+  /// No description provided for @laboratoryModeEnergetique.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mode Énergétique'**
+  String get laboratoryModeEnergetique;
+
+  /// No description provided for @laboratoryHautePrecision.
+  ///
+  /// In fr, this message translates to:
+  /// **'Haute Précision'**
+  String get laboratoryHautePrecision;
+
+  /// No description provided for @laboratoryEquilibre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Équilibré'**
+  String get laboratoryEquilibre;
+
+  /// No description provided for @laboratoryEconomie.
+  ///
+  /// In fr, this message translates to:
+  /// **'Économie'**
+  String get laboratoryEconomie;
+
+  /// No description provided for @laboratoryOptimisationGPS.
+  ///
+  /// In fr, this message translates to:
+  /// **'OPTIMISATION CARTOGRAPHIE (GPS)'**
+  String get laboratoryOptimisationGPS;
+
+  /// No description provided for @laboratoryFrequenceScanGPS.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fréquence de Scan GPS'**
+  String get laboratoryFrequenceScanGPS;
+
+  /// No description provided for @laboratoryPrecisionVsBatterie.
+  ///
+  /// In fr, this message translates to:
+  /// **'Précision vs Batterie'**
+  String get laboratoryPrecisionVsBatterie;
+
+  /// No description provided for @laboratoryFiltreLissage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Filtre de Lissage (Kalman)'**
+  String get laboratoryFiltreLissage;
+
+  /// No description provided for @laboratoryEviteSautsPosition.
+  ///
+  /// In fr, this message translates to:
+  /// **'Évite les sauts de position'**
+  String get laboratoryEviteSautsPosition;
+
+  /// No description provided for @laboratoryCalqueDefaut.
+  ///
+  /// In fr, this message translates to:
+  /// **'Calque par défaut'**
+  String get laboratoryCalqueDefaut;
+
+  /// No description provided for @laboratoryStandard.
+  ///
+  /// In fr, this message translates to:
+  /// **'Standard'**
+  String get laboratoryStandard;
+
+  /// No description provided for @laboratorySatellite.
+  ///
+  /// In fr, this message translates to:
+  /// **'Satellite'**
+  String get laboratorySatellite;
+
+  /// No description provided for @laboratoryHybride.
+  ///
+  /// In fr, this message translates to:
+  /// **'Hybride'**
+  String get laboratoryHybride;
+
+  /// No description provided for @laboratoryCloudSecurite.
+  ///
+  /// In fr, this message translates to:
+  /// **'CLOUD & SÉCURITÉ'**
+  String get laboratoryCloudSecurite;
+
+  /// No description provided for @laboratoryDonneesAlignees.
+  ///
+  /// In fr, this message translates to:
+  /// **'Données alignées'**
+  String get laboratoryDonneesAlignees;
+
+  /// No description provided for @laboratorySyncEnCours.
+  ///
+  /// In fr, this message translates to:
+  /// **'Synchronisation en cours...'**
+  String get laboratorySyncEnCours;
+
+  /// No description provided for @laboratoryForcerSauvegarde.
+  ///
+  /// In fr, this message translates to:
+  /// **'Forcer la Sauvegarde'**
+  String get laboratoryForcerSauvegarde;
+
+  /// No description provided for @laboratorySyncManuelleCloud.
+  ///
+  /// In fr, this message translates to:
+  /// **'Synchronisation manuelle vers le Cloud'**
+  String get laboratorySyncManuelleCloud;
+
+  /// No description provided for @laboratoryExportRGPD.
+  ///
+  /// In fr, this message translates to:
+  /// **'Export RGPD'**
+  String get laboratoryExportRGPD;
+
+  /// No description provided for @laboratoryGenererArchiveJSON.
+  ///
+  /// In fr, this message translates to:
+  /// **'Générer et partager mon archive JSON'**
+  String get laboratoryGenererArchiveJSON;
+
+  /// No description provided for @laboratoryNettoyageCache.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nettoyage du Cache'**
+  String get laboratoryNettoyageCache;
+
+  /// No description provided for @laboratoryOptimiserStockageLocal.
+  ///
+  /// In fr, this message translates to:
+  /// **'Optimiser le stockage local'**
+  String get laboratoryOptimiserStockageLocal;
+
+  /// No description provided for @laboratoryHorsLigneHub.
+  ///
+  /// In fr, this message translates to:
+  /// **'HORS LIGNE (OFFLINE HUB)'**
+  String get laboratoryHorsLigneHub;
+
+  /// No description provided for @laboratoryModelesIAEmbarques.
+  ///
+  /// In fr, this message translates to:
+  /// **'Modèles IA Embarqués'**
+  String get laboratoryModelesIAEmbarques;
+
+  /// No description provided for @laboratoryV142Telecharge.
+  ///
+  /// In fr, this message translates to:
+  /// **'v1.4.2 Téléchargé'**
+  String get laboratoryV142Telecharge;
+
+  /// No description provided for @laboratoryCartesLocales.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cartes Locales'**
+  String get laboratoryCartesLocales;
+
+  /// No description provided for @laboratoryGererStockage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Gérer le Stockage'**
+  String get laboratoryGererStockage;
+
+  /// No description provided for @laboratoryViderFichiersTemporaires.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vider les fichiers temporaires'**
+  String get laboratoryViderFichiersTemporaires;
+
+  /// No description provided for @laboratoryMonArchiveOsirion.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mon archive de données OSIRION (RGPD)'**
+  String get laboratoryMonArchiveOsirion;
+
+  /// No description provided for @laboratoryResolutionProblemes.
+  ///
+  /// In fr, this message translates to:
+  /// **'RÉSOLUTION DE PROBLÈMES'**
+  String get laboratoryResolutionProblemes;
+
+  /// No description provided for @laboratoryDiagnosticRapide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Diagnostic Rapide'**
+  String get laboratoryDiagnosticRapide;
+
+  /// No description provided for @laboratoryVerifierCameraGPS.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vérifier la caméra et le GPS'**
+  String get laboratoryVerifierCameraGPS;
+
+  /// No description provided for @laboratorySignalementSuggestions.
+  ///
+  /// In fr, this message translates to:
+  /// **'Signalement & Suggestions'**
+  String get laboratorySignalementSuggestions;
+
+  /// No description provided for @laboratoryBugsAmeliorations.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bugs ou Améliorations'**
+  String get laboratoryBugsAmeliorations;
+
+  /// No description provided for @laboratoryCentreAide.
+  ///
+  /// In fr, this message translates to:
+  /// **'Centre d\'Aide'**
+  String get laboratoryCentreAide;
+
+  /// No description provided for @laboratoryTutorielsPlacementCamera.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tutoriels de placement caméra'**
+  String get laboratoryTutorielsPlacementCamera;
+
+  /// No description provided for @laboratoryCrowdsourcing.
+  ///
+  /// In fr, this message translates to:
+  /// **'CROWDSOURCING'**
+  String get laboratoryCrowdsourcing;
+
+  /// No description provided for @laboratoryProposerParc.
+  ///
+  /// In fr, this message translates to:
+  /// **'Proposer un nouveau Parc'**
+  String get laboratoryProposerParc;
+
+  /// No description provided for @laboratoryStreetWorkout.
+  ///
+  /// In fr, this message translates to:
+  /// **'Street Workout'**
+  String get laboratoryStreetWorkout;
+
+  /// No description provided for @laboratorySuggererLivre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Suggérer un Livre'**
+  String get laboratorySuggererLivre;
+
+  /// No description provided for @laboratoryPourArcActuel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pour l\'Arc Actuel'**
+  String get laboratoryPourArcActuel;
+
+  /// No description provided for @laboratoryDeconnexionSysteme.
+  ///
+  /// In fr, this message translates to:
+  /// **'Déconnexion du Système'**
+  String get laboratoryDeconnexionSysteme;
+
+  /// No description provided for @laboratoryCloturerSession.
+  ///
+  /// In fr, this message translates to:
+  /// **'Clôturer la session OSIRION'**
+  String get laboratoryCloturerSession;
+
+  /// No description provided for @laboratoryEnvironnementsInteractifs.
+  ///
+  /// In fr, this message translates to:
+  /// **'ENVIRONNEMENTS INTERACTIFS'**
+  String get laboratoryEnvironnementsInteractifs;
+
+  /// No description provided for @laboratoryTesterOverlayDojo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tester l\'Overlay Dojo (Caméra IA)'**
+  String get laboratoryTesterOverlayDojo;
+
+  /// No description provided for @laboratoryAfficheOverlaySport.
+  ///
+  /// In fr, this message translates to:
+  /// **'Affiche l\'overlay de sport sur flux vidéo live'**
+  String get laboratoryAfficheOverlaySport;
+
+  /// No description provided for @laboratoryProjetsEnCours.
+  ///
+  /// In fr, this message translates to:
+  /// **'PROJETS EN COURS'**
+  String get laboratoryProjetsEnCours;
+
+  /// No description provided for @laboratoryCapteurCardiaque.
+  ///
+  /// In fr, this message translates to:
+  /// **'Capteur Cardiaque (Optique)'**
+  String get laboratoryCapteurCardiaque;
+
+  /// No description provided for @laboratoryMesurePoulsFlash.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mesure du pouls via flash caméra'**
+  String get laboratoryMesurePoulsFlash;
+
+  /// No description provided for @laboratoryNouveauxMouvementsIA.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveaux Mouvements IA'**
+  String get laboratoryNouveauxMouvementsIA;
+
+  /// No description provided for @laboratoryDetectionPlanche.
+  ///
+  /// In fr, this message translates to:
+  /// **'Détection Planche & Front Lever'**
+  String get laboratoryDetectionPlanche;
+
+  /// No description provided for @laboratoryCoachVocalGeneratif.
+  ///
+  /// In fr, this message translates to:
+  /// **'Coach Vocal Génératif'**
+  String get laboratoryCoachVocalGeneratif;
+
+  /// No description provided for @laboratoryIAConversationnelle.
+  ///
+  /// In fr, this message translates to:
+  /// **'IA conversationnelle pendant l\'effort'**
+  String get laboratoryIAConversationnelle;
+
+  /// No description provided for @profileRank.
+  ///
+  /// In fr, this message translates to:
+  /// **'RANG'**
+  String get profileRank;
+
+  /// No description provided for @profileDisciple.
+  ///
+  /// In fr, this message translates to:
+  /// **'DISCIPLE'**
+  String get profileDisciple;
+
+  /// No description provided for @profilePrestigeGlobal.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prestige Global'**
+  String get profilePrestigeGlobal;
+
+  /// No description provided for @profileForce.
+  ///
+  /// In fr, this message translates to:
+  /// **'FORCE'**
+  String get profileForce;
+
+  /// No description provided for @profileHarmonie.
+  ///
+  /// In fr, this message translates to:
+  /// **'HARMONIE'**
+  String get profileHarmonie;
+
+  /// No description provided for @profileSagesse.
+  ///
+  /// In fr, this message translates to:
+  /// **'SAGESSE'**
+  String get profileSagesse;
+
+  /// No description provided for @profileJoursActifs.
+  ///
+  /// In fr, this message translates to:
+  /// **'JOURS ACTIFS'**
+  String get profileJoursActifs;
+
+  /// No description provided for @profilePoids.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poids'**
+  String get profilePoids;
+
+  /// No description provided for @profileMasseGrasse.
+  ///
+  /// In fr, this message translates to:
+  /// **'Masse Grasse'**
+  String get profileMasseGrasse;
+
+  /// No description provided for @profileMuscle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Muscle'**
+  String get profileMuscle;
+
+  /// No description provided for @profileSommeil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sommeil'**
+  String get profileSommeil;
+
+  /// No description provided for @profileMoyenne.
+  ///
+  /// In fr, this message translates to:
+  /// **'moy.'**
+  String get profileMoyenne;
+
+  /// No description provided for @profileMaxPompes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Max Pompes (Unbroken)'**
+  String get profileMaxPompes;
+
+  /// No description provided for @profileMaxTractions.
+  ///
+  /// In fr, this message translates to:
+  /// **'Max Tractions'**
+  String get profileMaxTractions;
+
+  /// No description provided for @profilePrecisionMouvement.
+  ///
+  /// In fr, this message translates to:
+  /// **'Précision Mouvement'**
+  String get profilePrecisionMouvement;
+
+  /// No description provided for @profileMeilleureAllure.
+  ///
+  /// In fr, this message translates to:
+  /// **'Meilleure Allure (1km)'**
+  String get profileMeilleureAllure;
+
+  /// No description provided for @profileBoucleAlpha.
+  ///
+  /// In fr, this message translates to:
+  /// **'Boucle Alpha (6km)'**
+  String get profileBoucleAlpha;
+
+  /// No description provided for @profileDistanceTotale.
+  ///
+  /// In fr, this message translates to:
+  /// **'Distance Totale'**
+  String get profileDistanceTotale;
+
+  /// No description provided for @profileDebut.
+  ///
+  /// In fr, this message translates to:
+  /// **'DÉBUT'**
+  String get profileDebut;
+
+  /// No description provided for @profileFin.
+  ///
+  /// In fr, this message translates to:
+  /// **'FIN'**
+  String get profileFin;
+
+  /// No description provided for @relicNameTitlePerseverant.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le Persévérant'**
+  String get relicNameTitlePerseverant;
+
+  /// No description provided for @relicNameTitleTitan.
+  ///
+  /// In fr, this message translates to:
+  /// **'Titan de Fer'**
+  String get relicNameTitleTitan;
+
+  /// No description provided for @relicNameHaloFeu.
+  ///
+  /// In fr, this message translates to:
+  /// **'Halo de Feu'**
+  String get relicNameHaloFeu;
+
+  /// No description provided for @relicNameAuraBrume.
+  ///
+  /// In fr, this message translates to:
+  /// **'Brume Matinale'**
+  String get relicNameAuraBrume;
+
+  /// No description provided for @relicNameHaloSylvestre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Halo Sylvestre'**
+  String get relicNameHaloSylvestre;
+
+  /// No description provided for @relicNameHaloEpines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Couronne d\\'**
+  String get relicNameHaloEpines;
+
+  /// No description provided for @relicNameHaloGlacial.
+  ///
+  /// In fr, this message translates to:
+  /// **'Halo Glacial'**
+  String get relicNameHaloGlacial;
+
+  /// No description provided for @relicNameAuraVents.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vents Tourbillonnants'**
+  String get relicNameAuraVents;
+
+  /// No description provided for @relicNameFxCarbone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Particules de Carbone'**
+  String get relicNameFxCarbone;
+
+  /// No description provided for @relicNameAuraMagnetique.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sphère Magnétique'**
+  String get relicNameAuraMagnetique;
+
+  /// No description provided for @relicNameHaloFoudroyant.
+  ///
+  /// In fr, this message translates to:
+  /// **'Halo Foudroyant'**
+  String get relicNameHaloFoudroyant;
+
+  /// No description provided for @relicNameAuraBio.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lueur Bio-luminescente'**
+  String get relicNameAuraBio;
+
+  /// No description provided for @relicNameHaloSolaire.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rayonnement Solaire'**
+  String get relicNameHaloSolaire;
+
+  /// No description provided for @relicNameFxNeon.
+  ///
+  /// In fr, this message translates to:
+  /// **'Traînée de Néon'**
+  String get relicNameFxNeon;
+
+  /// No description provided for @relicNameAuraVolcanique.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aura Volcanique'**
+  String get relicNameAuraVolcanique;
+
+  /// No description provided for @relicNameAuraCristalline.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aura Cristalline'**
+  String get relicNameAuraCristalline;
+
+  /// No description provided for @relicNameFxCyber.
+  ///
+  /// In fr, this message translates to:
+  /// **'Éclat Cybernétique'**
+  String get relicNameFxCyber;
+
+  /// No description provided for @relicNameAuraPurete.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aura de Pureté'**
+  String get relicNameAuraPurete;
+
+  /// No description provided for @relicNameHaloPlasma.
+  ///
+  /// In fr, this message translates to:
+  /// **'Halo Plasma'**
+  String get relicNameHaloPlasma;
+
+  /// No description provided for @relicNameAuraQuantique.
+  ///
+  /// In fr, this message translates to:
+  /// **'Résonance Quantique'**
+  String get relicNameAuraQuantique;
+
+  /// No description provided for @relicNameAuraOmbre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ombre Furtive'**
+  String get relicNameAuraOmbre;
+
+  /// No description provided for @relicNameFxEtoiles.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poussière d\\'**
+  String get relicNameFxEtoiles;
+
+  /// No description provided for @relicNameBoostMotivation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Éclat de Motivation'**
+  String get relicNameBoostMotivation;
+
+  /// No description provided for @relicNameBoostSeve.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sève Énergisante'**
+  String get relicNameBoostSeve;
+
+  /// No description provided for @relicNameBoostVitalite2.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cristal de Vitalité'**
+  String get relicNameBoostVitalite2;
+
+  /// No description provided for @relicNameBoostEchange.
+  ///
+  /// In fr, this message translates to:
+  /// **'Jeton d\\'**
+  String get relicNameBoostEchange;
+
+  /// No description provided for @relicNameBoostRecuperation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Potion de Récupération'**
+  String get relicNameBoostRecuperation;
+
+  /// No description provided for @relicNameBoostFlorale.
+  ///
+  /// In fr, this message translates to:
+  /// **'Essence Florale'**
+  String get relicNameBoostFlorale;
+
+  /// No description provided for @relicNameBoostAigle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Souffle de l\\'**
+  String get relicNameBoostAigle;
+
+  /// No description provided for @relicNameBoostOxygene.
+  ///
+  /// In fr, this message translates to:
+  /// **'Élixir d\\'**
+  String get relicNameBoostOxygene;
+
+  /// No description provided for @relicNameBoostAdrenaline.
+  ///
+  /// In fr, this message translates to:
+  /// **'Boost d\\'**
+  String get relicNameBoostAdrenaline;
+
+  /// No description provided for @relicNameBoostFer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Infusion de Fer'**
+  String get relicNameBoostFer;
+
+  /// No description provided for @relicNameBoostBouclier.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bouclier Thermique'**
+  String get relicNameBoostBouclier;
+
+  /// No description provided for @relicNameBoostTicketDouble.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ticket Double Gain'**
+  String get relicNameBoostTicketDouble;
+
+  /// No description provided for @relicNameBoostResilience.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cristal de Résilience'**
+  String get relicNameBoostResilience;
+
+  /// No description provided for @relicNameBoostPurificateur.
+  ///
+  /// In fr, this message translates to:
+  /// **'Filtre Purificateur'**
+  String get relicNameBoostPurificateur;
+
+  /// No description provided for @relicNameBoostCroissance.
+  ///
+  /// In fr, this message translates to:
+  /// **'Graine de Croissance'**
+  String get relicNameBoostCroissance;
+
+  /// No description provided for @relicNameBoostBatterie.
+  ///
+  /// In fr, this message translates to:
+  /// **'Batterie Haute Tension'**
+  String get relicNameBoostBatterie;
+
+  /// No description provided for @relicNameBoostCatalyseur.
+  ///
+  /// In fr, this message translates to:
+  /// **'Catalyseur de Carbone'**
+  String get relicNameBoostCatalyseur;
+
+  /// No description provided for @relicNameBoostMultiplicateur.
+  ///
+  /// In fr, this message translates to:
+  /// **'Multiplicateur d\\'**
+  String get relicNameBoostMultiplicateur;
+
+  /// No description provided for @relicNameBoostApesanteur.
+  ///
+  /// In fr, this message translates to:
+  /// **'Poudre d\\'**
+  String get relicNameBoostApesanteur;
+
+  /// No description provided for @relicNameBoostSuperCondensateur.
+  ///
+  /// In fr, this message translates to:
+  /// **'Super-Condensateur'**
+  String get relicNameBoostSuperCondensateur;
+
+  /// No description provided for @relicNameTitleShop1.
+  ///
+  /// In fr, this message translates to:
+  /// **'Apprenti Forgeron'**
+  String get relicNameTitleShop1;
+
+  /// No description provided for @relicNameTitleShop2.
+  ///
+  /// In fr, this message translates to:
+  /// **'Frappeur d\\'**
+  String get relicNameTitleShop2;
+
+  /// No description provided for @relicNameTitleShop3.
+  ///
+  /// In fr, this message translates to:
+  /// **'Souffleur de Braises'**
+  String get relicNameTitleShop3;
+
+  /// No description provided for @relicNameTitleShop4.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tisonnier Ardent'**
+  String get relicNameTitleShop4;
+
+  /// No description provided for @relicNameTitleShop5.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sculpteur de Fer'**
+  String get relicNameTitleShop5;
+
+  /// No description provided for @relicNameTitleShop6.
+  ///
+  /// In fr, this message translates to:
+  /// **'Maître Enclume'**
+  String get relicNameTitleShop6;
+
+  /// No description provided for @relicNameTitleShop7.
+  ///
+  /// In fr, this message translates to:
+  /// **'Façonneur d\\'**
+  String get relicNameTitleShop7;
+
+  /// No description provided for @relicNameTitleShop8.
+  ///
+  /// In fr, this message translates to:
+  /// **'Artisan de la Lame'**
+  String get relicNameTitleShop8;
+
+  /// No description provided for @relicNameTitleShop9.
+  ///
+  /// In fr, this message translates to:
+  /// **'Forgeron de Guerre'**
+  String get relicNameTitleShop9;
+
+  /// No description provided for @relicNameTitleShop10.
+  ///
+  /// In fr, this message translates to:
+  /// **'Seigneur de la Forge'**
+  String get relicNameTitleShop10;
+
+  /// No description provided for @relicNameTitleShop11.
+  ///
+  /// In fr, this message translates to:
+  /// **'Créateur d\\'**
+  String get relicNameTitleShop11;
+
+  /// No description provided for @relicNameTitleShop12.
+  ///
+  /// In fr, this message translates to:
+  /// **'Forgeron Stellaire'**
+  String get relicNameTitleShop12;
+
+  /// No description provided for @relicNameTitleShop13.
+  ///
+  /// In fr, this message translates to:
+  /// **'Gardien du Feu Primordial'**
+  String get relicNameTitleShop13;
+
+  /// No description provided for @relicNameTitleShop14.
+  ///
+  /// In fr, this message translates to:
+  /// **'Faiseur de Mondes'**
+  String get relicNameTitleShop14;
+
+  /// No description provided for @relicNameTitleShop15.
+  ///
+  /// In fr, this message translates to:
+  /// **'Démiurge de l\\'**
+  String get relicNameTitleShop15;
+
+  /// No description provided for @relicNameTitleLvl1.
+  ///
+  /// In fr, this message translates to:
+  /// **'Novice'**
+  String get relicNameTitleLvl1;
+
+  /// No description provided for @relicNameTitleLvl2.
+  ///
+  /// In fr, this message translates to:
+  /// **'Initié(e)'**
+  String get relicNameTitleLvl2;
+
+  /// No description provided for @relicNameTitleLvl3.
+  ///
+  /// In fr, this message translates to:
+  /// **'Marcheur'**
+  String get relicNameTitleLvl3;
+
+  /// No description provided for @relicNameTitleLvl4.
+  ///
+  /// In fr, this message translates to:
+  /// **'Apprenti(e)'**
+  String get relicNameTitleLvl4;
+
+  /// No description provided for @relicNameTitleLvl5.
+  ///
+  /// In fr, this message translates to:
+  /// **'Disciple'**
+  String get relicNameTitleLvl5;
+
+  /// No description provided for @relicNameTitleLvl6.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pratiquant(e)'**
+  String get relicNameTitleLvl6;
+
+  /// No description provided for @relicNameTitleLvl7.
+  ///
+  /// In fr, this message translates to:
+  /// **'Explorateur'**
+  String get relicNameTitleLvl7;
+
+  /// No description provided for @relicNameTitleLvl8.
+  ///
+  /// In fr, this message translates to:
+  /// **'Challenger'**
+  String get relicNameTitleLvl8;
+
+  /// No description provided for @relicNameTitleLvl9.
+  ///
+  /// In fr, this message translates to:
+  /// **'Combattant(e)'**
+  String get relicNameTitleLvl9;
+
+  /// No description provided for @relicNameTitleLvl10.
+  ///
+  /// In fr, this message translates to:
+  /// **'Guerrier(e)'**
+  String get relicNameTitleLvl10;
+
+  /// No description provided for @relicNameTitleLvl11.
+  ///
+  /// In fr, this message translates to:
+  /// **'Athlète'**
+  String get relicNameTitleLvl11;
+
+  /// No description provided for @relicNameTitleLvl12.
+  ///
+  /// In fr, this message translates to:
+  /// **'Défenseur'**
+  String get relicNameTitleLvl12;
+
+  /// No description provided for @relicNameTitleLvl13.
+  ///
+  /// In fr, this message translates to:
+  /// **'Protecteur'**
+  String get relicNameTitleLvl13;
+
+  /// No description provided for @relicNameTitleLvl14.
+  ///
+  /// In fr, this message translates to:
+  /// **'Soldat'**
+  String get relicNameTitleLvl14;
+
+  /// No description provided for @relicNameTitleLvl15.
+  ///
+  /// In fr, this message translates to:
+  /// **'Spartiate'**
+  String get relicNameTitleLvl15;
+
+  /// No description provided for @relicNameTitleLvl16.
+  ///
+  /// In fr, this message translates to:
+  /// **'Centurion'**
+  String get relicNameTitleLvl16;
+
+  /// No description provided for @relicNameTitleLvl17.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vétéran'**
+  String get relicNameTitleLvl17;
+
+  /// No description provided for @relicNameTitleLvl18.
+  ///
+  /// In fr, this message translates to:
+  /// **'Gardien(ne)'**
+  String get relicNameTitleLvl18;
+
+  /// No description provided for @relicNameTitleLvl19.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sentinelle'**
+  String get relicNameTitleLvl19;
+
+  /// No description provided for @relicNameTitleLvl20.
+  ///
+  /// In fr, this message translates to:
+  /// **'Chevalier(e)'**
+  String get relicNameTitleLvl20;
+
+  /// No description provided for @relicNameTitleLvl22.
+  ///
+  /// In fr, this message translates to:
+  /// **'Paladin'**
+  String get relicNameTitleLvl22;
+
+  /// No description provided for @relicNameTitleLvl24.
+  ///
+  /// In fr, this message translates to:
+  /// **'Champion(ne)'**
+  String get relicNameTitleLvl24;
+
+  /// No description provided for @relicNameTitleLvl26.
+  ///
+  /// In fr, this message translates to:
+  /// **'Élite'**
+  String get relicNameTitleLvl26;
+
+  /// No description provided for @relicNameTitleLvl28.
+  ///
+  /// In fr, this message translates to:
+  /// **'Héros / Héroïne'**
+  String get relicNameTitleLvl28;
+
+  /// No description provided for @relicNameTitleLvl30.
+  ///
+  /// In fr, this message translates to:
+  /// **'Légende'**
+  String get relicNameTitleLvl30;
+
+  /// No description provided for @relicNameTitleLvl32.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mythe'**
+  String get relicNameTitleLvl32;
+
+  /// No description provided for @relicNameTitleLvl34.
+  ///
+  /// In fr, this message translates to:
+  /// **'Maître'**
+  String get relicNameTitleLvl34;
+
+  /// No description provided for @relicNameTitleLvl36.
+  ///
+  /// In fr, this message translates to:
+  /// **'Grand Maître'**
+  String get relicNameTitleLvl36;
+
+  /// No description provided for @relicNameTitleLvl38.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prodige'**
+  String get relicNameTitleLvl38;
+
+  /// No description provided for @relicNameTitleLvl40.
+  ///
+  /// In fr, this message translates to:
+  /// **'Demi-Dieu'**
+  String get relicNameTitleLvl40;
+
+  /// No description provided for @relicNameTitleLvl42.
+  ///
+  /// In fr, this message translates to:
+  /// **'Immortel(le)'**
+  String get relicNameTitleLvl42;
+
+  /// No description provided for @relicNameTitleLvl45.
+  ///
+  /// In fr, this message translates to:
+  /// **'Colosse'**
+  String get relicNameTitleLvl45;
+
+  /// No description provided for @relicNameTitleLvl48.
+  ///
+  /// In fr, this message translates to:
+  /// **'Titan'**
+  String get relicNameTitleLvl48;
+
+  /// No description provided for @relicNameTitleLvl50.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dieu de la Guerre'**
+  String get relicNameTitleLvl50;
+
+  /// No description provided for @relicNameTitleLvl55.
+  ///
+  /// In fr, this message translates to:
+  /// **'Gardien de la Terre'**
+  String get relicNameTitleLvl55;
+
+  /// No description provided for @relicNameTitleLvl60.
+  ///
+  /// In fr, this message translates to:
+  /// **'Force de la Nature'**
+  String get relicNameTitleLvl60;
+
+  /// No description provided for @relicNameTitleLvl65.
+  ///
+  /// In fr, this message translates to:
+  /// **'Seigneur des Éléments'**
+  String get relicNameTitleLvl65;
+
+  /// No description provided for @relicNameTitleLvl70.
+  ///
+  /// In fr, this message translates to:
+  /// **'Maître de la Gravité'**
+  String get relicNameTitleLvl70;
+
+  /// No description provided for @relicNameTitleLvl75.
+  ///
+  /// In fr, this message translates to:
+  /// **'Entité Cosmique'**
+  String get relicNameTitleLvl75;
+
+  /// No description provided for @relicNameTitleLvl80.
+  ///
+  /// In fr, this message translates to:
+  /// **'Astre Flamboyant'**
+  String get relicNameTitleLvl80;
+
+  /// No description provided for @relicNameTitleLvl85.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supernova'**
+  String get relicNameTitleLvl85;
+
+  /// No description provided for @relicNameTitleLvl90.
+  ///
+  /// In fr, this message translates to:
+  /// **'Galactique'**
+  String get relicNameTitleLvl90;
+
+  /// No description provided for @relicNameTitleLvl95.
+  ///
+  /// In fr, this message translates to:
+  /// **'Être Suprême'**
+  String get relicNameTitleLvl95;
+
+  /// No description provided for @relicNameTitleLvl100.
+  ///
+  /// In fr, this message translates to:
+  /// **'Alpha Suprême'**
+  String get relicNameTitleLvl100;
+
+  /// No description provided for @relicNameTitleLvl110.
+  ///
+  /// In fr, this message translates to:
+  /// **'Primordial'**
+  String get relicNameTitleLvl110;
+
+  /// No description provided for @relicNameTitleLvl120.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nexus'**
+  String get relicNameTitleLvl120;
+
+  /// No description provided for @relicNameTitleLvl130.
+  ///
+  /// In fr, this message translates to:
+  /// **'Singularité'**
+  String get relicNameTitleLvl130;
+
+  /// No description provided for @relicNameTitleLvl140.
+  ///
+  /// In fr, this message translates to:
+  /// **'L\\'**
+  String get relicNameTitleLvl140;
+
+  /// No description provided for @relicNameTitleLvl150.
+  ///
+  /// In fr, this message translates to:
+  /// **'Oméga'**
+  String get relicNameTitleLvl150;
+
+  /// No description provided for @relicNameTitleLvl200.
+  ///
+  /// In fr, this message translates to:
+  /// **'L\\'**
+  String get relicNameTitleLvl200;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

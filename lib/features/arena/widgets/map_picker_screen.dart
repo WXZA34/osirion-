@@ -184,13 +184,16 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
       backgroundColor: widget.surfaceColor,
       body: Stack(
         children: [
-          mb.MapWidget(
-            onMapCreated: _onMapCreated,
-            onTapListener: _onMapTap,
+          Positioned.fill(
+            child: mb.MapWidget(
+              onMapCreated: _onMapCreated,
+              onTapListener: _onMapTap,
+            ),
           ),
           
           SafeArea(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -225,7 +228,7 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
                               }
                             },
                             decoration: InputDecoration(
-                              hintText: "Rechercher une adresse...",
+                              hintText: AppLocalizations.of(context)!.arenaSearchAddress,
                               hintStyle: TextStyle(color: hintColor),
                               border: InputBorder.none,
                               contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),

@@ -6,6 +6,7 @@ import 'package:confetti/confetti.dart';
 import '../../core/providers/library_providers.dart';
 import '../../core/providers/repository_providers.dart';
 import 'models/relic.dart';
+import 'models/relic_localization.dart';
 import '../home/models/arc_data.dart';
 import '../../core/providers/arc_provider.dart';
 
@@ -18,6 +19,8 @@ class ArsenalScreen extends ConsumerStatefulWidget {
 
 class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
   int _selectedTabIndex = 0; // 0: Boutique, 1: Grades, 2: Inventaire
+  String _selectedShopFilter = 'TOUS'; // TOUS, HALO, TITLE, BOOST
+  bool _isPurchasing = false;
 
   // Colors based on Arc theme
   ArcData get _currentArc => ref.watch(arcProvider);
@@ -59,7 +62,7 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text(
-          "L'ARSENAL",
+          AppLocalizations.of(context)!.arsenalLArsenal,
           style: TextStyle(
             color: _isSummer ? _onSurfaceColor : Colors.white,
             fontWeight: FontWeight.w900,
@@ -111,6 +114,7 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
                 user?.level ?? 1,
                 currentHalo,
                 currentTitle,
+                user?.unlockedTitles ?? [],
               ),
             ),
           ),
@@ -149,6 +153,7 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
     int level,
     String? halo,
     String? title,
+    List<String> unlockedTitles,
   ) {
     final relicsAsync = ref.watch(relicsProvider);
 
@@ -170,28 +175,29 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
         switch (_selectedTabIndex) {
           case 0:
             final list = shopMap.values.toList();
-            return _buildShopTab(aether, inventory, list);
+            return _buildShopTab(aether, inventory, list, level, unlockedTitles);
           case 1:
             final list = titleMap.values.toList();
             list.sort((a, b) => (a.requiredLevel ?? 0).compareTo(b.requiredLevel ?? 0));
             return _buildLevelTitlesTab(level, title, list);
           case 2:
             // Pour l'inventaire, on utilise tous les types connus
-            return _buildInventoryTab(inventory, halo, title);
+            final allList = [...shopMap.values, ...titleMap.values];
+            return _buildInventoryTab(inventory, halo, title, allList, level, unlockedTitles);
           default:
             return const SizedBox.shrink();
         }
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (err, stack) => _buildFallbackContent(aether, inventory, level, title, halo),
+      error: (err, stack) => _buildFallbackContent(aether, inventory, level, title, halo, unlockedTitles),
     );
   }
 
-  Widget _buildFallbackContent(int aether, List<String> inventory, int level, String? title, String? halo) {
+  Widget _buildFallbackContent(int aether, List<String> inventory, int level, String? title, String? halo, List<String> unlockedTitles) {
     switch (_selectedTabIndex) {
-      case 0: return _buildShopTab(aether, inventory, arsenalRelics);
+      case 0: return _buildShopTab(aether, inventory, arsenalRelics, level, unlockedTitles);
       case 1: return _buildLevelTitlesTab(level, title, levelTitles);
-      case 2: return _buildInventoryTab(inventory, halo, title);
+      case 2: return _buildInventoryTab(inventory, halo, title, [...arsenalRelics, ...levelTitles], level, unlockedTitles);
       default: return const SizedBox.shrink();
     }
   }
@@ -250,7 +256,7 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      titleRelic.name,
+                      titleRelic.getLocalizedName(context),
                       style: TextStyle(
                         color: isUnlocked 
                             ? (_isSummer ? Colors.black87 : Colors.white) 
@@ -261,7 +267,7 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
                     ),
                     Text(
                       isUnlocked
-                          ? titleRelic.description
+                          ? titleRelic.getLocalizedDescription(context)
                           : AppLocalizations.of(context)!.arsenalUnlockedAtLevel(titleRelic.requiredLevel ?? 0),
                       style: TextStyle(
                         color: isUnlocked 
@@ -360,27 +366,109 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
   }
 
   // ============== BOUTIQUE ==============
-  Widget _buildShopTab(int currentAether, List<String> inventory, List<Relic> list) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(20),
-      itemCount: list.length,
-      itemBuilder: (context, index) {
-        final relic = list[index];
-        final bool isOwned = inventory.contains(relic.id);
+  Widget _buildShopTab(int currentAether, List<String> inventory, List<Relic> list, int userLevel, List<String> unlockedTitles) {
+    // Filtrage des éléments
+    List<Relic> filteredList = list;
+    if (_selectedShopFilter != 'TOUS') {
+      filteredList = list.where((r) => r.type.toUpperCase() == _selectedShopFilter).toList();
+    }
 
-        return _buildRelicCard(relic, isOwned, currentAether);
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Barre des filtres
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Row(
+            children: [
+              _buildFilterChip('TOUS'),
+              const SizedBox(width: 8),
+              _buildFilterChip('HALO'),
+              const SizedBox(width: 8),
+              _buildFilterChip('TITLE'),
+              const SizedBox(width: 8),
+              _buildFilterChip('BOOST'),
+            ],
+          ),
+        ),
+        
+        // Grille des reliques
+        Expanded(
+          child: GridView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+              childAspectRatio: 0.68, // Ajustement pour correspondre à la capture d'écran
+            ),
+            itemCount: filteredList.length,
+            itemBuilder: (context, index) {
+              final relic = filteredList[index];
+              final bool isOwned = inventory.contains(relic.id) || 
+                                   unlockedTitles.contains(relic.id) || 
+                                   (relic.type == 'title' && relic.requiredLevel != null && userLevel >= relic.requiredLevel!);
+              return _buildRelicGridCard(relic, isOwned, currentAether);
+            },
+          ),
+        ),
+      ],
     );
   }
 
-  Widget _buildRelicCard(Relic relic, bool isOwned, int currentAether) {
+  String _getFilterTranslation(BuildContext context, String filter) {
+    switch (filter) {
+      case 'TOUS': return AppLocalizations.of(context)!.arsenalFilterAll;
+      case 'HALO': return AppLocalizations.of(context)!.arsenalFilterHalo;
+      case 'TITLE': return AppLocalizations.of(context)!.arsenalFilterTitle;
+      case 'BOOST': return AppLocalizations.of(context)!.arsenalFilterBoost;
+      default: return filter;
+    }
+  }
+
+  Widget _buildFilterChip(String label) {
+    bool isSelected = _selectedShopFilter == label;
+    return GestureDetector(
+      onTap: () => setState(() => _selectedShopFilter = label),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          color: isSelected ? _accentTech : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: isSelected ? _accentTech : (_isSummer ? Colors.black12 : Colors.white30)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (isSelected) ...[
+              Icon(Icons.check, color: _isSummer ? Colors.white : Colors.black, size: 16),
+              const SizedBox(width: 6),
+            ],
+            Text(
+              _getFilterTranslation(context, label),
+              style: TextStyle(
+                color: isSelected 
+                    ? (_isSummer ? Colors.white : Colors.black) 
+                    : (_isSummer ? Colors.black54 : Colors.white70),
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRelicGridCard(Relic relic, bool isOwned, int currentAether) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: _surfaceArmory,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: relic.color.withValues(alpha: 0.3)),
+        border: Border.all(color: relic.color.withValues(alpha: 0.2)),
         boxShadow: [
           if (isOwned)
             BoxShadow(
@@ -389,51 +477,51 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
             ),
         ],
       ),
-      child: Row(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          // Icône en haut
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
               color: relic.color.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
-            child: Icon(relic.icon, color: relic.color, size: 30),
+            child: Icon(relic.icon, color: relic.color, size: 28),
           ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  relic.name,
-                  style: TextStyle(
-                    color: _isSummer ? Colors.black87 : Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+          
+          // Texte au milieu
+          Column(
+            children: [
+              Text(
+                relic.getLocalizedName(context),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: _isSummer ? Colors.black87 : Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  relic.description,
-                  style: TextStyle(
-                    color: _isSummer ? Colors.black54 : Colors.white54,
-                    fontSize: 12,
-                  ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                relic.type.toUpperCase(),
+                style: TextStyle(
+                  color: relic.color,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1,
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  "${AppLocalizations.of(context)!.arsenalTypePrefix}: ${relic.type.toUpperCase()}",
-                  style: TextStyle(
-                    color: relic.color,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          const SizedBox(width: 12),
-          _buildBuyButton(relic, isOwned, currentAether),
+          
+          // Bouton en bas
+          SizedBox(
+            width: double.infinity,
+            child: _buildBuyButton(relic, isOwned, currentAether),
+          ),
         ],
       ),
     );
@@ -442,13 +530,14 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
   Widget _buildBuyButton(Relic relic, bool isOwned, int currentAether) {
     if (isOwned) {
       return Container(
+        alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           color: _isSummer ? Colors.black.withValues(alpha: 0.05) : Colors.white10,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
-          "POSSÉDÉ",
+          AppLocalizations.of(context)!.arsenalOwned,
           style: TextStyle(
             color: _isSummer ? _onSurfaceColor : Colors.white54,
             fontSize: 10,
@@ -461,7 +550,7 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
     bool canAfford = currentAether >= relic.cost;
 
     return ElevatedButton(
-      onPressed: canAfford ? () => _confirmPurchase(relic) : null,
+      onPressed: (canAfford && !_isPurchasing) ? () => _confirmPurchase(relic) : null,
       style: ElevatedButton.styleFrom(
         backgroundColor: canAfford 
             ? _accentPremium 
@@ -499,11 +588,11 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
           (context) => AlertDialog(
             backgroundColor: _surfaceArmory,
             title: Text(
-              "Pacte du Forgeron",
+              AppLocalizations.of(context)!.arsenalBlacksmithPact,
               style: TextStyle(color: _accentPremium),
             ),
             content: Text(
-              AppLocalizations.of(context)!.arsenalExchangeAetherFor(relic.cost.toString(), relic.name),
+              AppLocalizations.of(context)!.arsenalExchangeAetherFor(relic.cost.toString(), relic.getLocalizedName(context)),
               style: TextStyle(
                 color: _isSummer ? Colors.black87 : Colors.white,
               ),
@@ -527,7 +616,7 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
                   backgroundColor: _accentPremium,
                   foregroundColor: Colors.black,
                 ),
-                child: const Text("Accepter"),
+                child: Text(AppLocalizations.of(context)!.commonAccept),
               ),
             ],
           ),
@@ -535,8 +624,14 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
   }
 
   Future<void> _executePurchase(Relic relic) async {
+    if (_isPurchasing) return;
+    
     final user = ref.read(userProfileProvider).valueOrNull;
     if (user == null) return;
+
+    setState(() {
+      _isPurchasing = true;
+    });
 
     try {
       final repo = ref.read(valerionRepositoryProvider);
@@ -546,19 +641,35 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
         _confettiController.play();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)!.arsenalRelicAcquired(relic.name)),
+            content: Text(AppLocalizations.of(context)!.arsenalRelicAcquired(relic.getLocalizedName(context))),
             backgroundColor: relic.color,
           ),
         );
       }
     } catch (e) {
       if (mounted) {
+        String errorMessage = e.toString();
+        // Nettoyage de l'erreur pour une meilleure UX
+        if (errorMessage.contains('already-exists')) {
+          errorMessage = AppLocalizations.of(context)!.arsenalOwned; // "Possédé"
+        } else if (errorMessage.contains('failed-precondition')) {
+          errorMessage = "Fonds d'Aether insuffisants.";
+        } else {
+          errorMessage = errorMessage.replaceAll(RegExp(r'\[.*?\]\s*'), '').replaceAll('Exception: ', '');
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Échec de la transaction : $e"),
+            content: Text(errorMessage),
             backgroundColor: Colors.red,
           ),
         );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isPurchasing = false;
+        });
       }
     }
   }
@@ -568,19 +679,26 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
     List<String> inventoryIds,
     String? currentHalo,
     String? currentTitle,
+    List<Relic> allRelics,
+    int userLevel,
+    List<String> unlockedTitles,
   ) {
-    if (inventoryIds.isEmpty) {
-      return const Center(
+    // Obtenir les objets possédés : inventory, unlockedTitles, et ceux du niveau
+    final ownedRelics = allRelics.where((r) {
+      if (inventoryIds.contains(r.id)) return true;
+      if (unlockedTitles.contains(r.id)) return true;
+      if (r.type == 'title' && r.requiredLevel != null && userLevel >= r.requiredLevel!) return true;
+      return false;
+    }).toList();
+
+    if (ownedRelics.isEmpty) {
+      return Center(
         child: Text(
-          "Votre sac est vide. Visitez le Forgeron.",
-          style: TextStyle(color: Colors.white54),
+          AppLocalizations.of(context)!.arsenalEmptyInventory,
+          style: const TextStyle(color: Colors.white54),
         ),
       );
     }
-
-    // Obtenir les objets possédés
-    final ownedRelics =
-        arsenalRelics.where((r) => inventoryIds.contains(r.id)).toList();
 
     return ListView.builder(
       padding: const EdgeInsets.all(20),
@@ -618,7 +736,7 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      relic.name,
+                      relic.getLocalizedName(context),
                       style: TextStyle(
                         color: _isSummer ? Colors.black87 : Colors.white,
                         fontWeight: FontWeight.bold,
@@ -688,8 +806,8 @@ class _ArsenalScreenState extends ConsumerState<ArsenalScreen> {
           SnackBar(
             content: Text(
               isEquipping 
-                ? AppLocalizations.of(context)!.arsenalEquippedSuccess(relic.name) 
-                : AppLocalizations.of(context)!.arsenalUnequipped(relic.name)
+                ? AppLocalizations.of(context)!.arsenalEquippedSuccess(relic.getLocalizedName(context)) 
+                : AppLocalizations.of(context)!.arsenalUnequipped(relic.getLocalizedName(context))
             ),
             backgroundColor: isEquipping ? relic.color : Colors.grey[800],
             duration: const Duration(seconds: 2),

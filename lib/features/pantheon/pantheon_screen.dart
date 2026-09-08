@@ -383,22 +383,24 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
       case 'online':
       case 'disponible':
         statusColor = Colors.greenAccent;
-        statusText = "DISPONIBLE";
+        statusText = AppLocalizations.of(context)!.pantheonStatusDisponible;
         break;
       case 'in_dojo':
       case 'in_arena':
       case 'en plein effort':
         statusColor = Colors.orangeAccent;
-        statusText = "EN PLEIN EFFORT";
+        statusText = AppLocalizations.of(context)!.pantheonStatusEnPleinEffort;
         break;
       case 'offline':
       case 'hors ligne':
+      case 'en repos':
         statusColor = Colors.grey;
-        statusText = "HORS LIGNE";
+        statusText = AppLocalizations.of(context)!.pantheonStatusEnRepos;
         break;
       case 'ne pas déranger':
+      case 'do not disturb':
         statusColor = Colors.redAccent;
-        statusText = "NE PAS DÉRANGER";
+        statusText = AppLocalizations.of(context)!.pantheonStatusNePasDeranger;
         break;
       default:
         statusColor = Colors.cyanAccent;
@@ -459,15 +461,15 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
 
   void _showStatusPicker(BuildContext context, String currentStatus) {
     final statuses = [
-      {"label": "DISPONIBLE", "value": "online", "color": Colors.greenAccent},
+      {"label": AppLocalizations.of(context)!.pantheonStatusDisponible, "value": "online", "color": Colors.greenAccent},
       {
-        "label": "EN PLEIN EFFORT",
+        "label": AppLocalizations.of(context)!.pantheonStatusEnPleinEffort,
         "value": "in_dojo",
         "color": Colors.orangeAccent,
       },
-      {"label": "EN REPOS", "value": "offline", "color": Colors.grey},
+      {"label": AppLocalizations.of(context)!.pantheonStatusEnRepos, "value": "offline", "color": Colors.grey},
       {
-        "label": "NE PAS DÉRANGER",
+        "label": AppLocalizations.of(context)!.pantheonStatusNePasDeranger,
         "value": "ne pas déranger",
         "color": Colors.redAccent,
       },

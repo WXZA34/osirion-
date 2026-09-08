@@ -1711,4 +1711,684 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get googleSignInButton => 'Continuer avec Google';
+
+  @override
+  String get arenaForgeNavigationMode => '2. MODE DE NAVIGATION';
+
+  @override
+  String get arenaForgeBoucleIA => 'BOUCLE IA';
+
+  @override
+  String get arenaForgePointAB => 'POINT A -> B';
+
+  @override
+  String get arenaChoisirDestination => 'CHOISIR LA DESTINATION';
+
+  @override
+  String get arenaForgeStep3Destination => '3. DESTINATION';
+
+  @override
+  String get arenaForgeChooseDestinationOnMap => 'CHOISIR LA DESTINATION SUR LA CARTE';
+
+  @override
+  String get arenaForgeDestinationSelected => 'DESTINATION SÉLECTIONNÉE';
+
+  @override
+  String get arenaForgePleaseChooseDestination => 'Veuillez choisir une destination sur la carte.';
+
+  @override
+  String get arenaForgeGenerateRoute => 'GÉNÉRER LE TRACÉ';
+
+  @override
+  String get arenaSearchAddress => 'Rechercher une adresse...';
+
+  @override
+  String get arsenalFilterAll => 'TOUS';
+
+  @override
+  String get arsenalFilterHalo => 'HALO';
+
+  @override
+  String get arsenalFilterTitle => 'TITRE';
+
+  @override
+  String get arsenalFilterBoost => 'BOOST';
+
+  @override
+  String get pantheonStatusDisponible => 'DISPONIBLE';
+
+  @override
+  String get pantheonStatusEnPleinEffort => 'EN PLEIN EFFORT';
+
+  @override
+  String get pantheonStatusEnRepos => 'EN REPOS';
+
+  @override
+  String get pantheonStatusNePasDeranger => 'NE PAS DÉRANGER';
+
+  @override
+  String get arsenalOwned => 'POSSÉDÉ';
+
+  @override
+  String get arsenalBlacksmithPact => 'Pacte du Forgeron';
+
+  @override
+  String arsenalTransactionFailed(String error) {
+    return 'Échec de la transaction : $error';
+  }
+
+  @override
+  String get arsenalEmptyInventory => 'Votre sac est vide. Visitez le Forgeron.';
+
+  @override
+  String get laboratoryAvatar => 'Avatar';
+
+  @override
+  String get laboratoryMoteurs => 'Moteurs';
+
+  @override
+  String get laboratoryDonnees => 'Données';
+
+  @override
+  String get laboratorySupport => 'Support';
+
+  @override
+  String get laboratoryBeta => 'Bêta';
+
+  @override
+  String get laboratoryModificationAvatar => 'MODIFICATION DE L\'AVATAR';
+
+  @override
+  String get laboratoryNomDeCode => 'Nom de code';
+
+  @override
+  String get laboratoryIdentifiantPublic => 'Identifiant public';
+
+  @override
+  String get laboratoryAge => 'Âge';
+
+  @override
+  String get laboratoryAnnees => 'Années';
+
+  @override
+  String get laboratoryTaille => 'Taille';
+
+  @override
+  String get laboratoryCm => 'cm';
+
+  @override
+  String get laboratoryPoidsTotal => 'Poids (Total)';
+
+  @override
+  String get laboratoryKg => 'kg';
+
+  @override
+  String get laboratoryMasseGrasse => 'Masse Grasse';
+
+  @override
+  String get laboratoryPourcentage => '%';
+
+  @override
+  String get laboratoryMuscle => 'Muscle';
+
+  @override
+  String get laboratoryArchivesCombat => 'ARCHIVES DE COMBAT (VERROUILLÉES)';
+
+  @override
+  String get laboratoryEchecLiaison => 'Échec de la liaison:';
+
+  @override
+  String get laboratoryStationCalibration => 'STATION DE CALIBRATION IA';
+
+  @override
+  String get laboratorySensibiliteDetection => 'Sensibilité de Détection';
+
+  @override
+  String get laboratoryAjustezLuminosite => 'Ajustez selon la luminosité de la pièce';
+
+  @override
+  String get laboratorySuperpositionSquelettique => 'Superposition Squelettique';
+
+  @override
+  String get laboratoryAfficherLignesVideo => 'Afficher les lignes sur le flux vidéo';
+
+  @override
+  String get laboratoryModeEnergetique => 'Mode Énergétique';
+
+  @override
+  String get laboratoryHautePrecision => 'Haute Précision';
+
+  @override
+  String get laboratoryEquilibre => 'Équilibré';
+
+  @override
+  String get laboratoryEconomie => 'Économie';
+
+  @override
+  String get laboratoryOptimisationGPS => 'OPTIMISATION CARTOGRAPHIE (GPS)';
+
+  @override
+  String get laboratoryFrequenceScanGPS => 'Fréquence de Scan GPS';
+
+  @override
+  String get laboratoryPrecisionVsBatterie => 'Précision vs Batterie';
+
+  @override
+  String get laboratoryFiltreLissage => 'Filtre de Lissage (Kalman)';
+
+  @override
+  String get laboratoryEviteSautsPosition => 'Évite les sauts de position';
+
+  @override
+  String get laboratoryCalqueDefaut => 'Calque par défaut';
+
+  @override
+  String get laboratoryStandard => 'Standard';
+
+  @override
+  String get laboratorySatellite => 'Satellite';
+
+  @override
+  String get laboratoryHybride => 'Hybride';
+
+  @override
+  String get laboratoryCloudSecurite => 'CLOUD & SÉCURITÉ';
+
+  @override
+  String get laboratoryDonneesAlignees => 'Données alignées';
+
+  @override
+  String get laboratorySyncEnCours => 'Synchronisation en cours...';
+
+  @override
+  String get laboratoryForcerSauvegarde => 'Forcer la Sauvegarde';
+
+  @override
+  String get laboratorySyncManuelleCloud => 'Synchronisation manuelle vers le Cloud';
+
+  @override
+  String get laboratoryExportRGPD => 'Export RGPD';
+
+  @override
+  String get laboratoryGenererArchiveJSON => 'Générer et partager mon archive JSON';
+
+  @override
+  String get laboratoryNettoyageCache => 'Nettoyage du Cache';
+
+  @override
+  String get laboratoryOptimiserStockageLocal => 'Optimiser le stockage local';
+
+  @override
+  String get laboratoryHorsLigneHub => 'HORS LIGNE (OFFLINE HUB)';
+
+  @override
+  String get laboratoryModelesIAEmbarques => 'Modèles IA Embarqués';
+
+  @override
+  String get laboratoryV142Telecharge => 'v1.4.2 Téléchargé';
+
+  @override
+  String get laboratoryCartesLocales => 'Cartes Locales';
+
+  @override
+  String get laboratoryGererStockage => 'Gérer le Stockage';
+
+  @override
+  String get laboratoryViderFichiersTemporaires => 'Vider les fichiers temporaires';
+
+  @override
+  String get laboratoryMonArchiveOsirion => 'Mon archive de données OSIRION (RGPD)';
+
+  @override
+  String get laboratoryResolutionProblemes => 'RÉSOLUTION DE PROBLÈMES';
+
+  @override
+  String get laboratoryDiagnosticRapide => 'Diagnostic Rapide';
+
+  @override
+  String get laboratoryVerifierCameraGPS => 'Vérifier la caméra et le GPS';
+
+  @override
+  String get laboratorySignalementSuggestions => 'Signalement & Suggestions';
+
+  @override
+  String get laboratoryBugsAmeliorations => 'Bugs ou Améliorations';
+
+  @override
+  String get laboratoryCentreAide => 'Centre d\'Aide';
+
+  @override
+  String get laboratoryTutorielsPlacementCamera => 'Tutoriels de placement caméra';
+
+  @override
+  String get laboratoryCrowdsourcing => 'CROWDSOURCING';
+
+  @override
+  String get laboratoryProposerParc => 'Proposer un nouveau Parc';
+
+  @override
+  String get laboratoryStreetWorkout => 'Street Workout';
+
+  @override
+  String get laboratorySuggererLivre => 'Suggérer un Livre';
+
+  @override
+  String get laboratoryPourArcActuel => 'Pour l\'Arc Actuel';
+
+  @override
+  String get laboratoryDeconnexionSysteme => 'Déconnexion du Système';
+
+  @override
+  String get laboratoryCloturerSession => 'Clôturer la session OSIRION';
+
+  @override
+  String get laboratoryEnvironnementsInteractifs => 'ENVIRONNEMENTS INTERACTIFS';
+
+  @override
+  String get laboratoryTesterOverlayDojo => 'Tester l\'Overlay Dojo (Caméra IA)';
+
+  @override
+  String get laboratoryAfficheOverlaySport => 'Affiche l\'overlay de sport sur flux vidéo live';
+
+  @override
+  String get laboratoryProjetsEnCours => 'PROJETS EN COURS';
+
+  @override
+  String get laboratoryCapteurCardiaque => 'Capteur Cardiaque (Optique)';
+
+  @override
+  String get laboratoryMesurePoulsFlash => 'Mesure du pouls via flash caméra';
+
+  @override
+  String get laboratoryNouveauxMouvementsIA => 'Nouveaux Mouvements IA';
+
+  @override
+  String get laboratoryDetectionPlanche => 'Détection Planche & Front Lever';
+
+  @override
+  String get laboratoryCoachVocalGeneratif => 'Coach Vocal Génératif';
+
+  @override
+  String get laboratoryIAConversationnelle => 'IA conversationnelle pendant l\'effort';
+
+  @override
+  String get profileRank => 'RANG';
+
+  @override
+  String get profileDisciple => 'DISCIPLE';
+
+  @override
+  String get profilePrestigeGlobal => 'Prestige Global';
+
+  @override
+  String get profileForce => 'FORCE';
+
+  @override
+  String get profileHarmonie => 'HARMONIE';
+
+  @override
+  String get profileSagesse => 'SAGESSE';
+
+  @override
+  String get profileJoursActifs => 'JOURS ACTIFS';
+
+  @override
+  String get profilePoids => 'Poids';
+
+  @override
+  String get profileMasseGrasse => 'Masse Grasse';
+
+  @override
+  String get profileMuscle => 'Muscle';
+
+  @override
+  String get profileSommeil => 'Sommeil';
+
+  @override
+  String get profileMoyenne => 'moy.';
+
+  @override
+  String get profileMaxPompes => 'Max Pompes (Unbroken)';
+
+  @override
+  String get profileMaxTractions => 'Max Tractions';
+
+  @override
+  String get profilePrecisionMouvement => 'Précision Mouvement';
+
+  @override
+  String get profileMeilleureAllure => 'Meilleure Allure (1km)';
+
+  @override
+  String get profileBoucleAlpha => 'Boucle Alpha (6km)';
+
+  @override
+  String get profileDistanceTotale => 'Distance Totale';
+
+  @override
+  String get profileDebut => 'DÉBUT';
+
+  @override
+  String get profileFin => 'FIN';
+
+  @override
+  String get relicNameTitlePerseverant => 'Le Persévérant';
+
+  @override
+  String get relicNameTitleTitan => 'Titan de Fer';
+
+  @override
+  String get relicNameHaloFeu => 'Halo de Feu';
+
+  @override
+  String get relicNameAuraBrume => 'Brume Matinale';
+
+  @override
+  String get relicNameHaloSylvestre => 'Halo Sylvestre';
+
+  @override
+  String get relicNameHaloEpines => 'Couronne d\\';
+
+  @override
+  String get relicNameHaloGlacial => 'Halo Glacial';
+
+  @override
+  String get relicNameAuraVents => 'Vents Tourbillonnants';
+
+  @override
+  String get relicNameFxCarbone => 'Particules de Carbone';
+
+  @override
+  String get relicNameAuraMagnetique => 'Sphère Magnétique';
+
+  @override
+  String get relicNameHaloFoudroyant => 'Halo Foudroyant';
+
+  @override
+  String get relicNameAuraBio => 'Lueur Bio-luminescente';
+
+  @override
+  String get relicNameHaloSolaire => 'Rayonnement Solaire';
+
+  @override
+  String get relicNameFxNeon => 'Traînée de Néon';
+
+  @override
+  String get relicNameAuraVolcanique => 'Aura Volcanique';
+
+  @override
+  String get relicNameAuraCristalline => 'Aura Cristalline';
+
+  @override
+  String get relicNameFxCyber => 'Éclat Cybernétique';
+
+  @override
+  String get relicNameAuraPurete => 'Aura de Pureté';
+
+  @override
+  String get relicNameHaloPlasma => 'Halo Plasma';
+
+  @override
+  String get relicNameAuraQuantique => 'Résonance Quantique';
+
+  @override
+  String get relicNameAuraOmbre => 'Ombre Furtive';
+
+  @override
+  String get relicNameFxEtoiles => 'Poussière d\\';
+
+  @override
+  String get relicNameBoostMotivation => 'Éclat de Motivation';
+
+  @override
+  String get relicNameBoostSeve => 'Sève Énergisante';
+
+  @override
+  String get relicNameBoostVitalite2 => 'Cristal de Vitalité';
+
+  @override
+  String get relicNameBoostEchange => 'Jeton d\\';
+
+  @override
+  String get relicNameBoostRecuperation => 'Potion de Récupération';
+
+  @override
+  String get relicNameBoostFlorale => 'Essence Florale';
+
+  @override
+  String get relicNameBoostAigle => 'Souffle de l\\';
+
+  @override
+  String get relicNameBoostOxygene => 'Élixir d\\';
+
+  @override
+  String get relicNameBoostAdrenaline => 'Boost d\\';
+
+  @override
+  String get relicNameBoostFer => 'Infusion de Fer';
+
+  @override
+  String get relicNameBoostBouclier => 'Bouclier Thermique';
+
+  @override
+  String get relicNameBoostTicketDouble => 'Ticket Double Gain';
+
+  @override
+  String get relicNameBoostResilience => 'Cristal de Résilience';
+
+  @override
+  String get relicNameBoostPurificateur => 'Filtre Purificateur';
+
+  @override
+  String get relicNameBoostCroissance => 'Graine de Croissance';
+
+  @override
+  String get relicNameBoostBatterie => 'Batterie Haute Tension';
+
+  @override
+  String get relicNameBoostCatalyseur => 'Catalyseur de Carbone';
+
+  @override
+  String get relicNameBoostMultiplicateur => 'Multiplicateur d\\';
+
+  @override
+  String get relicNameBoostApesanteur => 'Poudre d\\';
+
+  @override
+  String get relicNameBoostSuperCondensateur => 'Super-Condensateur';
+
+  @override
+  String get relicNameTitleShop1 => 'Apprenti Forgeron';
+
+  @override
+  String get relicNameTitleShop2 => 'Frappeur d\\';
+
+  @override
+  String get relicNameTitleShop3 => 'Souffleur de Braises';
+
+  @override
+  String get relicNameTitleShop4 => 'Tisonnier Ardent';
+
+  @override
+  String get relicNameTitleShop5 => 'Sculpteur de Fer';
+
+  @override
+  String get relicNameTitleShop6 => 'Maître Enclume';
+
+  @override
+  String get relicNameTitleShop7 => 'Façonneur d\\';
+
+  @override
+  String get relicNameTitleShop8 => 'Artisan de la Lame';
+
+  @override
+  String get relicNameTitleShop9 => 'Forgeron de Guerre';
+
+  @override
+  String get relicNameTitleShop10 => 'Seigneur de la Forge';
+
+  @override
+  String get relicNameTitleShop11 => 'Créateur d\\';
+
+  @override
+  String get relicNameTitleShop12 => 'Forgeron Stellaire';
+
+  @override
+  String get relicNameTitleShop13 => 'Gardien du Feu Primordial';
+
+  @override
+  String get relicNameTitleShop14 => 'Faiseur de Mondes';
+
+  @override
+  String get relicNameTitleShop15 => 'Démiurge de l\\';
+
+  @override
+  String get relicNameTitleLvl1 => 'Novice';
+
+  @override
+  String get relicNameTitleLvl2 => 'Initié(e)';
+
+  @override
+  String get relicNameTitleLvl3 => 'Marcheur';
+
+  @override
+  String get relicNameTitleLvl4 => 'Apprenti(e)';
+
+  @override
+  String get relicNameTitleLvl5 => 'Disciple';
+
+  @override
+  String get relicNameTitleLvl6 => 'Pratiquant(e)';
+
+  @override
+  String get relicNameTitleLvl7 => 'Explorateur';
+
+  @override
+  String get relicNameTitleLvl8 => 'Challenger';
+
+  @override
+  String get relicNameTitleLvl9 => 'Combattant(e)';
+
+  @override
+  String get relicNameTitleLvl10 => 'Guerrier(e)';
+
+  @override
+  String get relicNameTitleLvl11 => 'Athlète';
+
+  @override
+  String get relicNameTitleLvl12 => 'Défenseur';
+
+  @override
+  String get relicNameTitleLvl13 => 'Protecteur';
+
+  @override
+  String get relicNameTitleLvl14 => 'Soldat';
+
+  @override
+  String get relicNameTitleLvl15 => 'Spartiate';
+
+  @override
+  String get relicNameTitleLvl16 => 'Centurion';
+
+  @override
+  String get relicNameTitleLvl17 => 'Vétéran';
+
+  @override
+  String get relicNameTitleLvl18 => 'Gardien(ne)';
+
+  @override
+  String get relicNameTitleLvl19 => 'Sentinelle';
+
+  @override
+  String get relicNameTitleLvl20 => 'Chevalier(e)';
+
+  @override
+  String get relicNameTitleLvl22 => 'Paladin';
+
+  @override
+  String get relicNameTitleLvl24 => 'Champion(ne)';
+
+  @override
+  String get relicNameTitleLvl26 => 'Élite';
+
+  @override
+  String get relicNameTitleLvl28 => 'Héros / Héroïne';
+
+  @override
+  String get relicNameTitleLvl30 => 'Légende';
+
+  @override
+  String get relicNameTitleLvl32 => 'Mythe';
+
+  @override
+  String get relicNameTitleLvl34 => 'Maître';
+
+  @override
+  String get relicNameTitleLvl36 => 'Grand Maître';
+
+  @override
+  String get relicNameTitleLvl38 => 'Prodige';
+
+  @override
+  String get relicNameTitleLvl40 => 'Demi-Dieu';
+
+  @override
+  String get relicNameTitleLvl42 => 'Immortel(le)';
+
+  @override
+  String get relicNameTitleLvl45 => 'Colosse';
+
+  @override
+  String get relicNameTitleLvl48 => 'Titan';
+
+  @override
+  String get relicNameTitleLvl50 => 'Dieu de la Guerre';
+
+  @override
+  String get relicNameTitleLvl55 => 'Gardien de la Terre';
+
+  @override
+  String get relicNameTitleLvl60 => 'Force de la Nature';
+
+  @override
+  String get relicNameTitleLvl65 => 'Seigneur des Éléments';
+
+  @override
+  String get relicNameTitleLvl70 => 'Maître de la Gravité';
+
+  @override
+  String get relicNameTitleLvl75 => 'Entité Cosmique';
+
+  @override
+  String get relicNameTitleLvl80 => 'Astre Flamboyant';
+
+  @override
+  String get relicNameTitleLvl85 => 'Supernova';
+
+  @override
+  String get relicNameTitleLvl90 => 'Galactique';
+
+  @override
+  String get relicNameTitleLvl95 => 'Être Suprême';
+
+  @override
+  String get relicNameTitleLvl100 => 'Alpha Suprême';
+
+  @override
+  String get relicNameTitleLvl110 => 'Primordial';
+
+  @override
+  String get relicNameTitleLvl120 => 'Nexus';
+
+  @override
+  String get relicNameTitleLvl130 => 'Singularité';
+
+  @override
+  String get relicNameTitleLvl140 => 'L\\';
+
+  @override
+  String get relicNameTitleLvl150 => 'Oméga';
+
+  @override
+  String get relicNameTitleLvl200 => 'L\\';
 }

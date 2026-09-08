@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../arena_active_screen.dart';
 import '../../home/models/arc_data.dart';
 import '../../../core/providers/arc_provider.dart';
+import '../widgets/map_picker_screen.dart';
+import '../../../core/models/lat_lng.dart';
 
 class ForgeTab extends ConsumerStatefulWidget {
   const ForgeTab({super.key});
@@ -15,7 +17,8 @@ class ForgeTab extends ConsumerStatefulWidget {
 class _ForgeTabState extends ConsumerState<ForgeTab> {
   String _selectedSport = 'RUNNING'; 
   double _targetDistanceKm = 5.0;
-  String _terrainType = 'PLAT'; // PLAT, VALLONNE
+  String _navigationMode = 'BOUCLE_IA'; // BOUCLE_IA, POINT_A_B
+  LatLng? _selectedDestination;
 
   ArcData get _currentArc => ref.watch(arcProvider);
   Color get _surfaceColor => _currentArc.surfaceColor;
@@ -43,33 +46,62 @@ class _ForgeTabState extends ConsumerState<ForgeTab> {
           ),
           const SizedBox(height: 40),
 
-          _buildHeader(AppLocalizations.of(context)!.arenaForgeDenivele),
+          _buildHeader(AppLocalizations.of(context)!.arenaForgeNavigationMode),
           const SizedBox(height: 16),
           Row(
             children: [
-              _buildTerrainOption("PLAT", AppLocalizations.of(context)!.arenaForgePlat, Icons.straighten),
+              _buildNavigationOption("BOUCLE_IA", AppLocalizations.of(context)!.arenaForgeBoucleIA, Icons.sync),
               const SizedBox(width: 12),
-              _buildTerrainOption("VALLONNE", AppLocalizations.of(context)!.arenaForgeVallonne, Icons.terrain),
+              _buildNavigationOption("POINT_A_B", AppLocalizations.of(context)!.arenaForgePointAB, Icons.place),
             ],
           ),
           const SizedBox(height: 40),
 
-          _buildHeader(AppLocalizations.of(context)!.arenaForgeDistanceBoucle),
-          const SizedBox(height: 16),
-          _buildDistanceSelector(isSummer),
-          const SizedBox(height: 48),
+          if (_navigationMode == 'BOUCLE_IA') ...[
+            _buildHeader(AppLocalizations.of(context)!.arenaForgeDistanceBoucle),
+            const SizedBox(height: 16),
+            _buildDistanceSelector(isSummer),
+            const SizedBox(height: 48),
+          ] else if (_navigationMode == 'POINT_A_B') ...[
+            _buildHeader(AppLocalizations.of(context)!.arenaForgeStep3Destination),
+            const SizedBox(height: 16),
+            _buildDestinationSelector(isSummer),
+            const SizedBox(height: 48),
+          ],
 
           ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ArenaActiveScreen(
-                    sportType: _selectedSport,
-                    targetDistanceKm: _targetDistanceKm,
+            onPressed: () async {
+              if (_navigationMode == 'BOUCLE_IA') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ArenaActiveScreen(
+                      sportType: _selectedSport,
+                      targetDistanceKm: _targetDistanceKm,
+                    ),
                   ),
-                ),
-              );
+                );
+              } else {
+                if (_selectedDestination == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context)!.arenaForgePleaseChooseDestination),
+                      backgroundColor: Colors.redAccent,
+                    ),
+                  );
+                  return;
+                }
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ArenaActiveScreen(
+                      sportType: _selectedSport,
+                      targetDistanceKm: 0.0, // Calculated automatically by routing
+                      destination: _selectedDestination,
+                    ),
+                  ),
+                );
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: _accentColor,
@@ -79,12 +111,12 @@ class _ForgeTabState extends ConsumerState<ForgeTab> {
               elevation: 10,
             ),
             child: Text(
-              AppLocalizations.of(context)!.arenaGNRerLa,
-              style: TextStyle(
-                color: isSummer ? Colors.white : Colors.black,
+              AppLocalizations.of(context)!.arenaForgeGenerateRoute,
+              style: const TextStyle(
+                color: Colors.white,
                 fontWeight: FontWeight.w900,
                 fontSize: 16,
-                letterSpacing: 1,
+                letterSpacing: 2,
               ),
             ),
           ),
@@ -135,14 +167,14 @@ class _ForgeTabState extends ConsumerState<ForgeTab> {
     );
   }
 
-  Widget _buildTerrainOption(String id, String label, IconData icon) {
-    bool isSelected = _terrainType == id;
+  Widget _buildNavigationOption(String id, String label, IconData icon) {
+    bool isSelected = _navigationMode == id;
     bool isSummer = _currentArc.arcType == AlphaArc.summer;
     Color color = _accentColor;
 
     return Expanded(
       child: GestureDetector(
-        onTap: () => setState(() => _terrainType = id),
+        onTap: () => setState(() => _navigationMode = id),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(vertical: 14),
@@ -193,6 +225,60 @@ class _ForgeTabState extends ConsumerState<ForgeTab> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildDestinationSelector(bool isSummer) {
+    return GestureDetector(
+      onTap: () async {
+        final LatLng? dest = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MapPickerScreen(
+              primaryColor: _accentColor,
+              surfaceColor: _surfaceColor,
+            ),
+          ),
+        );
+        if (dest != null) {
+          setState(() {
+            _selectedDestination = dest;
+          });
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 32),
+        decoration: BoxDecoration(
+          color: _surfaceColor,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: _selectedDestination != null ? _accentColor : (isSummer ? Colors.black.withValues(alpha: 0.05) : Colors.white10),
+            width: _selectedDestination != null ? 2 : 1,
+          ),
+        ),
+        child: Column(
+          children: [
+            Icon(
+              _selectedDestination != null ? Icons.place : Icons.map,
+              color: _selectedDestination != null ? _accentColor : _accentColor.withValues(alpha: 0.8),
+              size: 40,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              _selectedDestination != null
+                  ? AppLocalizations.of(context)!.arenaForgeDestinationSelected
+                  : AppLocalizations.of(context)!.arenaForgeChooseDestinationOnMap,
+              style: TextStyle(
+                color: isSummer ? Colors.black87 : Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+                letterSpacing: 0.5,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

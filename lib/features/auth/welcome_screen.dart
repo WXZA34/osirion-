@@ -2,14 +2,170 @@ import '../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/providers/locale_provider.dart';
+import '../../core/providers/repository_providers.dart';
+import '../../core/navigation/main_navigation_shell.dart';
+import 'onboarding/setup_flow/sanctuary_setup_screen.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
 
-class WelcomeScreen extends ConsumerWidget {
+class WelcomeScreen extends ConsumerStatefulWidget {
   const WelcomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
+  bool _isLoading = false;
+
+  Future<void> _loginWithGoogle() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final authRepo = ref.read(authRepositoryProvider);
+      final valerionRepo = ref.read(valerionRepositoryProvider);
+
+      final user = await authRepo.signInWithGoogle();
+      final profile = await valerionRepo.getUserProfile(user.id);
+
+      if (profile == null) {
+        // Nouveau profil, on demande le pseudo via une modale
+        if (mounted) {
+          final pseudo = await _showPseudoDialog(context, valerionRepo);
+          if (pseudo != null && pseudo.isNotEmpty) {
+            final userToSave = user.copyWith(
+              username: pseudo,
+              createdAt: DateTime.now(),
+              level: 1,
+              xp: 0,
+            );
+            await valerionRepo.saveUserProfile(userToSave);
+            
+            if (mounted) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const SanctuarySetupScreen()),
+                (route) => false,
+              );
+            }
+          } else {
+            // L'utilisateur a annulé, on le déconnecte
+            await authRepo.signOut();
+            setState(() => _isLoading = false);
+            return;
+          }
+        }
+      } else {
+        // Profil existant
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const MainNavigationShell()),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString().replaceAll("Exception: ", "")),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<String?> _showPseudoDialog(BuildContext context, valerionRepo) async {
+    final controller = TextEditingController();
+    String? errorText;
+
+    return showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setStateDialog) {
+            return AlertDialog(
+              backgroundColor: const Color(0xFF161A22),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              title: Text(
+                AppLocalizations.of(context)!.googlePseudoTitle,
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.googlePseudoDesc,
+                    style: const TextStyle(color: Colors.white70),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: controller,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: "Pseudo",
+                      hintStyle: const TextStyle(color: Colors.white54),
+                      errorText: errorText,
+                      filled: true,
+                      fillColor: Colors.black26,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(
+                    AppLocalizations.of(context)!.googlePseudoCancel,
+                    style: const TextStyle(color: Colors.white54),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    final text = controller.text.trim();
+                    if (text.isEmpty) {
+                      setStateDialog(() => errorText = AppLocalizations.of(context)!.googlePseudoEmptyError);
+                      return;
+                    }
+                    final isAvailable = await valerionRepo.isUsernameAvailable(text);
+                    if (!isAvailable) {
+                      setStateDialog(() => errorText = AppLocalizations.of(context)!.googlePseudoTakenError);
+                      return;
+                    }
+                    if (context.mounted) {
+                      Navigator.of(context).pop(text);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFFFD700),
+                    foregroundColor: Colors.black,
+                  ),
+                  child: Text(AppLocalizations.of(context)!.googlePseudoValidate),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final currentLocale = ref.watch(localeProvider);
 
     return Scaffold(
@@ -140,6 +296,37 @@ class WelcomeScreen extends ConsumerWidget {
                         ),
                       ),
                     ),
+
+                    const SizedBox(height: 16),
+
+                    // Bouton Google Sign-In
+                    _isLoading
+                        ? const CircularProgressIndicator(color: Color(0xFFFFD700))
+                        : ElevatedButton.icon(
+                            onPressed: _loginWithGoogle,
+                            icon: Image.asset(
+                              'assets/branding/google_logo.png', // Fallback icon si pas présent
+                              height: 24,
+                              errorBuilder: (context, error, stackTrace) => const Icon(Icons.g_mobiledata, size: 32),
+                            ),
+                            label: Text(
+                              AppLocalizations.of(context)!.googleSignInButton,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.1,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor: Colors.black87,
+                              minimumSize: const Size(double.infinity, 56),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              elevation: 4,
+                            ),
+                          ),
 
                     const SizedBox(height: 16),
 
