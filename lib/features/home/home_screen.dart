@@ -23,6 +23,7 @@ import 'package:valerion/core/domain/entities/user_entity.dart';
 import 'package:valerion/features/arsenal/models/relic.dart';
 import 'package:valerion/core/widgets/avatar_viewer.dart';
 import 'package:valerion/core/services/notification_service.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'dart:async';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -44,6 +45,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _ensureProfileExists();
+    _checkForUpdate();
     _initNotifications();
     
     // Traiter une éventuelle notification qui a lancé l'app
@@ -54,6 +56,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
         _handleNotificationNavigation(initialPayload);
       }
     });
+  }
+
+  Future<void> _checkForUpdate() async {
+    try {
+      final info = await InAppUpdate.checkForUpdate();
+      if (info.updateAvailability == UpdateAvailability.updateAvailable) {
+        await InAppUpdate.performImmediateUpdate();
+      }
+    } catch (e) {
+      debugPrint("Erreur in_app_update: $e");
+    }
   }
 
   @override
