@@ -182,7 +182,8 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: widget.surfaceColor,
-      body: Stack(
+      body: SizedBox.expand(
+        child: Stack(
         children: [
           Positioned.fill(
             child: mb.MapWidget(
@@ -296,6 +297,7 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
               ),
             ),
         ],
+      ),
       ),
     );
   }

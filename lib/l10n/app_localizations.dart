@@ -1970,7 +1970,7 @@ abstract class AppLocalizations {
   /// No description provided for @profileRegistreArene.
   ///
   /// In fr, this message translates to:
-  /// **'REGISTRE : L\'AR�NE (GPS)'**
+  /// **'REGISTRE : L\'ARÈNE (GPS)'**
   String get profileRegistreArene;
 
   /// No description provided for @profileLangueTitle.
@@ -1994,7 +1994,7 @@ abstract class AppLocalizations {
   /// No description provided for @profileThemeTitle.
   ///
   /// In fr, this message translates to:
-  /// **'Th�me & Arc Actif'**
+  /// **'Thème & Arc Actif'**
   String get profileThemeTitle;
 
   /// No description provided for @profileThemeSubtitle.
@@ -2006,25 +2006,25 @@ abstract class AppLocalizations {
   /// No description provided for @profileExportTitle.
   ///
   /// In fr, this message translates to:
-  /// **'Export des Donn�es'**
+  /// **'Export des Données'**
   String get profileExportTitle;
 
   /// No description provided for @profileExportSubtitle.
   ///
   /// In fr, this message translates to:
-  /// **'T�l�charger le rapport PDF'**
+  /// **'Télécharger le rapport PDF'**
   String get profileExportSubtitle;
 
   /// No description provided for @profileConfidentialiteTitle.
   ///
   /// In fr, this message translates to:
-  /// **'Confidentialit�'**
+  /// **'Confidentialité'**
   String get profileConfidentialiteTitle;
 
   /// No description provided for @profileConfidentialiteSubtitle.
   ///
   /// In fr, this message translates to:
-  /// **'Visibilit� dans le Panth�on'**
+  /// **'Visibilité dans le Panthéon'**
   String get profileConfidentialiteSubtitle;
 
   /// No description provided for @dojoChoixCible.

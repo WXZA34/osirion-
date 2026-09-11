@@ -945,7 +945,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get profileTabReglages => 'Réglages';
 
   @override
-  String get profileRegistreArene => 'REGISTRE : L\'AR�NE (GPS)';
+  String get profileRegistreArene => 'REGISTRE : L\'ARÈNE (GPS)';
 
   @override
   String get profileLangueTitle => 'Langue';
@@ -957,22 +957,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String get profileChangerLangueDialog => 'Changer la langue';
 
   @override
-  String get profileThemeTitle => 'Th�me & Arc Actif';
+  String get profileThemeTitle => 'Thème & Arc Actif';
 
   @override
   String get profileThemeSubtitle => 'Basculer manuellement d\'Arc';
 
   @override
-  String get profileExportTitle => 'Export des Donn�es';
+  String get profileExportTitle => 'Export des Données';
 
   @override
-  String get profileExportSubtitle => 'T�l�charger le rapport PDF';
+  String get profileExportSubtitle => 'Télécharger le rapport PDF';
 
   @override
-  String get profileConfidentialiteTitle => 'Confidentialit�';
+  String get profileConfidentialiteTitle => 'Confidentialité';
 
   @override
-  String get profileConfidentialiteSubtitle => 'Visibilit� dans le Panth�on';
+  String get profileConfidentialiteSubtitle => 'Visibilité dans le Panthéon';
 
   @override
   String get dojoChoixCible => '1. CHOIX DE LA CIBLE';

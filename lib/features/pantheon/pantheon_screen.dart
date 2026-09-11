@@ -28,6 +28,7 @@ import 'screens/alpha_camera_screen.dart';
 import 'package:camera/camera.dart'; 
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import '../duel/screens/live_duel_screen.dart';
 
 class PantheonScreen extends ConsumerStatefulWidget {
   final int initialTabIndex;
@@ -1180,38 +1181,230 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
   }
 
   // --- Tab 3: Domination Urbaine (Spots) ---
+  // --- Tab 3: Domination Urbaine (Spots) ---
   Widget _buildDominationSpots(Color surfaceColor, Color accentColor, ArcData arc, bool isSummer, Color onSurfaceColor) {
-    return Column(
+    return SingleChildScrollView(
       key: ValueKey(3),
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(height: 100),
-        Icon(Icons.construction, color: accentColor, size: 64),
-        SizedBox(height: 24),
-        Text(
-          AppLocalizations.of(context)!.pantheonModuleEnCoursDe,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: accentColor,
-            fontSize: 16,
-            fontWeight: FontWeight.w900,
-            letterSpacing: 2,
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.only(top: 80, bottom: 40, left: 16, right: 16),
+      child: Column(
+        children: [
+          _buildDominationCard(
+            title: "LE DUEL",
+            subtitle: "Entraînement Rapide",
+            description: "Affrontez un adversaire ou un fantôme. Système de handicap actif.",
+            icon: Icons.sports_mma,
+            color: Colors.amber,
+            onTap: () => _showExerciseSelector(context, "duel", Colors.amber),
           ),
+          const SizedBox(height: 16),
+          _buildDominationCard(
+            title: "LA LIGUE",
+            subtitle: "Mode Classé (Ranked)",
+            description: "Compétition pure. Zéro handicap. Gravissez les échelons.",
+            icon: Icons.emoji_events,
+            color: Colors.cyanAccent,
+            onTap: () => _showExerciseSelector(context, "ligue", Colors.cyanAccent),
+          ),
+          const SizedBox(height: 16),
+          _buildDominationCard(
+            title: "LE RAID MONDIAL",
+            subtitle: "Événement Communautaire",
+            description: "Abattez le Boss ensemble. (Bientôt disponible)",
+            icon: Icons.fort,
+            color: Colors.deepOrangeAccent,
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Le Raid Mondial sera bientôt disponible !")),
+              );
+            },
+            isLocked: true,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDominationCard({
+    required String title,
+    required String subtitle,
+    required String description,
+    required IconData icon,
+    required Color color,
+    required VoidCallback onTap,
+    bool isLocked = false,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: isLocked ? color.withOpacity(0.05) : color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isLocked ? color.withOpacity(0.3) : color.withOpacity(0.6),
+            width: 2,
+          ),
+          boxShadow: isLocked ? null : [
+            BoxShadow(
+              color: color.withOpacity(0.1),
+              blurRadius: 10,
+              spreadRadius: 2,
+            )
+          ],
         ),
-        SizedBox(height: 12),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40),
-          child: Text(
-            AppLocalizations.of(context)!.pantheonLeCentreDeCommandement,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: onSurfaceColor.withValues(alpha: 0.5),
-              fontSize: 12,
-              height: 1.5,
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: isLocked ? Colors.grey.withOpacity(0.1) : color.withOpacity(0.2),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                icon,
+                color: isLocked ? Colors.grey : color,
+                size: 32,
+              ),
+            ),
+            const SizedBox(width: 20),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    subtitle.toUpperCase(),
+                    style: TextStyle(
+                      color: isLocked ? Colors.grey : color.withOpacity(0.8),
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      color: isLocked ? Colors.grey : Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 1.5,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    description,
+                    style: TextStyle(
+                      color: isLocked ? Colors.grey : Colors.white70,
+                      fontSize: 14,
+                      height: 1.4,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (isLocked) ...[
+              const SizedBox(width: 12),
+              const Icon(Icons.lock, color: Colors.grey, size: 24),
+            ] else ...[
+              const SizedBox(width: 12),
+              Icon(Icons.chevron_right, color: color, size: 28),
+            ]
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showExerciseSelector(BuildContext context, String modeId, Color themeColor) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: const Color(0xFF0F111A), // Dark surface
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+            border: Border.all(color: themeColor.withOpacity(0.3), width: 1),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.white24,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                "SÉLECTIONNEZ VOTRE EXERCICE",
+                style: TextStyle(
+                  color: themeColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 1.5,
+                ),
+              ),
+              const SizedBox(height: 32),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildExerciseOption(context, "Pompes", "pushups", Icons.fitness_center, themeColor, modeId),
+                  _buildExerciseOption(context, "Squats", "squats", Icons.accessibility_new, themeColor, modeId),
+                  _buildExerciseOption(context, "Abdos", "situps", Icons.airline_seat_flat, themeColor, modeId),
+                ],
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildExerciseOption(BuildContext context, String label, String type, IconData icon, Color color, String modeId) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pop(context);
+        final demoDuelId = "duel_\${modeId}_\${DateTime.now().millisecondsSinceEpoch}";
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => LiveDuelScreen(
+              duelId: demoDuelId,
+              opponentId: "opponent_bot_123", // Utilisateur factice pour le moment
+              exerciseType: type,
             ),
           ),
-        ),
-      ],
+        );
+      },
+      child: Column(
+        children: [
+          Container(
+            width: 70,
+            height: 70,
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.15),
+              shape: BoxShape.circle,
+              border: Border.all(color: color.withOpacity(0.5), width: 2),
+            ),
+            child: Icon(icon, color: color, size: 32),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            label,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
