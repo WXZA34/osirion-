@@ -120,10 +120,54 @@ export const ArenaFullManager: React.FC<ArenaFullManagerProps> = ({
         if (data.length > 0) setNoGoZones(data);
       });
 
+      // 4. Territories (H3)
+      const unsubTerritories = onSnapshot(query(collection(db, 'territories')), (snap) => {
+        const data = snap.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data()
+        })) as unknown as TerritoryHexModel[];
+        if (data.length > 0) setTerritories(data);
+        else setTerritories([]); // Empty if no data
+      });
+
+      // 5. Live Duels (Colosseum)
+      const unsubLiveDuels = onSnapshot(query(collection(db, 'live_duels')), (snap) => {
+        const data = snap.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data()
+        })) as unknown as ColosseumLiveDuel[];
+        if (data.length > 0) setLiveDuels(data);
+        else setLiveDuels([]);
+      });
+
+      // 6. Tournaments (Colosseum)
+      const unsubTournaments = onSnapshot(query(collection(db, 'colosseum_tournaments')), (snap) => {
+        const data = snap.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data()
+        })) as unknown as ColosseumTournament[];
+        if (data.length > 0) setTournaments(data);
+        else setTournaments([]);
+      });
+
+      // 7. Forge Routes (IA & Routage)
+      const unsubForgeRoutes = onSnapshot(query(collection(db, 'forge_routes')), (snap) => {
+        const data = snap.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data()
+        })) as unknown as ForgeRouteTemplate[];
+        if (data.length > 0) setForgeRoutes(data);
+        else setForgeRoutes([]);
+      });
+
       return () => {
         unsubBastions();
         unsubRuns();
         unsubNoGo();
+        unsubTerritories();
+        unsubLiveDuels();
+        unsubTournaments();
+        unsubForgeRoutes();
       };
     }).catch(e => console.error("Firebase sync error in ArenaFullManager:", e));
   }, []);
