@@ -56,6 +56,7 @@ import {
   Check,
   Flag,
   Share2,
+  Map,
 } from 'lucide-react';
 
 interface ArenaFullManagerProps {
@@ -1148,38 +1149,63 @@ export const ArenaFullManager: React.FC<ArenaFullManagerProps> = ({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              {noGoZones.map((zone) => (
-                <div
-                  key={zone.id}
-                  className={`p-3.5 rounded-2xl border transition ${
-                    zone.active
-                      ? 'bg-rose-50/50 border-rose-200'
-                      : 'bg-slate-50 border-slate-200 opacity-60'
-                  }`}
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <span className="text-[10px] font-bold text-rose-700 uppercase bg-rose-100/80 px-2 py-0.5 rounded">
-                        {zone.reason}
-                      </span>
-                      <h5 className="font-bold text-slate-900 text-xs mt-1.5">{zone.name}</h5>
+              {noGoZones.map((zone) => {
+                const lat = zone.center?.latitude || zone.latitude || 0;
+                const lng = zone.center?.longitude || zone.longitude || 0;
+                const mapUrl = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=16/${lat}/${lng}`;
+                return (
+                  <div
+                    key={zone.id}
+                    className={`p-3.5 rounded-2xl border transition ${
+                      zone.active
+                        ? 'bg-rose-50/50 border-rose-200'
+                        : 'bg-slate-50 border-slate-200 opacity-60'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <span className="text-[10px] font-bold text-rose-700 uppercase bg-rose-100/80 px-2 py-0.5 rounded">
+                          {zone.reason || 'NON_SPÉCIFIÉ'}
+                        </span>
+                        <h5 className="font-bold text-slate-900 text-xs mt-1.5">{zone.name || 'Zone sans nom'}</h5>
+                        {zone.reported_by && (
+                          <p className="text-[10px] text-slate-400 mt-0.5">Signalé par: {zone.reported_by}</p>
+                        )}
+                        {zone.createdAt && (
+                          <p className="text-[10px] text-slate-400 mt-0.5">Le: {zone.createdAt}</p>
+                        )}
+                      </div>
+
+                      <button
+                        onClick={() => handleToggleNoGoZone(zone.id)}
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                          zone.active ? 'bg-rose-600 text-white' : 'bg-slate-200 text-slate-700'
+                        }`}
+                      >
+                        {zone.active ? 'Active' : 'Désactivée'}
+                      </button>
                     </div>
 
-                    <button
-                      onClick={() => handleToggleNoGoZone(zone.id)}
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
-                        zone.active ? 'bg-rose-600 text-white' : 'bg-slate-200 text-slate-700'
-                      }`}
-                    >
-                      {zone.active ? 'Active' : 'Désactivée'}
-                    </button>
+                    <div className="mt-3 flex items-center justify-between border-t border-slate-200/60 pt-2">
+                      <p className="text-[11px] text-slate-500">
+                        Rayon: <strong>{zone.radiusMeters || 0} m</strong>
+                        <br />
+                        GPS: {lat.toFixed(5)}, {lng.toFixed(5)}
+                      </p>
+                      
+                      <a
+                        href={mapUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[10px] bg-slate-900 text-white px-3 py-1.5 rounded-lg font-bold flex items-center gap-1 hover:bg-slate-800 transition"
+                      >
+                        <Map className="w-3 h-3" />
+                        Ouvrir Maps
+                      </a>
+                    </div>
                   </div>
-
-                  <p className="text-[11px] text-slate-500 mt-2">
-                    Rayon de protection : <strong>{zone.radiusMeters} m</strong> autour du repère GPS.
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
