@@ -280,5 +280,21 @@ service cloud.firestore {
       allow update, delete: if isAuthenticated() && 
         resource.data.reported_by == request.auth.uid; 
     }
+
+    // ----------------------------------------------------------------------
+    // AUTRES SECTIONS DE L'ARÈNE
+    // ----------------------------------------------------------------------
+    match /territories/{document=**} {
+      allow read, write: if true;
+    }
+    match /live_duels/{document=**} {
+      allow read, write: if true;
+    }
+    match /colosseum_tournaments/{document=**} {
+      allow read, write: if true;
+    }
+    match /forge_routes/{document=**} {
+      allow read, write: if true;
+    }
   }
 }
