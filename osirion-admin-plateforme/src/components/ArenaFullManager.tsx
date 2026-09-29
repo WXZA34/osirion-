@@ -91,10 +91,14 @@ export const ArenaFullManager: React.FC<ArenaFullManagerProps> = ({
 
       // 1. Bastions
       const unsubBastions = onSnapshot(query(collection(db, 'bastions')), (snap) => {
-        const data = snap.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data()
-        })) as unknown as BastionTacticalSpot[];
+        const data = snap.docs.map((doc) => {
+          const raw = doc.data();
+          return {
+            id: doc.id,
+            ...raw,
+            position: raw.position || { latitude: raw.latitude || 0, longitude: raw.longitude || 0 },
+          } as BastionTacticalSpot;
+        });
         if (data.length > 0) setBastions(data);
       });
 
