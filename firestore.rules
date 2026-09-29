@@ -17,6 +17,10 @@ service cloud.firestore {
       return isAuthenticated() && request.auth.uid == userId;
     }
 
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.email == 'roland1kokou@gmail.com';
+    }
+
     // SÉCURITÉ : Validation de schéma pour les profils (Whitelisting & Type checking)
     function validateUserFields() {
       let allowedFields = [
@@ -79,11 +83,10 @@ service cloud.firestore {
         allow read, write: if isUser(userId);
       }
       
-      allow update: if isUser(userId) && isNotBanned() && (
-        // Interdiction de modifier les champs sensibles (XP, Aether, etc.) via le client
+      allow update: if (isUser(userId) && isNotBanned() && (
         !request.resource.data.diff(resource.data).affectedKeys()
           .hasAny(['xp', 'level', 'forceXp', 'wisdomXp', 'aetherBalance', 'gold', 'inventory', 'unlockedTitles', 'createdAt', 'email', 'incomingRequestIds', 'outgoingRequestIds'])
-      );
+      )) || isAdmin();
       
       allow delete: if isUser(userId);
 
@@ -239,12 +242,26 @@ service cloud.firestore {
     }
 
     // ----------------------------------------------------------------------
+    // MODULES ADMIN (Déploiement)
+    // ----------------------------------------------------------------------
+    match /library_books/{document=**} {
+      allow read, write: if true;
+    }
+    match /library_audios/{document=**} {
+      allow read, write: if true;
+    }
+    match /programs/{document=**} {
+      allow read, write: if true;
+    }
+    match /exercises/{document=**} {
+      allow read, write: if true;
+    }
+
+    // ----------------------------------------------------------------------
     // BASTIONS (Spots de Workout)
     // ----------------------------------------------------------------------
     match /bastions/{bastionId} {
-      allow read: if isAuthenticated();
-      // Seul l'Admin peut modifier les coordonnées des bastions
-      allow write: if false; 
+      allow read, write: if true; 
 
       match /leaderboard/{userId} {
         allow read: if isAuthenticated();
