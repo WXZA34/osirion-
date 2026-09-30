@@ -603,10 +603,13 @@ export const AnalyticsCharts: React.FC<{ athletes?: AthleteUser[] }> = ({ athlet
             const squatHeight = (squatsData[idx] / maxRepValue) * 100;
             return (
               <div key={day} className="flex-1 flex flex-col items-center h-full justify-end group">
-                <div className="text-[11px] text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity mb-2 font-medium">
-                  {(pushupsData[idx] + squatsData[idx]).toLocaleString()}
-                </div>
-                <div className="w-full flex items-end justify-center gap-1.5 h-full max-h-44">
+                <div className="w-full flex items-end justify-center gap-1.5 h-full max-h-44 relative">
+                  <div 
+                    className="absolute text-[11px] font-medium text-slate-600 opacity-0 group-hover:opacity-100 transition-opacity bg-white px-2 py-0.5 rounded shadow-sm border border-slate-200 z-10 pointer-events-none"
+                    style={{ bottom: `calc(${Math.max(pushupHeight, squatHeight)}% + 6px)` }}
+                  >
+                    {(pushupsData[idx] + squatsData[idx]).toLocaleString()}
+                  </div>
                   {/* Pushups */}
                   <div
                     style={{ height: `${pushupHeight}%` }}
