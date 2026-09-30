@@ -10,6 +10,9 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/providers/repository_providers.dart';
 import '../models/arc_data.dart';
 import '../../../../core/providers/arc_provider.dart';
+import 'transmission_comments_sheet.dart';
+import 'transmission_poll_sheet.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class DailyVideoCard extends ConsumerStatefulWidget {
   const DailyVideoCard({super.key});
@@ -27,6 +30,8 @@ class _DailyVideoCardState extends ConsumerState<DailyVideoCard> {
   VideoPlayerController? _videoController;
   
   bool _isYoutube = false;
+  bool _isWebViewLink = false;
+  WebViewController? _webViewController;
   bool _isExternalLink = false;
   bool _isCustomVideoReady = false;
   bool _isMuted = false;
@@ -48,9 +53,11 @@ class _DailyVideoCardState extends ConsumerState<DailyVideoCard> {
     _videoController?.dispose();
     _youtubeController = null;
     _videoController = null;
+    _webViewController = null;
     _cachedPlayer = null;
     _isCustomVideoReady = false;
     _isExternalLink = false;
+    _isWebViewLink = false;
 
     // Détection Youtube vs Firebase/MP4
     final youtubeId = YoutubePlayer.convertUrlToId(url);
@@ -69,9 +76,24 @@ class _DailyVideoCardState extends ConsumerState<DailyVideoCard> {
         ),
       );
       setState(() {});
-    } else if (url.contains('tiktok.com') || url.contains('instagram.com/reel/')) {
+    } else if (url.contains('tiktok.com') || url.contains('instagram.com') || url.contains('twitter.com') || url.contains('x.com')) {
       _isYoutube = false;
-      _isExternalLink = true;
+      _isExternalLink = false;
+      _isWebViewLink = true;
+
+      String embedUrl = url;
+      if (url.contains('tiktok.com')) {
+        final RegExp regex = RegExp(r'/video/(\d+)');
+        final match = regex.firstMatch(url);
+        if (match != null) {
+          embedUrl = 'https://www.tiktok.com/embed/v2/${match.group(1)}';
+        }
+      }
+
+      _webViewController = WebViewController()
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setBackgroundColor(Colors.black)
+        ..loadRequest(Uri.parse(embedUrl));
       setState(() {});
     } else {
       _isYoutube = false;
@@ -227,7 +249,67 @@ class _DailyVideoCardState extends ConsumerState<DailyVideoCard> {
                               height: 1.5,
                             ),
                           ),
-                        ]
+                        ],
+                        if (config.interactionType == 'POLL' || config.interactionType == 'BOTH' || config.interactionType == 'ALL') ...[
+                          const SizedBox(height: 16),
+                          GestureDetector(
+                            onTap: () {
+                              TransmissionPollSheet.show(context);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                              decoration: BoxDecoration(
+                                color: currentArc.primaryColor.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(color: currentArc.primaryColor.withValues(alpha: 0.2)),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.poll_rounded, color: currentArc.primaryColor, size: 20),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    "Répondre au sondage",
+                                    style: TextStyle(
+                                      color: currentArc.primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                        if (config.interactionType == 'COMMENTS' || config.interactionType == 'BOTH' || config.interactionType == 'ALL' || config.interactionType == null) ...[
+                          const SizedBox(height: 16),
+                          GestureDetector(
+                            onTap: () {
+                              TransmissionCommentsSheet.show(context);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                              decoration: BoxDecoration(
+                                color: currentArc.primaryColor.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(color: currentArc.primaryColor.withValues(alpha: 0.2)),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.forum_rounded, color: currentArc.primaryColor, size: 20),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    "Ouvrir les commentaires",
+                                    style: TextStyle(
+                                      color: currentArc.primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ),
@@ -307,6 +389,14 @@ class _DailyVideoCardState extends ConsumerState<DailyVideoCard> {
         ),
       );
     } 
+
+    if (_isWebViewLink && _webViewController != null) {
+      return SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: WebViewWidget(controller: _webViewController!),
+      );
+    }
     
     if (_isExternalLink) {
       return Container(

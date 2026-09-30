@@ -6,11 +6,14 @@ class GlobalConfigEntity {
   final String? dailyVideoDescription;
   final List<LibraryAudioEntity>? forgeAudios;
 
+  final String? interactionType;
+
   GlobalConfigEntity({
     this.dailyVideoUrl,
     this.dailyVideoTitle,
     this.dailyVideoDescription,
     this.forgeAudios,
+    this.interactionType,
   });
 
   factory GlobalConfigEntity.fromMap(Map<String, dynamic> map) {
@@ -21,6 +24,7 @@ class GlobalConfigEntity {
       dailyVideoUrl: url,
       dailyVideoTitle: map['dailyVideoTitle'] as String?,
       dailyVideoDescription: map['dailyVideoDescription'] as String?,
+      interactionType: map['interactionType'] as String?,
       forgeAudios: audiosList
           .map((e) => LibraryAudioEntity.fromMap('', e as Map<String, dynamic>))
           .toList(),
@@ -32,6 +36,7 @@ class GlobalConfigEntity {
       'dailyVideoUrl': dailyVideoUrl,
       'dailyVideoTitle': dailyVideoTitle,
       'dailyVideoDescription': dailyVideoDescription,
+      'interactionType': interactionType,
       'forgeAudios': forgeAudios?.map((e) => e.toMap()).toList() ?? [],
     };
   }

@@ -7,20 +7,11 @@ import 'repository_providers.dart';
 final dojoExercisesProvider = StreamProvider<List<ExerciseConfig>>((ref) {
   final repository = ref.watch(valerionRepositoryProvider);
 
-  // Auto-initialisation : On écoute le flux
+  // Écoute pure de Firestore sans auto-migration
   return repository.getDojoExercises().handleError((error) {
     debugPrint("❌ [DojoProvider] Erreur : $error");
   }).map((list) {
-    // Vérifier si le document sentinelle existe
-    final migrationDone = list.any((e) => e.id == '_migration_done');
-    
-    // Si la sentinelle est absente, on déclenche l'upload des données par défaut
-    if (!migrationDone) {
-      debugPrint("🚀 [DojoProvider] Migration manquante ou Firestore vide, initialisation...");
-      repository.uploadDefaultExercises(ValerionExercises.catalogue);
-    }
-    
-    // On retourne la liste filtrée (on enlève les documents techniques comme la sentinelle)
+    // On retourne la liste filtrée (on enlève les documents techniques potentiels)
     return list.where((e) => !e.id.startsWith('_')).toList();
   });
 });
@@ -31,16 +22,9 @@ final filteredExercisesProvider = Provider.family<List<ExerciseConfig>, ({String
   
   return exercisesAsync.when(
     data: (list) {
-      final filtered = list.where((e) => e.targetBodyPart == arg.target && e.trainingType == arg.type).toList();
-      
-      // Fallback sur le catalogue statique si Firestore est vide (première migration)
-      if (filtered.isEmpty) {
-        return ValerionExercises.getByTargetAndType(arg.target, arg.type);
-      }
-      
-      return filtered;
+      return list.where((e) => e.targetBodyPart == arg.target && e.trainingType == arg.type).toList();
     },
-    loading: () => ValerionExercises.getByTargetAndType(arg.target, arg.type), // Fallback pendant le chargement
-    error: (_, __) => ValerionExercises.getByTargetAndType(arg.target, arg.type), // Fallback en cas d'erreur
+    loading: () => [], // Pas de fallback, source de vérité = Firestore
+    error: (_, __) => [], 
   );
 });

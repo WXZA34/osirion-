@@ -207,10 +207,14 @@ class _LiveDuelScreenState extends State<LiveDuelScreen> with SingleTickerProvid
             left: 20,
             right: 20,
             child: TugOfWarBar(
-              myReps: _myReps,
-              opponentReps: _opponentReps,
-              myColor: Colors.amber,
-              opponentColor: Colors.deepOrangeAccent,
+              playerName: "VOUS",
+              playerLevel: 15,
+              playerReps: _myReps.toDouble(),
+              opponentName: "ADVERSAIRE",
+              opponentLevel: 15,
+              opponentReps: _opponentReps.toDouble(),
+              tugPosition: (_myReps + _opponentReps) == 0 ? 0.5 : (_opponentReps / (_myReps + _opponentReps)).clamp(0.1, 0.9),
+              handicapMultiplier: 1.0,
             ),
           ),
 

@@ -209,17 +209,20 @@ service cloud.firestore {
       allow write: if isAuthenticated();
     }
     match /books/{id} {
-      allow read: if isAuthenticated();
-      allow write: if isAuthenticated();
+      allow read, write: if true;
     }
     match /library_audios/{id} {
-      allow read: if isAuthenticated();
-      allow write: if isAuthenticated(); 
+      allow read, write: if true; 
     }
 
     match /global_config/{docId} {
       allow read: if isAuthenticated();
-      allow write: if false; 
+      allow write: if isAdmin(); 
+    }
+
+    match /daily_transmissions/{docId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated(); // TODO: Securiser plus tard pour les votes/commentaires
     }
 
     match /system_announcements/{announcementId} {

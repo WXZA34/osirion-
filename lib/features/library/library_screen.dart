@@ -1238,23 +1238,15 @@ class _DynamicBookList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(libraryBooksProvider).when(
       data: (firebaseBooks) {
-        final staticBooks = getLibraryCatalog(context)[activeArc] ?? [];
-        final dynamicBooks = firebaseBooks.where((b) => b.arc == activeArc).toList();
-        
-        // Dédoublonnage par ID (priorité au contenu Firestore si présent)
-        final Map<String, BookEntity> bookMap = {};
-        for (var b in staticBooks) { bookMap[b.id] = b; }
-        for (var b in dynamicBooks) { bookMap[b.id] = b; }
-        
-        final allBooks = bookMap.values.toList();
+        final allBooks = firebaseBooks.where((b) => b.arc == activeArc).toList();
 
         if (allBooks.isEmpty) {
           return Padding(
-            padding: EdgeInsets.symmetric(vertical: 40),
+            padding: const EdgeInsets.symmetric(vertical: 40),
             child: Center(
               child: Text(
                 AppLocalizations.of(context)!.libraryAucunLivreTrouv,
-                style: TextStyle(color: Colors.white30, fontSize: 12),
+                style: const TextStyle(color: Colors.white30, fontSize: 12),
               ),
             ),
           );
@@ -1264,15 +1256,8 @@ class _DynamicBookList extends ConsumerWidget {
           children: allBooks.map((book) => onBuildCard(book)).toList(),
         );
       },
-      loading: () => _buildStaticFallback(context),
-      error: (err, stack) => _buildStaticFallback(context),
-    );
-  }
-
-  Widget _buildStaticFallback(BuildContext context) {
-    final staticBooks = getLibraryCatalog(context)[activeArc] ?? [];
-    return Column(
-      children: staticBooks.map((book) => onBuildCard(book)).toList(),
+      loading: () => const Center(child: CircularProgressIndicator(color: Colors.white)),
+      error: (err, stack) => Center(child: Text('Erreur', style: const TextStyle(color: Colors.red))),
     );
   }
 }
@@ -1291,15 +1276,20 @@ class _DynamicAudioList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(libraryAudiosProvider).when(
       data: (firebaseAudios) {
-        final staticAudios = ValerionAudios.getCatalogue(context);
-        
-        // Dédoublonnage par ID
-        final Map<String, LibraryAudioEntity> audioMap = {};
-        for (var a in staticAudios) { audioMap[a.id] = a; }
-        for (var a in firebaseAudios) { audioMap[a.id] = a; }
-        
-        final allAudios = audioMap.values.toList();
+        final allAudios = firebaseAudios.toList();
         allAudios.sort((a, b) => a.order.compareTo(b.order));
+
+        if (allAudios.isEmpty) {
+          return const Padding(
+            padding: EdgeInsets.symmetric(vertical: 40),
+            child: Center(
+              child: Text(
+                "Aucun podcast disponible.",
+                style: TextStyle(color: Colors.white30, fontSize: 12),
+              ),
+            ),
+          );
+        }
 
         return Column(
           children: [
@@ -1316,26 +1306,17 @@ class _DynamicAudioList extends ConsumerWidget {
               }
               return buildAudioCard(audio.title, audio.subtitle, icon, audio.audioUrl);
             }),
-            SizedBox(height: 16),
-            Divider(color: Colors.white10),
+            const SizedBox(height: 16),
+            const Divider(color: Colors.white10),
             Text(AppLocalizations.of(context)!.libraryNouveauxContenusSynchronisS,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white24, fontSize: 10),
+              style: const TextStyle(color: Colors.white24, fontSize: 10),
             ),
           ],
         );
       },
-      loading: () => _buildStaticFallback(context),
-      error: (err, stack) => _buildStaticFallback(context),
-    );
-  }
-
-  Widget _buildStaticFallback(BuildContext context) {
-    final staticAudios = ValerionAudios.getCatalogue(context);
-    return Column(
-      children: staticAudios.map((audio) {
-        return buildAudioCard(audio.title, audio.subtitle, Icons.music_note, audio.audioUrl);
-      }).toList(),
+      loading: () => const Center(child: CircularProgressIndicator(color: Colors.white)),
+      error: (err, stack) => const Center(child: Text('Erreur', style: TextStyle(color: Colors.red))),
     );
   }
 }

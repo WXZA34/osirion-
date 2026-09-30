@@ -762,22 +762,39 @@ exports.reportBastionIntel = functions.https.onCall(async (data, context) => {
 
         const bastionRef = admin.firestore().collection('bastions').doc(bastionId);
         const bastionDoc = await transaction.get(bastionRef);
-        if (!bastionDoc.exists) throw new functions.https.HttpsError('not-found', 'Bastion introuvable.');
         
-        // SÉCURITÉ ANTI-SPOOFING : Vérification de la distance et de la vélocité côté serveur
-        const bData = bastionDoc.data();
-        const distance = getDistance(lat, lng, bData.latitude, bData.longitude);
-        if (distance > 65) {
-            throw new functions.https.HttpsError('permission-denied', 'Signal GPS distant. Rapprochez-vous du bastion.');
+        let bData = {};
+        if (bastionDoc.exists) {
+            bData = bastionDoc.data();
+            // SÉCURITÉ ANTI-SPOOFING : Vérification de la distance et de la vélocité côté serveur
+            const distance = getDistance(lat, lng, bData.latitude, bData.longitude);
+            if (distance > 65) {
+                throw new functions.https.HttpsError('permission-denied', 'Signal GPS distant. Rapprochez-vous du bastion.');
+            }
+        } else {
+            // Création automatique si le Bastion vient d'OSM et n'existe pas encore
+            bData = {
+                latitude: lat,
+                longitude: lng,
+                name: bastionName || 'Bastion Inconnu',
+                city: 'Inconnue', // Idéalement via un reverse geocoding, mais on initialise avec une valeur par défaut
+                status: 'PENDING_REVIEW', // L'admin devra le valider
+                equipmentList: [],
+                reviewsCount: 0,
+                rating: 0
+            };
         }
+
         if (!checkVelocity(userData.lastLat, userData.lastLng, userData.lastAt, lat, lng, now)) {
             throw new functions.https.HttpsError('permission-denied', 'Mouvement anormal détecté.');
         }
         
         transaction.set(bastionRef, {
+            ...bData,
             images: admin.firestore.FieldValue.arrayUnion(downloadUrl),
+            photosCount: admin.firestore.FieldValue.increment(1),
             lastActivity: admin.firestore.FieldValue.serverTimestamp(),
-            name: bastionName
+            contributedBy: uid
         }, { merge: true });
 
         const intelXp = 250;

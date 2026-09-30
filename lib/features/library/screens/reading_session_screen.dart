@@ -229,7 +229,9 @@ class _ReadingSessionScreenState extends State<ReadingSessionScreen> {
           Expanded(
             child:
                 widget.book.pdfPath != null
-                    ? SfPdfViewer.asset(widget.book.pdfPath!)
+                    ? (widget.book.pdfPath!.startsWith('http')
+                        ? SfPdfViewer.network(widget.book.pdfPath!)
+                        : SfPdfViewer.asset(widget.book.pdfPath!))
                     : SingleChildScrollView(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 24,

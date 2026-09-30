@@ -29,6 +29,9 @@ import 'package:camera/camera.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import '../duel/screens/live_duel_screen.dart';
+import 'package:valerion/features/duel/screens/league_ladder_screen.dart';
+import 'package:valerion/features/duel/screens/match_history_screen.dart';
+import 'package:valerion/features/pantheon/screens/pantheon_profile_screen.dart';
 
 class PantheonScreen extends ConsumerStatefulWidget {
   final int initialTabIndex;
@@ -224,13 +227,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
       case 1:
         return _buildClans(surfaceColor, accentColor, arc, isSummer, onSurfaceColor); // Sera revu plus tard
       case 2:
-        return _buildLeaderboards(
-          surfaceColor,
-          accentColor,
-          arc,
-          isSummer,
-          onSurfaceColor,
-        ); // Sera revu plus tard
+        return const LeagueLadderScreen();
       case 3:
         return _buildDominationSpots(
           surfaceColor,
@@ -1188,128 +1185,525 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.only(top: 80, bottom: 40, left: 16, right: 16),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildDominationCard(
-            title: "LE DUEL",
-            subtitle: "Entraînement Rapide",
-            description: "Affrontez un adversaire ou un fantôme. Système de handicap actif.",
-            icon: Icons.sports_mma,
-            color: Colors.amber,
-            onTap: () => _showExerciseSelector(context, "duel", Colors.amber),
+          _buildAthleteStatusBanner(),
+          const SizedBox(height: 16),
+          
+          // Quick Access Buttons
+          Row(
+            children: [
+              Expanded(
+                child: TextButton.icon(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => const MatchHistoryScreen()));
+                  },
+                  icon: const Icon(Icons.history, color: Colors.white, size: 18),
+                  label: const Text("Historique", style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.white.withValues(alpha: 0.05),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: TextButton.icon(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => const PantheonProfileScreen()));
+                  },
+                  icon: const Icon(Icons.shield, color: Colors.white, size: 18),
+                  label: const Text("Profil", style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.white.withValues(alpha: 0.05),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 32),
+          
+          const Text(
+            "DISCIPLINES DE COMBAT",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1.5,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            "Sélectionnez un mode pour engager votre séance physique.",
+            style: TextStyle(color: Colors.white60, fontSize: 12),
           ),
           const SizedBox(height: 16),
-          _buildDominationCard(
-            title: "LA LIGUE",
-            subtitle: "Mode Classé (Ranked)",
-            description: "Compétition pure. Zéro handicap. Gravissez les échelons.",
+
+          _buildGrandGameModeCard(
+            modeId: "duel",
+            badgeText: "ENTRAÎNEMENT RAPIDE • TUG OF WAR",
+            icon: Icons.bolt,
+            gradientColors: [const Color(0xFF1E1714), const Color(0xFF161519), const Color(0xFF121316)],
+            accentColor: Colors.deepOrangeAccent,
+            title: "1. Le Duel",
+            subtitle: "Combat immédiat & équilibré",
+            description: "Affrontez un adversaire en direct ou son Fantôme asynchrone. Le Système de Handicap ajuste l'impact des répétitions : un niveau débutant peut renverser un vétéran sur la barre de tir à la corde s'il donne tout !",
+            features: [
+              "⚖️ Système de Handicap actif (poids par niveau)",
+              "👻 Matchmaking Fantôme instantané sans attente",
+              "🎯 Jauge dynamique de Tir à la Corde"
+            ],
+            actionText: "Lancer un Duel",
+            onTap: () => _showExerciseSelector(context, "duel", Colors.deepOrangeAccent),
+          ),
+          const SizedBox(height: 16),
+
+          _buildGrandGameModeCard(
+            modeId: "ligue",
+            badgeText: "MODE CLASSÉ • SPRINT 60s • MMR",
             icon: Icons.emoji_events,
-            color: Colors.cyanAccent,
+            gradientColors: [const Color(0xFF14191E), const Color(0xFF15171C), const Color(0xFF121316)],
+            accentColor: Colors.cyanAccent,
+            title: "2. La Ligue",
+            subtitle: "Compétition pure • Rangs Bronze à Valérion",
+            description: "Aucun handicap : 1 pompe égale 1 pompe. L'IA de vision compte avec rigueur absolue (demi-amplitude = 0.5 point). Seuls les guerriers de votre ligue vous sont opposés pour grimper jusqu'au sommet du Panthéon.",
+            features: [
+              "📏 Arbitrage IA Strict (1.0 pleine / 0.5 demi-rép)",
+              "📈 Échelle MMR saisonnière & promotions de palier",
+              "👑 Trophée Ultime : Rang Ligue Valérion"
+            ],
+            actionText: "Défier la Ligue",
             onTap: () => _showExerciseSelector(context, "ligue", Colors.cyanAccent),
           ),
           const SizedBox(height: 16),
-          _buildDominationCard(
-            title: "LE RAID MONDIAL",
-            subtitle: "Événement Communautaire",
-            description: "Abattez le Boss ensemble. (Bientôt disponible)",
-            icon: Icons.fort,
-            color: Colors.deepOrangeAccent,
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
+
+          _buildGrandRaidBossCard(
+            bossHp: 645210, // Simulated current HP
+            maxHp: 1000000,
+            onJoinRaid: () {
+               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Le Raid Mondial sera bientôt disponible !")),
               );
-            },
-            isLocked: true,
+            }
           ),
         ],
       ),
     );
   }
 
-  Widget _buildDominationCard({
+  Widget _buildAthleteStatusBanner() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF161618),
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.05),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.fitness_center, color: Colors.white, size: 20),
+              ),
+              const SizedBox(width: 16),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "ARÈNE DE DOMINATION",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.8,
+                    ),
+                  ),
+                  Text(
+                    "Ligue : Bronze • 1200 MMR",
+                    style: TextStyle(
+                      color: Colors.white54,
+                      fontSize: 11,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.white10,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.white24),
+            ),
+            child: const Text(
+              "NIV. 12",
+              style: TextStyle(
+                color: Colors.amber,
+                fontSize: 11,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGrandGameModeCard({
+    required String modeId,
+    required String badgeText,
+    required IconData icon,
+    required List<Color> gradientColors,
+    required Color accentColor,
     required String title,
     required String subtitle,
     required String description,
-    required IconData icon,
-    required Color color,
+    required List<String> features,
+    required String actionText,
     required VoidCallback onTap,
-    bool isLocked = false,
   }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: isLocked ? color.withOpacity(0.05) : color.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: isLocked ? color.withOpacity(0.3) : color.withOpacity(0.6),
-            width: 2,
-          ),
-          boxShadow: isLocked ? null : [
-            BoxShadow(
-              color: color.withOpacity(0.1),
-              blurRadius: 10,
-              spreadRadius: 2,
-            )
+          color: const Color(0xFF161618),
+          borderRadius: BorderRadius.circular(24),
+        ),
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Top Tag and Icon
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.05),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    badgeText,
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.8,
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 36,
+                  height: 36,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.05),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(icon, color: Colors.white, size: 18),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            
+            // Title & Subtitle
+            Text(
+              title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.w900,
+                letterSpacing: -0.5,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              subtitle,
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.6),
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 12),
+            
+            // Description
+            Text(
+              description,
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.5),
+                fontSize: 14,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 16),
+            
+            // Features Chips
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: features.map((f) => Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.05),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  f,
+                  style: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              )).toList(),
+            ),
+            const SizedBox(height: 24),
+            
+            // Action Button
+            Container(
+              width: double.infinity,
+              height: 52,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    actionText.toUpperCase(),
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 1.0,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Icon(Icons.arrow_forward, color: Colors.black, size: 18),
+                ],
+              ),
+            ),
           ],
         ),
-        child: Row(
+      ),
+    );
+  }
+
+  Widget _buildGrandRaidBossCard({
+    required int bossHp,
+    required int maxHp,
+    required VoidCallback onJoinRaid,
+  }) {
+    final hpFraction = (bossHp / maxHp).clamp(0.0, 1.0);
+    
+    return GestureDetector(
+      onTap: onJoinRaid,
+      child: Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFF161618),
+          borderRadius: BorderRadius.circular(24),
+        ),
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Header
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.05),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Text(
+                    "ÉVÉNEMENT COMMUNAUTAIRE",
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.8,
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 36,
+                  height: 36,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.05),
+                    shape: BoxShape.circle,
+                  ),
+                  alignment: Alignment.center,
+                  child: const Text("⚔️", style: TextStyle(fontSize: 17)),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            
+            const Text(
+              "3. Le Raid Mondial",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.w900,
+                letterSpacing: -0.5,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              "Affrontez le Valérion Primordial",
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.6),
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 16),
+            
+            // Description
+            const Text(
+              "1 Pompe = 1 Dégât infligé ! Tous les athlètes de l'application frappent le boss en direct. Coordonnez vos efforts pour abattre cette menace titanesque.",
+              style: TextStyle(
+                color: Colors.white54,
+                fontSize: 14,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 16),
+            
+            // Live Boss HP Progress
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: isLocked ? Colors.grey.withOpacity(0.1) : color.withOpacity(0.2),
-                shape: BoxShape.circle,
+                color: Colors.white.withValues(alpha: 0.03),
+                borderRadius: BorderRadius.circular(16),
               ),
-              child: Icon(
-                icon,
-                color: isLocked ? Colors.grey : color,
-                size: 32,
-              ),
-            ),
-            const SizedBox(width: 20),
-            Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    subtitle.toUpperCase(),
-                    style: TextStyle(
-                      color: isLocked ? Colors.grey : color.withOpacity(0.8),
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.2,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "VIE RESTANTE DU GOLEM",
+                        style: TextStyle(
+                          color: Colors.white54,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                      Text(
+                        "${(bossHp / 1000).toStringAsFixed(1)}K / ${(maxHp / 1000).toStringAsFixed(1)}K PV",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    title,
-                    style: TextStyle(
-                      color: isLocked ? Colors.grey : Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 1.5,
+                  const SizedBox(height: 12),
+                  Container(
+                    height: 8,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(4),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    description,
-                    style: TextStyle(
-                      color: isLocked ? Colors.grey : Colors.white70,
-                      fontSize: 14,
-                      height: 1.4,
+                    alignment: Alignment.centerLeft,
+                    child: FractionallySizedBox(
+                      widthFactor: hpFraction,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-            if (isLocked) ...[
-              const SizedBox(width: 12),
-              const Icon(Icons.lock, color: Colors.grey, size: 24),
-            ] else ...[
-              const SizedBox(width: 12),
-              Icon(Icons.chevron_right, color: color, size: 28),
-            ]
+            const SizedBox(height: 16),
+            
+            // Relic Reward Callout
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.05),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                children: [
+                  const Text("🎁", style: TextStyle(fontSize: 20)),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Récompense : Relique Épique",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          "Attribuée à chaque guerrier participant dès que le Golem tombe.",
+                          style: TextStyle(
+                            color: Colors.white.withValues(alpha: 0.5),
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+            
+            // Join Button
+            Container(
+              width: double.infinity,
+              height: 52,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "FRAPPER LE GOLEM EN DIRECT",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 1.0,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Icon(Icons.arrow_forward, color: Colors.black, size: 18),
+                ],
+              ),
+            ),
           ],
         ),
       ),
