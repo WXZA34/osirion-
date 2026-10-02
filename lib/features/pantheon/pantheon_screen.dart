@@ -1180,15 +1180,12 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
   // --- Tab 3: Domination Urbaine (Spots) ---
   // --- Tab 3: Domination Urbaine (Spots) ---
   Widget _buildDominationSpots(Color surfaceColor, Color accentColor, ArcData arc, bool isSummer, Color onSurfaceColor) {
-    return SingleChildScrollView(
+    return Column(
       key: ValueKey(3),
-      physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.only(top: 80, bottom: 40, left: 16, right: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildAthleteStatusBanner(),
-          const SizedBox(height: 16),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildAthleteStatusBanner(),
+        const SizedBox(height: 16),
           
           // Quick Access Buttons
           Row(
