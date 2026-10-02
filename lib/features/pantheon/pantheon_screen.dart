@@ -1293,8 +1293,7 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
             }
           ),
         ],
-      ),
-    );
+      );
   }
 
   Widget _buildAthleteStatusBanner() {
