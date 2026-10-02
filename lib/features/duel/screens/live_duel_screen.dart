@@ -192,7 +192,7 @@ class _LiveDuelScreenState extends State<LiveDuelScreen> with SingleTickerProvid
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Camera Background
+          // Camera Background, Overlay, and Skeleton aligned perfectly
           LayoutBuilder(
             builder: (context, constraints) {
               final size = _cameraController!.value.previewSize!;
@@ -205,18 +205,19 @@ class _LiveDuelScreenState extends State<LiveDuelScreen> with SingleTickerProvid
                   child: SizedBox(
                     width: size.height, // Swapped for portrait orientation
                     height: size.width,
-                    child: CameraPreview(_cameraController!),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        CameraPreview(_cameraController!),
+                        Container(color: Colors.black.withOpacity(0.4)),
+                        if (_customPaint != null) _customPaint!,
+                      ],
+                    ),
                   ),
                 ),
               );
             },
           ),
-          
-          // Dark Overlay
-          Container(color: Colors.black.withOpacity(0.4)),
-
-          // Skeleton Overlay
-          if (_customPaint != null) _customPaint!,
 
           // Tug of War Bar
           Positioned(

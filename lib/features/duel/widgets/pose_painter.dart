@@ -13,29 +13,55 @@ class PosePainter extends CustomPainter {
     final double scaleX = size.width / absoluteImageSize.width;
     final double scaleY = size.height / absoluteImageSize.height;
 
+    // Glowing Neon Paint for the Core Body
     final paint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 3.0
-      ..color = Colors.white70;
+      ..strokeWidth = 4.0
+      ..strokeCap = StrokeCap.round
+      ..color = Colors.cyanAccent.withOpacity(0.8);
+      
+    final coreGlow = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 8.0
+      ..strokeCap = StrokeCap.round
+      ..color = Colors.cyanAccent.withOpacity(0.3)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5);
 
+    // Glowing Amber for Left Limbs
     final leftPaint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 3.0
-      ..color = Colors.amber;
+      ..strokeWidth = 4.0
+      ..strokeCap = StrokeCap.round
+      ..color = Colors.amberAccent;
+      
+    final leftGlow = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 8.0
+      ..strokeCap = StrokeCap.round
+      ..color = Colors.amber.withOpacity(0.3)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5);
 
+    // Glowing Orange for Right Limbs
     final rightPaint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 3.0
+      ..strokeWidth = 4.0
+      ..strokeCap = StrokeCap.round
       ..color = Colors.deepOrangeAccent;
+      
+    final rightGlow = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 8.0
+      ..strokeCap = StrokeCap.round
+      ..color = Colors.deepOrangeAccent.withOpacity(0.3)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5);
+
+    // Joint Marker
+    final jointPaint = Paint()
+      ..style = PaintingStyle.fill
+      ..color = Colors.white;
 
     for (final pose in poses) {
-      pose.landmarks.forEach((_, landmark) {
-        final x = _translateX(landmark.x, rotation, size, absoluteImageSize);
-        final y = _translateY(landmark.y, rotation, size, absoluteImageSize);
-        canvas.drawCircle(Offset(x, y), 5, paint);
-      });
-
-      void paintLine(PoseLandmarkType type1, PoseLandmarkType type2, Paint paintType) {
+      void paintLine(PoseLandmarkType type1, PoseLandmarkType type2, Paint paintType, Paint glowType) {
         final joint1 = pose.landmarks[type1];
         final joint2 = pose.landmarks[type2];
         if (joint1 != null && joint2 != null) {
@@ -43,27 +69,37 @@ class PosePainter extends CustomPainter {
           final y1 = _translateY(joint1.y, rotation, size, absoluteImageSize);
           final x2 = _translateX(joint2.x, rotation, size, absoluteImageSize);
           final y2 = _translateY(joint2.y, rotation, size, absoluteImageSize);
+          
+          canvas.drawLine(Offset(x1, y1), Offset(x2, y2), glowType);
           canvas.drawLine(Offset(x1, y1), Offset(x2, y2), paintType);
         }
       }
 
       // Draw arms
-      paintLine(PoseLandmarkType.leftShoulder, PoseLandmarkType.leftElbow, leftPaint);
-      paintLine(PoseLandmarkType.leftElbow, PoseLandmarkType.leftWrist, leftPaint);
-      paintLine(PoseLandmarkType.rightShoulder, PoseLandmarkType.rightElbow, rightPaint);
-      paintLine(PoseLandmarkType.rightElbow, PoseLandmarkType.rightWrist, rightPaint);
+      paintLine(PoseLandmarkType.leftShoulder, PoseLandmarkType.leftElbow, leftPaint, leftGlow);
+      paintLine(PoseLandmarkType.leftElbow, PoseLandmarkType.leftWrist, leftPaint, leftGlow);
+      paintLine(PoseLandmarkType.rightShoulder, PoseLandmarkType.rightElbow, rightPaint, rightGlow);
+      paintLine(PoseLandmarkType.rightElbow, PoseLandmarkType.rightWrist, rightPaint, rightGlow);
 
       // Draw Body
-      paintLine(PoseLandmarkType.leftShoulder, PoseLandmarkType.rightShoulder, paint);
-      paintLine(PoseLandmarkType.leftHip, PoseLandmarkType.rightHip, paint);
-      paintLine(PoseLandmarkType.leftShoulder, PoseLandmarkType.leftHip, paint);
-      paintLine(PoseLandmarkType.rightShoulder, PoseLandmarkType.rightHip, paint);
+      paintLine(PoseLandmarkType.leftShoulder, PoseLandmarkType.rightShoulder, paint, coreGlow);
+      paintLine(PoseLandmarkType.leftHip, PoseLandmarkType.rightHip, paint, coreGlow);
+      paintLine(PoseLandmarkType.leftShoulder, PoseLandmarkType.leftHip, paint, coreGlow);
+      paintLine(PoseLandmarkType.rightShoulder, PoseLandmarkType.rightHip, paint, coreGlow);
 
       // Draw legs
-      paintLine(PoseLandmarkType.leftHip, PoseLandmarkType.leftKnee, leftPaint);
-      paintLine(PoseLandmarkType.leftKnee, PoseLandmarkType.leftAnkle, leftPaint);
-      paintLine(PoseLandmarkType.rightHip, PoseLandmarkType.rightKnee, rightPaint);
-      paintLine(PoseLandmarkType.rightKnee, PoseLandmarkType.rightAnkle, rightPaint);
+      paintLine(PoseLandmarkType.leftHip, PoseLandmarkType.leftKnee, leftPaint, leftGlow);
+      paintLine(PoseLandmarkType.leftKnee, PoseLandmarkType.leftAnkle, leftPaint, leftGlow);
+      paintLine(PoseLandmarkType.rightHip, PoseLandmarkType.rightKnee, rightPaint, rightGlow);
+      paintLine(PoseLandmarkType.rightKnee, PoseLandmarkType.rightAnkle, rightPaint, rightGlow);
+
+      // Draw Joints on top of lines
+      pose.landmarks.forEach((_, landmark) {
+        final x = _translateX(landmark.x, rotation, size, absoluteImageSize);
+        final y = _translateY(landmark.y, rotation, size, absoluteImageSize);
+        canvas.drawCircle(Offset(x, y), 6, coreGlow); // Outer glow
+        canvas.drawCircle(Offset(x, y), 3, jointPaint); // Inner bright joint
+      });
     }
   }
 
