@@ -26,6 +26,8 @@ class _TransmissionCommentsSheetState extends ConsumerState<TransmissionComments
   final TextEditingController _commentController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool _isSubmitting = false;
+  String? _replyingToCommentId;
+  String? _replyingToPseudo;
 
   @override
   void dispose() {
@@ -42,7 +44,7 @@ class _TransmissionCommentsSheetState extends ConsumerState<TransmissionComments
     try {
       final comments = List<dynamic>.from(commentSession['comments'] ?? []);
       
-      final newComment = {
+      final newEntry = {
         'id': 'comm_${DateTime.now().millisecondsSinceEpoch}',
         'athleteId': user.id,
         'athletePseudo': user.username,
@@ -54,9 +56,24 @@ class _TransmissionCommentsSheetState extends ConsumerState<TransmissionComments
         'likesCount': 0,
         'isPinned': false,
         'status': 'VISIBLE',
+        'replies': [],
       };
 
-      comments.insert(0, newComment);
+      if (_replyingToCommentId != null) {
+        // Find the comment and add reply
+        final index = comments.indexWhere((c) => c['id'] == _replyingToCommentId);
+        if (index != -1) {
+          final targetComment = Map<String, dynamic>.from(comments[index]);
+          final replies = List<dynamic>.from(targetComment['replies'] ?? []);
+          replies.add(newEntry);
+          targetComment['replies'] = replies;
+          comments[index] = targetComment;
+        }
+        _replyingToCommentId = null;
+        _replyingToPseudo = null;
+      } else {
+        comments.insert(0, newEntry);
+      }
 
       await _firestore.collection('daily_transmissions').doc(transmissionId).update({
         'commentSession.comments': comments,
@@ -72,6 +89,21 @@ class _TransmissionCommentsSheetState extends ConsumerState<TransmissionComments
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
     }
+  }
+
+  void _startReply(String commentId, String pseudo) {
+    setState(() {
+      _replyingToCommentId = commentId;
+      _replyingToPseudo = pseudo;
+    });
+    FocusScope.of(context).requestFocus();
+  }
+
+  void _cancelReply() {
+    setState(() {
+      _replyingToCommentId = null;
+      _replyingToPseudo = null;
+    });
   }
 
   @override
@@ -215,32 +247,54 @@ class _TransmissionCommentsSheetState extends ConsumerState<TransmissionComments
                               color: arc.arcType == AlphaArc.summer ? Colors.grey.shade50 : const Color(0xFF1E293B),
                               border: Border(top: BorderSide(color: arc.arcType == AlphaArc.summer ? Colors.black12 : Colors.white10)),
                             ),
-                            child: Row(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Expanded(
-                                  child: TextField(
-                                    controller: _commentController,
-                                    style: TextStyle(color: arc.arcType == AlphaArc.summer ? Colors.black87 : Colors.white),
-                                    decoration: InputDecoration(
-                                      hintText: "Rédigez votre rapport...",
-                                      hintStyle: TextStyle(color: arc.arcType == AlphaArc.summer ? Colors.black38 : Colors.white38),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                      filled: true,
-                                      fillColor: arc.arcType == AlphaArc.summer ? Colors.white : const Color(0xFF0F172A),
-                                      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                if (_replyingToPseudo != null)
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0, left: 4.0),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "En réponse à $_replyingToPseudo",
+                                          style: TextStyle(color: arc.primaryColor, fontSize: 12, fontWeight: FontWeight.w600),
+                                        ),
+                                        const Spacer(),
+                                        GestureDetector(
+                                          onTap: _cancelReply,
+                                          child: Icon(Icons.close, color: arc.primaryColor, size: 16),
+                                        )
+                                      ],
                                     ),
                                   ),
-                                ),
-                                const SizedBox(width: 12),
-                                _isSubmitting
-                                    ? const CircularProgressIndicator()
-                                    : IconButton(
-                                        icon: Icon(Icons.send_rounded, color: arc.primaryColor),
-                                        onPressed: () => _submitComment(user, doc.id, commentSession),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: TextField(
+                                        controller: _commentController,
+                                        style: TextStyle(color: arc.arcType == AlphaArc.summer ? Colors.black87 : Colors.white),
+                                        decoration: InputDecoration(
+                                          hintText: _replyingToPseudo != null ? "Votre réponse..." : "Rédigez votre rapport...",
+                                          hintStyle: TextStyle(color: arc.arcType == AlphaArc.summer ? Colors.black38 : Colors.white38),
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(20),
+                                            borderSide: BorderSide.none,
+                                          ),
+                                          filled: true,
+                                          fillColor: arc.arcType == AlphaArc.summer ? Colors.white : const Color(0xFF0F172A),
+                                          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                        ),
                                       ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    _isSubmitting
+                                        ? const CircularProgressIndicator()
+                                        : IconButton(
+                                            icon: Icon(Icons.send_rounded, color: arc.primaryColor),
+                                            onPressed: () => _submitComment(user, doc.id, commentSession),
+                                          ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
@@ -315,6 +369,20 @@ class _TransmissionCommentsSheetState extends ConsumerState<TransmissionComments
                   ),
                 ),
                 
+                // Actions (Reply)
+                const SizedBox(height: 8),
+                GestureDetector(
+                  onTap: () => _startReply(comment['id'], comment['athletePseudo'] ?? 'Athlète'),
+                  child: Text(
+                    "Répondre",
+                    style: TextStyle(
+                      color: isSummer ? Colors.black54 : Colors.white54,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                
                 // Admin Reply
                 if (adminReply != null)
                   Container(
@@ -353,7 +421,75 @@ class _TransmissionCommentsSheetState extends ConsumerState<TransmissionComments
                         ),
                       ],
                     ),
-                  )
+                  ),
+                
+                // User Replies
+                if (comment['replies'] != null && (comment['replies'] as List).isNotEmpty)
+                  Container(
+                    margin: const EdgeInsets.only(top: 12),
+                    padding: const EdgeInsets.only(left: 12),
+                    decoration: BoxDecoration(
+                      border: Border(left: BorderSide(color: arc.primaryColor.withValues(alpha: 0.3), width: 2)),
+                    ),
+                    child: Column(
+                      children: (comment['replies'] as List).map<Widget>((reply) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CircleAvatar(
+                                radius: 14,
+                                backgroundImage: (reply['athleteAvatar'] != null && reply['athleteAvatar'].toString().isNotEmpty)
+                                    ? NetworkImage(reply['athleteAvatar'])
+                                    : null,
+                                backgroundColor: arc.primaryColor.withValues(alpha: 0.2),
+                                child: (reply['athleteAvatar'] == null || reply['athleteAvatar'].toString().isEmpty)
+                                    ? Icon(Icons.person, color: arc.primaryColor, size: 14)
+                                    : null,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          reply['athletePseudo'] ?? 'Alpha',
+                                          style: TextStyle(
+                                            color: isSummer ? Colors.black87 : Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 6),
+                                        Text(
+                                          reply['createdAt'] ?? '',
+                                          style: TextStyle(
+                                            color: isSummer ? Colors.black45 : Colors.white54,
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 2),
+                                    Text(
+                                      reply['content'] ?? '',
+                                      style: TextStyle(
+                                        color: isSummer ? Colors.black87 : Colors.white70,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
               ],
             ),
           ),
