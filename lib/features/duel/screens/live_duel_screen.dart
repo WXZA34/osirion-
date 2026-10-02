@@ -193,7 +193,24 @@ class _LiveDuelScreenState extends State<LiveDuelScreen> with SingleTickerProvid
         fit: StackFit.expand,
         children: [
           // Camera Background
-          CameraPreview(_cameraController!),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final size = _cameraController!.value.previewSize!;
+              return SizedBox(
+                width: constraints.maxWidth,
+                height: constraints.maxHeight,
+                child: FittedBox(
+                  fit: BoxFit.cover,
+                  clipBehavior: Clip.hardEdge,
+                  child: SizedBox(
+                    width: size.height, // Swapped for portrait orientation
+                    height: size.width,
+                    child: CameraPreview(_cameraController!),
+                  ),
+                ),
+              );
+            },
+          ),
           
           // Dark Overlay
           Container(color: Colors.black.withOpacity(0.4)),
@@ -222,30 +239,49 @@ class _LiveDuelScreenState extends State<LiveDuelScreen> with SingleTickerProvid
           Center(
             child: ScaleTransition(
               scale: _scaleAnimation,
-              child: Text(
-                '$_myReps',
-                style: const TextStyle(
-                  fontSize: 120,
-                  fontWeight: FontWeight.w900,
-                  color: Colors.white,
-                ),
+              child: Stack(
+                children: [
+                  // Text Stroke/Glow
+                  Text(
+                    '$_myReps',
+                    style: TextStyle(
+                      fontSize: 140,
+                      fontWeight: FontWeight.w900,
+                      foreground: Paint()
+                        ..style = PaintingStyle.stroke
+                        ..strokeWidth = 6
+                        ..color = Colors.amber.withOpacity(0.5),
+                    ),
+                  ),
+                  Text(
+                    '$_myReps',
+                    style: const TextStyle(
+                      fontSize: 140,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.white,
+                      shadows: [
+                        Shadow(color: Colors.black54, blurRadius: 20, offset: Offset(0, 10)),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
 
           // Opponent PiP
           Positioned(
-            bottom: 30,
+            bottom: 40,
             right: 20,
             child: Container(
-              width: 100,
-              height: 140,
+              width: 110,
+              height: 160,
               decoration: BoxDecoration(
                 color: Colors.black87,
-                border: Border.all(color: Colors.pinkAccent, width: 2),
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: const [
-                  BoxShadow(color: Colors.pinkAccent, blurRadius: 10, spreadRadius: 1),
+                border: Border.all(color: Colors.deepOrangeAccent.withOpacity(0.6), width: 2),
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(color: Colors.deepOrangeAccent.withOpacity(0.2), blurRadius: 15, spreadRadius: 2),
                 ],
               ),
               child: Column(

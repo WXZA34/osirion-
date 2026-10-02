@@ -48,112 +48,133 @@ class TugOfWarBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // Player side
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              width: 24,
-                              height: 24,
-                              decoration: const BoxDecoration(
-                                color: Colors.amber,
-                                shape: BoxShape.circle,
-                              ),
-                              alignment: Alignment.center,
-                              child: const Text(
-                                "VOUS",
-                                style: TextStyle(
-                                  fontSize: 7,
-                                  fontWeight: FontWeight.w900,
-                                  color: Color(0xFF121316),
+                    Expanded(
+                      flex: 4,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                width: 24,
+                                height: 24,
+                                decoration: const BoxDecoration(
+                                  color: Colors.amber,
+                                  shape: BoxShape.circle,
+                                ),
+                                alignment: Alignment.center,
+                                child: const Text(
+                                  "VOUS",
+                                  style: TextStyle(
+                                    fontSize: 7,
+                                    fontWeight: FontWeight.w900,
+                                    color: Color(0xFF121316),
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 6),
-                            Text(
-                              playerName,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
+                              const SizedBox(width: 6),
+                              Expanded(
+                                child: Text(
+                                  playerName,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          "Niv. $playerLevel • ${playerReps.toInt()} réps",
-                          style: const TextStyle(
-                            color: Colors.amberAccent,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
+                            ],
                           ),
-                        ),
-                      ],
+                          Text(
+                            "Niv. $playerLevel • ${playerReps.toInt()} réps",
+                            style: const TextStyle(
+                              color: Colors.amberAccent,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
 
                     // Center VS Icon
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: Colors.deepOrangeAccent.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(color: Colors.deepOrangeAccent.withOpacity(0.35)),
-                      ),
-                      child: const Text(
-                        "⚔️ TUG OF WAR",
-                        style: TextStyle(
-                          color: Colors.orangeAccent,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 0.8,
+                    Expanded(
+                      flex: 3,
+                      child: Center(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: Colors.deepOrangeAccent.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: Colors.deepOrangeAccent.withOpacity(0.35)),
+                          ),
+                          child: const Text(
+                            "⚔️ TUG OF WAR",
+                            style: TextStyle(
+                              color: Colors.orangeAccent,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 0.8,
+                            ),
+                          ),
                         ),
                       ),
                     ),
 
                     // Opponent side
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              opponentName,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(width: 6),
-                            Container(
-                              width: 24,
-                              height: 24,
-                              decoration: const BoxDecoration(
-                                color: Colors.deepOrangeAccent,
-                                shape: BoxShape.circle,
-                              ),
-                              alignment: Alignment.center,
-                              child: const Text(
-                                "ADV",
-                                style: TextStyle(
-                                  fontSize: 7,
-                                  fontWeight: FontWeight.w900,
-                                  color: Color(0xFF121316),
+                    Expanded(
+                      flex: 4,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  opponentName,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.right,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          "Niv. $opponentLevel • ${opponentReps.toInt()} réps",
-                          style: const TextStyle(
-                            color: Colors.orangeAccent,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
+                              const SizedBox(width: 6),
+                              Container(
+                                width: 24,
+                                height: 24,
+                                decoration: const BoxDecoration(
+                                  color: Colors.deepOrangeAccent,
+                                  shape: BoxShape.circle,
+                                ),
+                                alignment: Alignment.center,
+                                child: const Text(
+                                  "ADV",
+                                  style: TextStyle(
+                                    fontSize: 7,
+                                    fontWeight: FontWeight.w900,
+                                    color: Color(0xFF121316),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
+                          Text(
+                            "Niv. $opponentLevel • ${opponentReps.toInt()} réps",
+                            style: const TextStyle(
+                              color: Colors.orangeAccent,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
