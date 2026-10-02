@@ -107,13 +107,70 @@ class _LiveDuelScreenState extends State<LiveDuelScreen> with SingleTickerProvid
     _syncService.initializeDuel(widget.duelId, userId, widget.opponentId);
     
     _syncService.opponentStream?.listen((event) {
-      if (event.snapshot.value != null) {
+      if (event.snapshot.value != null && mounted) {
         final data = event.snapshot.value as Map<dynamic, dynamic>;
         setState(() {
           _opponentReps = data['reps'] ?? 0;
         });
+        _checkEndCondition();
       }
     });
+  }
+
+  bool _hasEnded = false;
+  final int _targetReps = 10; // First to 10 reps wins
+
+  void _checkEndCondition() {
+    if (_hasEnded) return;
+    if (_myReps >= _targetReps || _opponentReps >= _targetReps) {
+      _hasEnded = true;
+      _showRecapDialog();
+    }
+  }
+
+  void _showRecapDialog() {
+    final bool iWon = _myReps >= _opponentReps;
+    
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF161519),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: Text(
+            iWon ? "VICTOIRE !" : "DÉFAITE",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: iWon ? Colors.amber : Colors.redAccent,
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text("VOUS : $_myReps", style: const TextStyle(color: Colors.white, fontSize: 18)),
+              const SizedBox(height: 8),
+              Text("ADVERSAIRE : $_opponentReps", style: const TextStyle(color: Colors.white70, fontSize: 18)),
+              const SizedBox(height: 20),
+              const Text("+20 XP", style: TextStyle(color: Colors.cyanAccent, fontWeight: FontWeight.bold)),
+            ],
+          ),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.amber, foregroundColor: Colors.black),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+              child: const Text("RETOURNER AU PANTHÉON", style: TextStyle(fontWeight: FontWeight.bold)),
+            )
+          ],
+        );
+      }
+    );
   }
 
   Future<void> _processCameraImage(CameraImage image) async {
@@ -151,6 +208,7 @@ class _LiveDuelScreenState extends State<LiveDuelScreen> with SingleTickerProvid
           });
           _syncService.sendRep(_myReps);
           _animationController.forward();
+          _checkEndCondition();
         }
       }
 
@@ -210,7 +268,8 @@ class _LiveDuelScreenState extends State<LiveDuelScreen> with SingleTickerProvid
                       children: [
                         CameraPreview(_cameraController!),
                         Container(color: Colors.black.withOpacity(0.4)),
-                        if (_customPaint != null) _customPaint!,
+                        // Skeleton Overlay removed as per user request
+                        // if (_customPaint != null) _customPaint!,
                       ],
                     ),
                   ),
@@ -226,13 +285,10 @@ class _LiveDuelScreenState extends State<LiveDuelScreen> with SingleTickerProvid
             right: 20,
             child: TugOfWarBar(
               playerName: "VOUS",
-              playerLevel: 15,
-              playerReps: _myReps.toDouble(),
+              playerReps: _myReps,
               opponentName: "ADVERSAIRE",
-              opponentLevel: 15,
-              opponentReps: _opponentReps.toDouble(),
+              opponentReps: _opponentReps,
               tugPosition: (_myReps + _opponentReps) == 0 ? 0.5 : (_opponentReps / (_myReps + _opponentReps)).clamp(0.1, 0.9),
-              handicapMultiplier: 1.0,
             ),
           ),
 
