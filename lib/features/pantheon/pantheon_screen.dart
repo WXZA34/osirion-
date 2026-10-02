@@ -1195,12 +1195,15 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) => const MatchHistoryScreen()));
                   },
-                  icon: const Icon(Icons.history, color: Colors.white, size: 18),
-                  label: const Text("Historique", style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+                  icon: const Icon(Icons.history, color: Colors.white70, size: 18),
+                  label: const Text("HISTORIQUE", style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.2)),
                   style: TextButton.styleFrom(
-                    backgroundColor: Colors.white.withValues(alpha: 0.05),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    backgroundColor: Colors.white.withValues(alpha: 0.03),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      side: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+                    ),
                   ),
                 ),
               ),
@@ -1210,12 +1213,15 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) => const PantheonProfileScreen()));
                   },
-                  icon: const Icon(Icons.shield, color: Colors.white, size: 18),
-                  label: const Text("Profil", style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+                  icon: const Icon(Icons.shield, color: Colors.white70, size: 18),
+                  label: const Text("PROFIL", style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.2)),
                   style: TextButton.styleFrom(
-                    backgroundColor: Colors.white.withValues(alpha: 0.05),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    backgroundColor: Colors.white.withValues(alpha: 0.03),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      side: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+                    ),
                   ),
                 ),
               ),
@@ -1293,10 +1299,22 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
 
   Widget _buildAthleteStatusBanner() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: const Color(0xFF161618),
+        gradient: const LinearGradient(
+          colors: [Color(0xFF1E2024), Color(0xFF121315)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.amber.withValues(alpha: 0.2), width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.amber.withValues(alpha: 0.05),
+            blurRadius: 15,
+            spreadRadius: 2,
+          ),
+        ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1346,18 +1364,19 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
           ),
           const SizedBox(width: 8),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: Colors.white10,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.white24),
+              color: Colors.amber.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.amber.withValues(alpha: 0.4)),
             ),
             child: const Text(
               "NIV. 12",
               style: TextStyle(
                 color: Colors.amber,
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: FontWeight.w900,
+                letterSpacing: 1.0,
               ),
             ),
           ),
@@ -1383,10 +1402,22 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFF161618),
+          gradient: LinearGradient(
+            colors: gradientColors,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: accentColor.withValues(alpha: 0.3), width: 1.5),
+          boxShadow: [
+            BoxShadow(
+              color: accentColor.withValues(alpha: 0.08),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
         ),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1416,13 +1447,14 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                   ),
                 ),
                 Container(
-                  width: 36,
-                  height: 36,
+                  width: 42,
+                  height: 42,
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.05),
+                    color: accentColor.withValues(alpha: 0.15),
                     shape: BoxShape.circle,
+                    border: Border.all(color: accentColor.withValues(alpha: 0.3)),
                   ),
-                  child: Icon(icon, color: Colors.white, size: 18),
+                  child: Icon(icon, color: accentColor, size: 20),
                 ),
               ],
             ),
@@ -1453,12 +1485,12 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
             Text(
               description,
               style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.5),
+                color: Colors.white.withValues(alpha: 0.7),
                 fontSize: 14,
-                height: 1.5,
+                height: 1.6,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
             
             // Features Chips
             Wrap(
@@ -1485,10 +1517,19 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
             // Action Button
             Container(
               width: double.infinity,
-              height: 52,
+              height: 56,
               decoration: BoxDecoration(
-                color: Colors.white,
+                gradient: LinearGradient(
+                  colors: [accentColor, accentColor.withValues(alpha: 0.8)],
+                ),
                 borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: accentColor.withValues(alpha: 0.3),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1496,14 +1537,14 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
                   Text(
                     actionText.toUpperCase(),
                     style: const TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 14,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 1.0,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 1.5,
                     ),
                   ),
                   const SizedBox(width: 8),
-                  const Icon(Icons.arrow_forward, color: Colors.black, size: 18),
+                  const Icon(Icons.arrow_forward, color: Colors.white, size: 18),
                 ],
               ),
             ),
@@ -1524,10 +1565,22 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
       onTap: onJoinRaid,
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFF161618),
+          gradient: const LinearGradient(
+            colors: [Color(0xFF23161A), Color(0xFF161519), Color(0xFF121316)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: Colors.redAccent.withValues(alpha: 0.3), width: 1.5),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.redAccent.withValues(alpha: 0.08),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
         ),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1535,31 +1588,37 @@ class _PantheonScreenState extends ConsumerState<PantheonScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.05),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Text(
-                    "ÉVÉNEMENT COMMUNAUTAIRE",
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 0.8,
+                Flexible(
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.05),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Text(
+                      "ÉVÉNEMENT COMMUNAUTAIRE",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 0.8,
+                      ),
                     ),
                   ),
                 ),
                 Container(
-                  width: 36,
-                  height: 36,
+                  width: 42,
+                  height: 42,
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.05),
+                    color: Colors.redAccent.withValues(alpha: 0.15),
                     shape: BoxShape.circle,
+                    border: Border.all(color: Colors.redAccent.withValues(alpha: 0.3)),
                   ),
                   alignment: Alignment.center,
-                  child: const Text("⚔️", style: TextStyle(fontSize: 17)),
+                  child: const Text("⚔️", style: TextStyle(fontSize: 18)),
                 ),
               ],
             ),
