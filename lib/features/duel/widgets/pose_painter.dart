@@ -13,46 +13,46 @@ class PosePainter extends CustomPainter {
     final double scaleX = size.width / absoluteImageSize.width;
     final double scaleY = size.height / absoluteImageSize.height;
 
-    // Glowing Neon Paint for the Core Body
+    // Glowing White Paint for the entire body
     final paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 4.0
       ..strokeCap = StrokeCap.round
-      ..color = Colors.cyanAccent.withOpacity(0.8);
+      ..color = Colors.white;
       
     final coreGlow = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 8.0
       ..strokeCap = StrokeCap.round
-      ..color = Colors.cyanAccent.withOpacity(0.3)
+      ..color = Colors.white.withOpacity(0.3)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5);
 
-    // Glowing Amber for Left Limbs
+    // Glowing White for Left Limbs
     final leftPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 4.0
       ..strokeCap = StrokeCap.round
-      ..color = Colors.amberAccent;
+      ..color = Colors.white;
       
     final leftGlow = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 8.0
       ..strokeCap = StrokeCap.round
-      ..color = Colors.amber.withOpacity(0.3)
+      ..color = Colors.white.withOpacity(0.3)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5);
 
-    // Glowing Orange for Right Limbs
+    // Glowing White for Right Limbs
     final rightPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 4.0
       ..strokeCap = StrokeCap.round
-      ..color = Colors.deepOrangeAccent;
+      ..color = Colors.white;
       
     final rightGlow = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 8.0
       ..strokeCap = StrokeCap.round
-      ..color = Colors.deepOrangeAccent.withOpacity(0.3)
+      ..color = Colors.white.withOpacity(0.3)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5);
 
     // Joint Marker
