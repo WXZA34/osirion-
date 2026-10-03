@@ -9,6 +9,7 @@ import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'dart:math' as math;
+import '../../features/home/models/arc_data.dart';
 
 class NotificationService {
   static final FirebaseMessaging _messaging = FirebaseMessaging.instance;
@@ -234,29 +235,96 @@ class NotificationService {
     }
   }
 
-  // Banques de phrases (Dark Fantasy / Épique)
-  static const List<Map<String, String>> _morningQuotes = [
-    {"title": "L'Aube du Guerrier ⚔️", "body": "Le Panthéon n'attendra pas. Debout, et forge ta légende aujourd'hui."},
-    {"title": "Le Sang des Anciens 🔥", "body": "Ton corps est un temple. Il est temps de l'honorer."},
-    {"title": "Appel aux Armes 🛡️", "body": "Les Dieux te regardent. Prouve-leur ta valeur dès ce matin."},
-    {"title": "Activation Alpha ⚡", "body": "Le monde dort encore. C'est l'heure de prendre l'avantage."},
-    {"title": "L'Éveil du Champion 👑", "body": "Chaque répétition compte. Lève-toi et prends ce qui te revient."},
-    {"title": "La Voie de la Force 🌪️", "body": "La discipline bâtit des empires. Commence le tien aujourd'hui."},
-    {"title": "Rituel Matinal 🩸", "body": "La sueur d'aujourd'hui est la gloire de demain. En avant !"},
-  ];
+  static List<Map<String, String>> _getMorningQuotes(AlphaArc arc) {
+    switch (arc) {
+      case AlphaArc.winter:
+        return const [
+          {"title": "L'Aube du Guerrier ⚔️", "body": "Le Panthéon n'attendra pas. Debout, et forge ta légende aujourd'hui."},
+          {"title": "Dans l'Ombre 🌑", "body": "Il fait froid, il fait sombre. C'est le moment parfait pour t'entraîner."},
+          {"title": "La Voie de la Force 🌪️", "body": "La discipline bâtit des empires. Commence le tien aujourd'hui."},
+          {"title": "Le Réveil de la Forge 🔥", "body": "Le feu ne s'allume pas tout seul. Lève-toi et frappe le fer."},
+          {"title": "Le Serment de l'Hiver ❄️", "body": "Les faibles restent au lit. Les forts conquièrent la journée."},
+          {"title": "Silence et Acier ⚔️", "body": "Personne ne te regarde. C'est maintenant que tu deviens grand."},
+          {"title": "Activation Alpha ⚡", "body": "Le monde dort encore. C'est l'heure de prendre l'avantage."},
+          {"title": "L'Heure Sombre ⏳", "body": "Chaque matin difficile est une victoire de plus sur toi-même."},
+          {"title": "Le Sang de l'Hiver 🩸", "body": "Le froid endurcit l'esprit. Lève-toi, ton entraînement t'attend."},
+          {"title": "La Forge t'appelle 🔨", "body": "Le marteau doit frapper l'enclume. Ne manque pas ta séance du matin."},
+        ];
+      case AlphaArc.summer:
+        return const [
+          {"title": "L'Éclat du Soleil ☀️", "body": "Le jour se lève. Il est temps de rayonner et de montrer tes résultats."},
+          {"title": "Énergie Solaire ⚡", "body": "La lumière est là. Sors, entraîne-toi et absorbe la puissance de l'été."},
+          {"title": "Le Sang des Anciens 🔥", "body": "Ton corps est un temple. Honore-le en ce jour éclatant."},
+          {"title": "L'Heure de Briller ✨", "body": "Le Summer Body ne se maintient pas tout seul. En avant !"},
+          {"title": "Guerrier de Lumière ⚔️", "body": "Ne laisse pas la chaleur t'abattre. Elle est ton alliée."},
+          {"title": "Chaleur et Sueur 💦", "body": "Transpire aujourd'hui pour rayonner demain."},
+          {"title": "L'Appel de l'Extérieur 🏃", "body": "Le monde est ton terrain de jeu. Va conquérir ta journée."},
+          {"title": "Rayonnement Alpha 👑", "body": "La discipline est aussi importante en été qu'en hiver. Lève-toi."},
+          {"title": "Le Feu de l'Été 🔥", "body": "Alimente la flamme de ta motivation. L'entraînement n'attend pas."},
+          {"title": "Aube Estivale 🌅", "body": "Chaque lever de soleil est une nouvelle chance d'être meilleur."},
+        ];
+      case AlphaArc.royal:
+        return const [
+          {"title": "L'Éveil du Roi 👑", "body": "Le trône t'attend. Mais d'abord, tu dois prouver que tu en es digne."},
+          {"title": "Souveraineté ⚖️", "body": "Un vrai leader maîtrise d'abord son propre corps. Lève-toi."},
+          {"title": "L'Empire Alpha 🏛️", "body": "Chaque répétition est une brique de plus à ton empire."},
+          {"title": "Appel aux Armes 🛡️", "body": "Les Dieux te regardent. Prouve-leur ta noblesse dès ce matin."},
+          {"title": "Le Sang Royal 🩸", "body": "Tu n'es pas né pour être moyen. Réveille ta grandeur."},
+          {"title": "La Couronne Lourde 👑", "body": "Assumer le pouvoir demande de la discipline. Ton entraînement t'attend."},
+          {"title": "Majesté et Force ⚔️", "body": "Le respect ne s'achète pas, il se gagne à la sueur de ton front."},
+          {"title": "L'Aube de l'Empereur 🌅", "body": "Le monde est à toi, si tu es prêt à le prendre aujourd'hui."},
+          {"title": "Le Rituel du Sacre 📜", "body": "Ta discipline matinale est ton couronnement quotidien."},
+          {"title": "Volonté Inébranlable 🛡️", "body": "Un roi ne trouve pas d'excuses. Il trouve des solutions. Lève-toi."},
+        ];
+    }
+  }
 
-  static const List<Map<String, String>> _eveningQuotes = [
-    {"title": "Le Bilan du Sang 🩸", "body": "Les batailles du jour sont terminées. Inscris tes exploits dans ton journal."},
-    {"title": "Le Repos du Guerrier 🏕️", "body": "Avant de fermer les yeux, consigne tes victoires et tes échecs."},
-    {"title": "L'Heure des Comptes ⚖️", "body": "As-tu été digne du Panthéon aujourd'hui ? Mets ton journal à jour."},
-    {"title": "Bilan Énergétique 🛡️", "body": "N'oublie pas de valider tes entraînements. La constance forge la puissance."},
-    {"title": "Chroniques d'Osirion 📜", "body": "Ton histoire s'écrit maintenant. Enregistre tes statistiques du jour."},
-    {"title": "Le Silence de la Forge 🌑", "body": "Le marteau se tait. Il est temps de contempler l'acier forgé aujourd'hui."},
-    {"title": "Héritage Quotidien ⏳", "body": "Qu'as-tu accompli sous le regard des Anciens ? Remplis ton journal."},
-  ];
+  static List<Map<String, String>> _getEveningQuotes(AlphaArc arc) {
+    switch (arc) {
+      case AlphaArc.winter:
+        return const [
+          {"title": "Le Silence de la Forge 🌑", "body": "Le marteau se tait. Il est temps de contempler l'acier forgé aujourd'hui."},
+          {"title": "Le Froid de la Nuit ❄️", "body": "Tu as survécu à un jour de plus. Valide tes exploits dans ton journal."},
+          {"title": "Le Bilan du Sang 🩸", "body": "Les batailles du jour sont terminées. Inscris tes victoires."},
+          {"title": "Le Repos du Guerrier 🏕️", "body": "Avant de fermer les yeux, consigne tes échecs et tes succès."},
+          {"title": "Les Braises S'Éteignent 🔥", "body": "La forge se repose. N'oublie pas de noter tes statistiques."},
+          {"title": "Ombre et Discipline 🐺", "body": "Tu as travaillé dans l'ombre. Maintenant, garde une trace de tes progrès."},
+          {"title": "La Fin de la Garde 🛡️", "body": "Ton tour de garde est terminé. Remplis ton journal d'entraînement."},
+          {"title": "Bilan Énergétique ⚔️", "body": "L'hiver est dur, mais tu l'es encore plus. Valide tes entraînements."},
+          {"title": "Héritage Quotidien ⏳", "body": "Qu'as-tu accompli sous le regard des Anciens aujourd'hui ?"},
+          {"title": "L'Heure des Comptes ⚖️", "body": "As-tu été digne du Panthéon ? Mets ton journal à jour avant de dormir."},
+        ];
+      case AlphaArc.summer:
+        return const [
+          {"title": "Le Crépuscule 🌅", "body": "Le soleil se couche sur tes efforts. Valide tes statistiques du jour."},
+          {"title": "Chaleur Retombante 🌙", "body": "La journée a été intense. C'est l'heure de faire le point."},
+          {"title": "Bilan Estival ☀️", "body": "As-tu rayonné aujourd'hui ? Inscris tes exploits dans le journal."},
+          {"title": "Le Repos de la Lumière ✨", "body": "Même le soleil doit se reposer. N'oublie pas de valider ton sport."},
+          {"title": "L'Éclat du Soir 🌇", "body": "Termine ta journée sur une victoire. Remplis ton journal."},
+          {"title": "Sueur Séchée 💧", "body": "Tu as tout donné. Laisse une trace de tes efforts dans ton carnet."},
+          {"title": "La Fin de l'Aventure 🏕️", "body": "Une autre journée de conquête s'achève. Fais tes comptes."},
+          {"title": "Bilan Énergétique 🛡️", "body": "La lumière décline. C'est le moment de consigner tes succès."},
+          {"title": "Mémoire du Soleil 📜", "body": "Garde en mémoire les efforts fournis sous le soleil d'aujourd'hui."},
+          {"title": "L'Heure du Repos 🌊", "body": "Après l'effort, le réconfort. Mais d'abord, le journal ! "},
+        ];
+      case AlphaArc.royal:
+        return const [
+          {"title": "Le Coucher du Roi 👑", "body": "Le royaume est en paix. Valide tes exploits de la journée."},
+          {"title": "Chroniques d'Osirion 📜", "body": "Ton histoire s'écrit maintenant. Enregistre tes statistiques du jour."},
+          {"title": "L'Heure des Comptes ⚖️", "body": "As-tu régné en maître aujourd'hui ? Remplis ton journal."},
+          {"title": "Le Sceptre Posé 🔱", "body": "Ta garde est terminée. Il est temps de faire le bilan de tes forces."},
+          {"title": "La Table Ronde 🏰", "body": "Avant le repos, consigne tes actes de bravoure pour la postérité."},
+          {"title": "Bilan Royal 🛡️", "body": "Un souverain connaît ses troupes et ses limites. Valide ton entraînement."},
+          {"title": "Le Poids de la Couronne 👑", "body": "Tu as assumé tes responsabilités. Note tes progrès avant de dormir."},
+          {"title": "Héritage du Trône ⏳", "body": "Ce que tu fais aujourd'hui résonnera demain. Remplis le journal."},
+          {"title": "Sagesse Nocturne 🦉", "body": "Réfléchis à tes actions. Inscris tes victoires et tes échecs."},
+          {"title": "Majesté Reposée 🌙", "body": "Ton empire peut dormir tranquille. N'oublie pas de valider tes séances."},
+        ];
+    }
+  }
 
   /// Programme des rappels sportifs quotidiens (sur 7 jours pour la variété)
-  static Future<void> scheduleDailyMotivations() async {
+  static Future<void> scheduleDailyMotivations(AlphaArc currentArc) async {
     const androidDetails = AndroidNotificationDetails(
       'fitness_reminders',
       'Coach Alpha',
@@ -271,10 +339,13 @@ class NotificationService {
 
     final random = math.Random();
 
+    final morningList = _getMorningQuotes(currentArc);
+    final eveningList = _getEveningQuotes(currentArc);
+
     // Programmer pour les 7 prochains jours
     for (int i = 0; i < 7; i++) {
-      final morningQuote = _morningQuotes[random.nextInt(_morningQuotes.length)];
-      final eveningQuote = _eveningQuotes[random.nextInt(_eveningQuotes.length)];
+      final morningQuote = morningList[random.nextInt(morningList.length)];
+      final eveningQuote = eveningList[random.nextInt(eveningList.length)];
 
       // Motivation du Matin (08:00)
       await _scheduleNotification(

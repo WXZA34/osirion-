@@ -23,7 +23,11 @@ class _MainNavigationShellState extends ConsumerState<MainNavigationShell> {
   Future<void> _initNotifications() async {
     // Demander la permission et programmer les rappels quand l'utilisateur arrive sur l'accueil
     await NotificationService.requestPermissions();
-    await NotificationService.scheduleDailyMotivations();
+    
+    if (!mounted) return;
+    // On récupère l'Arc en cours (Winter, Summer, Royal)
+    final currentArc = ref.read(arcProvider).arcType;
+    await NotificationService.scheduleDailyMotivations(currentArc);
   }
 
   @override
