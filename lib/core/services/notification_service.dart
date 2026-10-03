@@ -8,6 +8,7 @@ import '../domain/repositories/valerion_repository.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_timezone/flutter_timezone.dart';
+import 'dart:math' as math;
 
 class NotificationService {
   static final FirebaseMessaging _messaging = FirebaseMessaging.instance;
@@ -233,7 +234,28 @@ class NotificationService {
     }
   }
 
-  /// Programme des rappels sportifs quotidiens
+  // Banques de phrases (Dark Fantasy / Épique)
+  static const List<Map<String, String>> _morningQuotes = [
+    {"title": "L'Aube du Guerrier ⚔️", "body": "Le Panthéon n'attendra pas. Debout, et forge ta légende aujourd'hui."},
+    {"title": "Le Sang des Anciens 🔥", "body": "Ton corps est un temple. Il est temps de l'honorer."},
+    {"title": "Appel aux Armes 🛡️", "body": "Les Dieux te regardent. Prouve-leur ta valeur dès ce matin."},
+    {"title": "Activation Alpha ⚡", "body": "Le monde dort encore. C'est l'heure de prendre l'avantage."},
+    {"title": "L'Éveil du Champion 👑", "body": "Chaque répétition compte. Lève-toi et prends ce qui te revient."},
+    {"title": "La Voie de la Force 🌪️", "body": "La discipline bâtit des empires. Commence le tien aujourd'hui."},
+    {"title": "Rituel Matinal 🩸", "body": "La sueur d'aujourd'hui est la gloire de demain. En avant !"},
+  ];
+
+  static const List<Map<String, String>> _eveningQuotes = [
+    {"title": "Le Bilan du Sang 🩸", "body": "Les batailles du jour sont terminées. Inscris tes exploits dans ton journal."},
+    {"title": "Le Repos du Guerrier 🏕️", "body": "Avant de fermer les yeux, consigne tes victoires et tes échecs."},
+    {"title": "L'Heure des Comptes ⚖️", "body": "As-tu été digne du Panthéon aujourd'hui ? Mets ton journal à jour."},
+    {"title": "Bilan Énergétique 🛡️", "body": "N'oublie pas de valider tes entraînements. La constance forge la puissance."},
+    {"title": "Chroniques d'Osirion 📜", "body": "Ton histoire s'écrit maintenant. Enregistre tes statistiques du jour."},
+    {"title": "Le Silence de la Forge 🌑", "body": "Le marteau se tait. Il est temps de contempler l'acier forgé aujourd'hui."},
+    {"title": "Héritage Quotidien ⏳", "body": "Qu'as-tu accompli sous le regard des Anciens ? Remplis ton journal."},
+  ];
+
+  /// Programme des rappels sportifs quotidiens (sur 7 jours pour la variété)
   static Future<void> scheduleDailyMotivations() async {
     const androidDetails = AndroidNotificationDetails(
       'fitness_reminders',
@@ -242,33 +264,42 @@ class NotificationService {
       importance: Importance.max,
       priority: Priority.high,
     );
-
     const notificationDetails = NotificationDetails(android: androidDetails);
 
     // Annuler les anciennes pour éviter les doublons
     await _localNotifications.cancelAll();
 
-    // Motivation du Matin (08:00)
-    await _scheduleNotification(
-      id: 100,
-      title: "Activation Alpha ⚡",
-      body: "Le Panthéon n'attend pas. Prêt pour ta première quête ?",
-      hour: 8,
-      minute: 0,
-      details: notificationDetails,
-      payload: '{"type": "home"}',
-    );
+    final random = math.Random();
 
-    // Motivation du Soir (18:30)
-    await _scheduleNotification(
-      id: 101,
-      title: "Bilan Énergétique 🛡️",
-      body: "N'oublie pas de valider tes exploits du jour dans ton journal.",
-      hour: 18,
-      minute: 30,
-      details: notificationDetails,
-      payload: '{"type": "journal"}',
-    );
+    // Programmer pour les 7 prochains jours
+    for (int i = 0; i < 7; i++) {
+      final morningQuote = _morningQuotes[random.nextInt(_morningQuotes.length)];
+      final eveningQuote = _eveningQuotes[random.nextInt(_eveningQuotes.length)];
+
+      // Motivation du Matin (08:00)
+      await _scheduleNotification(
+        id: 100 + i,
+        title: morningQuote["title"]!,
+        body: morningQuote["body"]!,
+        hour: 8,
+        minute: 0,
+        dayOffset: i,
+        details: notificationDetails,
+        payload: '{"type": "home"}',
+      );
+
+      // Motivation du Soir (18:30)
+      await _scheduleNotification(
+        id: 200 + i,
+        title: eveningQuote["title"]!,
+        body: eveningQuote["body"]!,
+        hour: 18,
+        minute: 30,
+        dayOffset: i,
+        details: notificationDetails,
+        payload: '{"type": "journal"}',
+      );
+    }
   }
 
   static Future<void> _scheduleNotification({
@@ -277,6 +308,7 @@ class NotificationService {
     required String body,
     required int hour,
     required int minute,
+    required int dayOffset,
     required NotificationDetails details,
     String? payload,
   }) async {
@@ -290,10 +322,15 @@ class NotificationService {
       minute,
     );
 
-    if (scheduledDate.isBefore(now)) {
+    // Si on veut programmer pour aujourd'hui mais que l'heure est passée, on passe à demain (offset 0 -> 1)
+    if (dayOffset == 0 && scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
+    } else if (dayOffset > 0) {
+      scheduledDate = scheduledDate.add(Duration(days: dayOffset));
     }
 
+    // Le paramètre matchDateTimeComponents est supprimé car on veut une vraie notification unique par jour 
+    // qui change au fil du temps (sur les 7 prochains jours)
     await _localNotifications.zonedSchedule(
       id,
       title,
@@ -301,7 +338,6 @@ class NotificationService {
       scheduledDate,
       details,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      matchDateTimeComponents: DateTimeComponents.time,
       payload: payload,
     );
   }
