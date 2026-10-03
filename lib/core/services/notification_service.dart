@@ -7,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../domain/repositories/valerion_repository.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:flutter_timezone/flutter_timezone.dart';
 
 class NotificationService {
   static final FirebaseMessaging _messaging = FirebaseMessaging.instance;
@@ -64,6 +65,12 @@ class NotificationService {
 
     // Initialiser les fuseaux horaires pour le scheduling
     tz.initializeTimeZones();
+    try {
+      final String currentTimeZone = await FlutterTimezone.getLocalTimezone();
+      tz.setLocalLocation(tz.getLocation(currentTimeZone));
+    } catch (e) {
+      debugPrint("❌ [Notifications] Impossible de détecter le fuseau horaire: $e");
+    }
 
     // 3. Configurer les canaux Android (nécessaire pour Android 8.0+)
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
