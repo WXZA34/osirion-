@@ -16,6 +16,11 @@
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    
+    <!-- Permissions pour les notifications locales programmées -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
 
     <uses-sdk tools:overrideLibrary="com.google.mlkit.vision.pose, com.google.mlkit.vision.common, com.google.mlkit.vision.interfaces, io.flutter.plugins.firebase.storage, com.google.firebase.storage, io.flutter.plugins.firebase.firestore, com.google.firebase.firestore, com.llfbandit.record, io.flutter.plugins.firebase.messaging, com.google.firebase.messaging, io.flutter.plugins.firebase.auth, com.google.firebase.auth, io.flutter.plugins.firebase.core, com.google.firebase.core, io.flutter.plugins.firebase.appcheck, com.google.firebase.appcheck, com.google.firebase.appcheck.debug, com.google.firebase.appcheck.playintegrity, com.google.firebase.appcheck.safetynet, com.google.android.gms.base, com.google.android.gms.tasks, com.google.android.gms.common, com.google.firebase.installations, com.google.firebase.installations.interop, com.google.android.gms.maps, com.google.android.gms.location" />
 
@@ -78,6 +83,18 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="high_importance_channel" />
+
+        <!-- Receivers pour les notifications locales programmées (flutter_local_notifications) -->
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
+
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

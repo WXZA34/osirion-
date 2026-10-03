@@ -142,11 +142,17 @@ class NotificationService {
     });
   }
 
-  /// Demande explicitement les permissions de notification
+  /// Demander explicitement les permissions de notification
   static Future<void> requestPermissions() async {
-    // 0. Pour Android 13+, demander explicitement la permission via permission_handler
     if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+       // Demande de permission pour afficher des notifications (Android 13+)
        final status = await Permission.notification.request();
+       
+       // Demande de permission pour les alarmes exactes (Android 14+ pour scheduled notifications)
+       if (await Permission.scheduleExactAlarm.isDenied) {
+         await Permission.scheduleExactAlarm.request();
+       }
+
        if (kDebugMode) {
          debugPrint('🔔 [Notifications] Statut permission Android 13+: $status');
        }

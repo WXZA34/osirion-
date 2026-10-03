@@ -4,6 +4,7 @@ import 'package:valerion/features/home/home_screen.dart';
 import 'package:valerion/features/home/widgets/arc_completion_dialog.dart';
 import 'package:valerion/core/providers/arc_provider.dart';
 import 'package:valerion/core/providers/repository_providers.dart';
+import 'package:valerion/core/services/notification_service.dart';
 
 class MainNavigationShell extends ConsumerStatefulWidget {
   const MainNavigationShell({super.key});
@@ -13,6 +14,18 @@ class MainNavigationShell extends ConsumerStatefulWidget {
 }
 
 class _MainNavigationShellState extends ConsumerState<MainNavigationShell> {
+  @override
+  void initState() {
+    super.initState();
+    _initNotifications();
+  }
+
+  Future<void> _initNotifications() async {
+    // Demander la permission et programmer les rappels quand l'utilisateur arrive sur l'accueil
+    await NotificationService.requestPermissions();
+    await NotificationService.scheduleDailyMotivations();
+  }
+
   @override
   Widget build(BuildContext context) {
     // Activer les services de transition (Récompenses & Notifications)
