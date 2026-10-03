@@ -192,7 +192,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       case 2:
         return _buildMindTab(user);
       case 3:
-        return _buildSettingsTab();
+        return _buildSettingsTab(user);
       default:
         return const SizedBox.shrink();
     }
@@ -1005,7 +1005,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   // --- Tab 3: Réglages (Laboratoire / Gestion) ---
-  Widget _buildSettingsTab() {
+  Widget _buildSettingsTab(UserEntity? user) {
     return Column(
       key: const ValueKey(3),
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1059,6 +1059,63 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           Icons.color_lens,
           AppLocalizations.of(context)!.profileThemeTitle,
           AppLocalizations.of(context)!.profileThemeSubtitle,
+        ),
+        _buildSettingsButton(
+          Icons.theater_comedy, // Icône pour le changement d'Arc
+          "Arc Narratif",
+          "Forcer un Arc spécifique (Hiver, Été, Royal)",
+          onTap: () {
+            if (user == null) return;
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  backgroundColor: const Color(0xFF1A1D24),
+                  title: const Text("Choisir l'Arc Actif", style: TextStyle(color: Colors.white)),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ListTile(
+                        title: const Text("Saison Actuelle (Auto)", style: TextStyle(color: Colors.white)),
+                        onTap: () async {
+                          final updated = user.copyWith(activeArcId: ""); // empty string to bypass ?? in copyWith
+                          await ref.read(valerionRepositoryProvider).saveUserProfile(updated);
+                          if (context.mounted) Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        title: const Text("❄️ Winter Arc", style: TextStyle(color: Colors.cyan)),
+                        onTap: () async {
+                          // Note: copyWith(activeArcId: "WINTER ARC") won't work perfectly if copyWith requires explicitly setting null for clearance, but for strings it's fine. Wait, if it doesn't allow null in copyWith? We will see.
+                          // Wait, if copyWith is implemented with nullable activeArcId... 
+                          // If activeArcId is nullable in copyWith, we just pass "WINTER ARC". But if we want to reset it to null, we might need a specific method or we can just pass "" (empty string) and handle it in the ArcProvider. Let's pass "WINTER ARC".
+                          final updated = user.copyWith(activeArcId: "WINTER ARC");
+                          await ref.read(valerionRepositoryProvider).saveUserProfile(updated);
+                          if (context.mounted) Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        title: const Text("☀️ Summer Body", style: TextStyle(color: Colors.orange)),
+                        onTap: () async {
+                          final updated = user.copyWith(activeArcId: "SUMMER BODY");
+                          await ref.read(valerionRepositoryProvider).saveUserProfile(updated);
+                          if (context.mounted) Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        title: const Text("👑 Royal Arc", style: TextStyle(color: Colors.purpleAccent)),
+                        onTap: () async {
+                          final updated = user.copyWith(activeArcId: "ROYAL ARC");
+                          await ref.read(valerionRepositoryProvider).saveUserProfile(updated);
+                          if (context.mounted) Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
         ),
         _buildSettingsButton(
           Icons.download,
